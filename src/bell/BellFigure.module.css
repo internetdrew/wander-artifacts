@@ -13,17 +13,6 @@
   --shade-3: #ece3c7;
 }
 
-.figure [data-material='wood'] {
-  --face: #967553;
-  --top: #b29370;
-  --shade-0: #71543d;
-  --shade-1: #826347;
-  --shade-2: #957351;
-  --shade-3: #a38562;
-  --bell-edge: #634d39;
-  --bell-faint: #977a5b;
-}
-
 .figure [data-material='dark'],
 .figure [data-material='rubber'] {
   --face: #42483e;
@@ -72,8 +61,3 @@
   letter-spacing: 0.8px;
 }
 
-.shadow {
-  fill: #615341;
-  opacity: 0.16;
-  filter: blur(9px);
-}

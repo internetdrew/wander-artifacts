@@ -1,4 +1,4 @@
-import { useEffect, useId, useRef, useState } from 'react';
+import { useId, useRef, useState } from 'react';
 import {
   motion,
   useMotionValue,
@@ -12,6 +12,7 @@ import daytime from './assets/home-0.webp';
 import evening from './assets/home-1.webp';
 import nighttime from './assets/home-2.webp';
 import styles from './LightScrubber.module.css';
+import TextSwap from './TextSwap';
 
 const FRAMES = [
   { src: daytime, label: 'Daytime' },
@@ -55,68 +56,6 @@ function Layer({
   );
 }
 
-function SceneCaption({ t }: { t: MotionValue<number> }) {
-  const ref = useRef<HTMLSpanElement>(null);
-  const [initialLabel] = useState(() => describe(t.get()));
-  const reducedMotion = useReducedMotion();
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    let latest = describe(t.get());
-    let busy = false;
-    let timer: ReturnType<typeof setTimeout> | undefined;
-    const duration = getComputedStyle(el)
-      .getPropertyValue('--text-swap-dur')
-      .trim();
-    const parsed = Number.parseFloat(duration);
-    const durationMs = Number.isFinite(parsed)
-      ? parsed * (duration.endsWith('ms') ? 1 : 1000)
-      : 150;
-
-    function swap() {
-      if (!el) return;
-      if (reducedMotion) {
-        el.textContent = latest;
-        return;
-      }
-      if (busy || el.textContent === latest) return;
-      busy = true;
-      el.classList.add(styles.exit);
-      timer = setTimeout(() => {
-        // Read the latest requested label, skipping stale intermediate states.
-        el.textContent = latest;
-        el.classList.remove(styles.exit);
-        el.classList.add(styles.enterStart);
-        void el.offsetWidth;
-        el.classList.remove(styles.enterStart);
-        timer = setTimeout(() => {
-          busy = false;
-          swap();
-        }, durationMs);
-      }, durationMs);
-    }
-
-    el.classList.remove(styles.exit, styles.enterStart);
-    el.textContent = latest;
-    const unsubscribe = t.on('change', value => {
-      latest = describe(value);
-      swap();
-    });
-    return () => {
-      unsubscribe();
-      clearTimeout(timer);
-      el.classList.remove(styles.exit, styles.enterStart);
-    };
-  }, [t, reducedMotion]);
-
-  return (
-    <span ref={ref} className={`${styles.textSwap} font-[450] text-base`}>
-      {initialLabel}
-    </span>
-  );
-}
-
 /** Photo scrubber: continuous updates never pass through React state. */
 export default function LightScrubber() {
   const id = useId();
@@ -128,6 +67,7 @@ export default function LightScrubber() {
   const spring = useSpring(raw, LIGHT_SPRING);
   const reducedMotion = useReducedMotion();
   const t = reducedMotion ? raw : spring;
+  const caption = useTransform(t, describe);
   const handleLeft = useTransform(
     raw,
     value =>
@@ -200,7 +140,7 @@ export default function LightScrubber() {
             max-[601px]:inset-x-4 max-[601px]:bottom-4.5'
           aria-hidden='true'
         >
-          <SceneCaption t={t} />
+          <TextSwap value={caption} className='font-[450] text-base' />
         </div>
         <motion.span
           className='pointer-events-none absolute top-1/2 max-w-[calc(100%-90px)] -translate-y-1/2

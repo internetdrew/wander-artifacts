@@ -11,6 +11,7 @@
     "bell:build": "node scripts/build-bell.mjs --audit"
   },
   "dependencies": {
+    "@base-ui/react": "^1.9.0",
     "@fontsource-variable/instrument-sans": "^5.3.0",
     "@tailwindcss/vite": "^4.3.3",
     "motion": "^14.2.0",
