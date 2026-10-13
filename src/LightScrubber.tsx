@@ -199,8 +199,8 @@ export default function LightScrubber() {
           className={`${styles.shade} pointer-events-none absolute inset-0 size-full`}
         />
         <div
-          className='pointer-events-none absolute inset-x-[26px] bottom-[25px] grid text-white
-            max-[601px]:inset-x-4 max-[601px]:bottom-[18px]'
+          className='pointer-events-none absolute inset-x-6.5 bottom-6.25 grid text-white
+            max-[601px]:inset-x-4 max-[601px]:bottom-4.5'
           aria-hidden='true'
         >
           <SceneCaption t={t} />
