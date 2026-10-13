@@ -111,10 +111,7 @@ function SceneCaption({ t }: { t: MotionValue<number> }) {
   }, [t, reducedMotion]);
 
   return (
-    <span
-      ref={ref}
-      className={`${styles.textSwap} col-start-1 row-start-1 text-[clamp(22px,3vw,24px)] tracking-tight`}
-    >
+    <span ref={ref} className={`${styles.textSwap} font-[450] text-base`}>
       {initialLabel}
     </span>
   );
