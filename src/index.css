@@ -1,1 +1,8 @@
 @import 'tailwindcss';
+@import '@fontsource-variable/instrument-sans';
+
+@layer base {
+  html {
+    font-family: 'Instrument Sans Variable', sans-serif;
+  }
+}

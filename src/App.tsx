@@ -1,5 +1,11 @@
+import LightScrubber from './LightScrubber';
+
 function App() {
-  return <h1 className='bg-red-200'>hello world</h1>;
+  return (
+    <main className='max-w-2xl mx-auto'>
+      <LightScrubber />
+    </main>
+  );
 }
 
 export default App;
