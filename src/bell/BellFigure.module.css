@@ -1,0 +1,79 @@
+/* Material ramps belong to the SVG, not to the surrounding interface. */
+.figure {
+  --bell-edge: #514b3e;
+  --bell-faint: #8b795b;
+}
+
+.figure [data-material='brass'] {
+  --face: #eee5c9;
+  --top: #faf2d8;
+  --shade-0: #b3a27a;
+  --shade-1: #cdbd96;
+  --shade-2: #e0d3af;
+  --shade-3: #ece3c7;
+}
+
+.figure [data-material='wood'] {
+  --face: #967553;
+  --top: #b29370;
+  --shade-0: #71543d;
+  --shade-1: #826347;
+  --shade-2: #957351;
+  --shade-3: #a38562;
+  --bell-edge: #634d39;
+  --bell-faint: #977a5b;
+}
+
+.figure [data-material='dark'],
+.figure [data-material='rubber'] {
+  --face: #42483e;
+  --top: #51574b;
+  --shade-0: #292f28;
+  --shade-1: #343b31;
+  --shade-2: #40473b;
+  --shade-3: #495143;
+  --bell-edge: #292f28;
+  --bell-faint: #67705d;
+}
+
+.figure :global(.iso-fill) { fill: var(--face); }
+.figure :global(.iso-top) { fill: var(--top); }
+.figure :global(.iso-shade[data-shade='0']) { fill: var(--shade-0); }
+.figure :global(.iso-shade[data-shade='1']) { fill: var(--shade-1); }
+.figure :global(.iso-shade[data-shade='2']) { fill: var(--shade-2); }
+.figure :global(.iso-shade[data-shade='3']) { fill: var(--shade-3); }
+
+/* Overlap tone sheets slightly so antialiasing cannot leave hairline gaps. */
+.figure :global([data-seamless] > .iso-shade),
+.figure :global([data-seamless] > .iso-top) {
+  stroke-width: 0.4;
+  stroke-linejoin: round;
+}
+.figure :global([data-seamless] > .iso-shade[data-shade='0']) { stroke: var(--shade-0); }
+.figure :global([data-seamless] > .iso-shade[data-shade='1']) { stroke: var(--shade-1); }
+.figure :global([data-seamless] > .iso-shade[data-shade='2']) { stroke: var(--shade-2); }
+.figure :global([data-seamless] > .iso-shade[data-shade='3']) { stroke: var(--shade-3); }
+.figure :global([data-seamless] > .iso-top) { stroke: var(--top); }
+
+.figure :global(.iso-line) {
+  fill: none;
+  stroke: var(--bell-edge);
+  stroke-width: 0.55;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.figure :global(.iso-line[data-tone='faint']) {
+  stroke: var(--bell-faint);
+  stroke-width: 0.35;
+}
+.figure :global(.iso-text) {
+  fill: var(--bell-edge);
+  stroke: none;
+  letter-spacing: 0.8px;
+}
+
+.shadow {
+  fill: #615341;
+  opacity: 0.16;
+  filter: blur(9px);
+}
