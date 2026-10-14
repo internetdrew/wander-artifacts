@@ -1,19 +1,9 @@
 import { useEffect, useId, useRef, useState, type RefObject } from 'react';
 import { Button } from '@base-ui/react/button';
-import {
-  animate,
-  motion,
-  useInView,
-  useMotionValue,
-  useReducedMotion,
-  useTransform,
-} from 'motion/react';
-import art from './geometry.json';
-import styles from './BellFigure.module.css';
+import { animate, motion, useMotionValue, useReducedMotion } from 'motion/react';
+import { loadBell, type HairlineBellHandle } from './hairline/loadBell';
 import TextSwap from '../TextSwap';
 
-const PRESS = { duration: 0.28, times: [0, 0.2, 1], ease: 'easeOut' as const };
-const RESONANCE = { duration: 0.65, ease: 'easeOut' as const };
 // A quiet, synthesized metallic strike. No sample downloads or playback on load.
 const PARTIALS = [
   { frequency: 1850, gain: 0.095, decay: 1.3 },
@@ -23,39 +13,62 @@ const PARTIALS = [
 
 type Props = {
   buttonRef: RefObject<HTMLButtonElement | null>;
-  onRing: () => void;
+  onSettled: () => void;
 };
 
-export default function BellFigure({ buttonRef, onRing }: Props) {
-  const id = useId();
-  const container = useRef<HTMLDivElement>(null);
-  const visible = useInView(container);
+export default function BellFigure({ buttonRef, onSettled }: Props) {
+  const brandPathId = useId();
+  const brandPath = useRef<SVGPathElement>(null);
+  const stage = useRef<HTMLDivElement>(null);
+  const read = useRef<HTMLSpanElement>(null);
+  const figure = useRef<HairlineBellHandle | null>(null);
   const reducedMotion = useReducedMotion();
-  const press = useMotionValue(0);
-  const vibration = useMotionValue(0);
-  const y = useTransform(press, value => value * art.pressVector[1]);
-  const x = useTransform(press, value => value * art.pressVector[0]);
   const audio = useRef<AudioContext | null>(null);
   const [muted, setMuted] = useState(false);
   const soundLabel = useMotionValue('on');
 
   useEffect(() => {
-    if (!visible || reducedMotion) {
-      press.stop();
-      vibration.stop();
-      press.set(0);
-      vibration.set(0);
-    }
-  }, [visible, reducedMotion, press, vibration]);
+    const element = stage.current;
+    const readout = read.current;
+    if (!element || !readout) return;
+    let cancelled = false;
+    void loadBell()
+      .then(({ definition, runtime }) => {
+        if (cancelled) return;
+        const svg = runtime.mk(
+          'svg',
+          { viewBox: '0 0 400 320', 'aria-hidden': 'true' },
+          element,
+        );
+        figure.current = definition.mount(
+          {
+            stage: element,
+            svg,
+            read: readout,
+            onSurfacePath: path => brandPath.current?.setAttribute('d', path),
+            animatePlunger: (from, to, onUpdate, onComplete) => animate(from, to, {
+              type: 'spring', stiffness: 420, damping: 24, mass: 0.65,
+              onUpdate, onComplete,
+            }),
+          },
+          5,
+        );
+      })
+      .catch(error => console.error(error));
+    return () => {
+      cancelled = true;
+      figure.current?.destroy();
+      figure.current = null;
+      element.replaceChildren();
+    };
+  }, []);
 
   useEffect(
     () => () => {
-      press.stop();
-      vibration.stop();
       void audio.current?.close();
       audio.current = null;
     },
-    [press, vibration],
+    [],
   );
 
   async function ding() {
@@ -90,19 +103,11 @@ export default function BellFigure({ buttonRef, onRing }: Props) {
 
   function ring() {
     if (!muted) void ding();
-    if (!reducedMotion) {
-      void animate(press, [press.get(), 1, 0], PRESS);
-      void animate(
-        vibration,
-        [vibration.get(), 0.4, -0.3, 0.18, -0.08, 0],
-        RESONANCE,
-      );
-    }
-    onRing();
+    figure.current?.ring(onSettled);
   }
 
   return (
-    <div ref={container} className='mx-auto my-7 w-3/5'>
+    <div className='mx-auto my-7 w-full max-w-2xs touch-manipulation'>
       <button
         ref={buttonRef}
         type='button'
@@ -110,42 +115,27 @@ export default function BellFigure({ buttonRef, onRing }: Props) {
         onClick={ring}
         className='block w-full cursor-pointer mt-32 touch-manipulation rounded-xl focus-visible:outline-2 focus-visible:-outline-offset-4 focus-visible:outline-[#56684b]'
       >
-        <svg
-          viewBox={`0 0 ${art.width} ${art.height}`}
-          className={`${styles.figure} block h-auto w-full`}
-          aria-hidden='true'
-        >
-          <defs>
-            <clipPath id={`${id}-shaft`}>
-              <path d={art.shaftClip} />
-            </clipPath>
-          </defs>
-          {art.parts.map(part => {
-            const drawing = (
-              <g dangerouslySetInnerHTML={{ __html: part.svg }} />
-            );
-            return (
-              <g
-                key={part.name}
-                data-part={part.name}
-                data-material={part.material}
-                clipPath={
-                  part.name === 'plunger.shaft'
-                    ? `url(#${id}-shaft)`
-                    : undefined
-                }
-              >
-                {part.moving ? (
-                  <motion.g style={{ x, y }}>{drawing}</motion.g>
-                ) : part.name === 'bell.dome' ? (
-                  <motion.g style={{ x: vibration }}>{drawing}</motion.g>
-                ) : (
-                  drawing
-                )}
-              </g>
-            );
-          })}
-        </svg>
+        <div className='relative'>
+          <div ref={stage} data-hairline='bell' className='w-full' />
+          <svg
+            viewBox='0 0 400 320'
+            className='pointer-events-none absolute inset-0 size-full'
+            aria-hidden='true'
+          >
+            <defs>
+              <path ref={brandPath} id={brandPathId} />
+            </defs>
+            <text
+              className='fill-[#202020]/80 text-[11px] font-[550] tracking-[0.18em]'
+              textAnchor='middle'
+            >
+              <textPath href={`#${brandPathId}`} startOffset='50%'>
+                WANDER
+              </textPath>
+            </text>
+          </svg>
+        </div>
+        <span ref={read} className='sr-only' aria-hidden='true' />
       </button>
       <div className='absolute top-4 right-4 text-[10px]'>
         <Button
