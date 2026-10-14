@@ -4,14 +4,15 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --host",
     "build": "tsc -b && vite build",
     "lint": "oxlint",
     "preview": "vite preview",
-    "bell:build": "node scripts/build-bell.mjs --audit"
+    "bell:build": "node src/bell/hairline/build.mjs bell.js"
   },
   "dependencies": {
     "@base-ui/react": "^1.9.0",
+    "@fontsource-variable/caveat": "^5.3.0",
     "@fontsource-variable/instrument-sans": "^5.3.0",
     "@tailwindcss/vite": "^4.3.3",
     "motion": "^14.2.0",

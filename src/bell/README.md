@@ -1,29 +1,30 @@
-# Front-desk bell
+# Hairline concierge bell
 
-An Anatomy-kit SVG figure: a turned brass bell on a beveled walnut plinth.
-`BellFigure.tsx` owns the tap, short plunger stroke, quiet synthesized ring,
-sound toggle, and ring count. `ConciergeBell.tsx` owns the request disclosure.
+`bell.js` at the project root is the figure source. It builds the bell from a
+rounded base, a domed shell, a guide collar, and a spring-loaded plunger. Edit
+that file to change the drawing; the kernel, bench, and build script in
+`hairline/` are unchanged copies from the hairline-create skill.
 
-- Layout uses Tailwind. Material ramps and SVG-specific rules are formatted in
-  `BellFigure.module.css`.
-- `geometry.json` is generated, not hand-edited. Change world dimensions and
-  parts in `scripts/build-bell.mjs`, then run `npm run bell:build`.
-- The build uses vendored Anatomy kit modules under `scripts/anatomy-kit`.
-  These build-time geometry/audit tools never enter the browser bundle.
-- Forty physical parts are recorded with their true shapes. The audit checks
-  support, clearance, and depth order at five plunger positions. The shaft is
-  clipped at its guide and the visible length shortens on pressing.
-- The dome's external surface is rendered without hidden inner-wall shading;
-  the audit records its hollow wall. The tiny visual resonance is an SVG offset.
-- The button supports Enter and Space. Closing requests returns focus to it.
-  Reduced motion removes physical movement; offscreen motion stops. The bell
-  stays silent and still until activated, appropriate for a concierge control.
-- Sound is generated with three short decaying sine partials after a user gesture.
-  It needs no external audio sample and can be muted. Browser audio failure
-  never prevents the request options from opening.
-- SVG supplies the complete figure; no WebGL context or rendering loop is needed.
-  The concierge component is loaded as a separate chunk.
+`BellFigure.tsx` mounts the figure through `hairline/loadBell.ts`. Hairline owns
+its SVG, pointer hit testing, and sleeping animation loop; React owns the
+accessible ring button, synthesized sound, and sound toggle. The ring callback
+opens the contained Base UI drawer only once the plunger has finished returning.
+The backdrop fades in on completion, with the drawer entrance following 100ms
+later. Repeated strikes replace the pending completion, so an earlier strike
+cannot open the drawer during a later press.
 
-Validation: `npm run build`, `npm run lint`, `npm run bell:build`; browser checks
-at desktop and 390px, four-times close-up, keyboard open/close, reduced motion,
-and the Anatomy line-end checker. The request options remain local previews.
+The WANDER wordmark is an SVG text-on-path layer in the React component.
+The figure projects a latitude on the dome and updates that path during recoil,
+so the lettering follows the shell's perceived curvature and movement. The
+standalone Hairline preview retains the unbranded figure.
+
+Static hit areas use the bell's resting geometry. The subtle hover depresses
+the plunger by one world unit; the main motion is a 70ms strike, followed by a
+440ms release and a small damped shell recoil. The kernel handles offscreen
+sleep and reduced motion. The hover is intentionally quiet: the action is a
+press, rather than a large transformation on pointer movement.
+
+Run `npm run bell:build` to rebuild `hairline-bell.html`, a standalone preview.
+Open it with `?play=1` to follow the tour: plunger, shell, plunger, then leave.
+The Hairline look tool validates rest/answer, narrow views, intensity extremes,
+both themes, read-outs, frame bounds, console output, and settling behavior.
