@@ -20,7 +20,9 @@ standalone Hairline preview retains the unbranded figure.
 
 Static hit areas use the bell's resting geometry. The subtle hover depresses
 the plunger by one world unit; the main motion is a 70ms strike, followed by a
-440ms release and a small damped shell recoil. The kernel handles offscreen
+Motion spring return with a visible rebound and a small damped shell recoil.
+The return spring is configured in `BellFigure.tsx` (stiffness 420, damping 14,
+mass 0.65); the standalone preview falls back to a 440ms eased return. The kernel handles offscreen
 sleep and reduced motion. The hover is intentionally quiet: the action is a
 press, rather than a large transformation on pointer movement.
 

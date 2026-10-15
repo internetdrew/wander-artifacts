@@ -4,6 +4,9 @@ import { animate, motion, useMotionValue, useReducedMotion } from 'motion/react'
 import { loadBell, type HairlineBellHandle } from './hairline/loadBell';
 import TextSwap from '../TextSwap';
 
+// Underdamped return: one clear rebound, then a smaller settling bounce.
+const PLUNGER_RETURN = { type: 'spring' as const, stiffness: 420, damping: 14, mass: 0.65 };
+
 // A quiet, synthesized metallic strike. No sample downloads or playback on load.
 const PARTIALS = [
   { frequency: 1850, gain: 0.095, decay: 1.3 },
@@ -47,7 +50,7 @@ export default function BellFigure({ buttonRef, onSettled }: Props) {
             read: readout,
             onSurfacePath: path => brandPath.current?.setAttribute('d', path),
             animatePlunger: (from, to, onUpdate, onComplete) => animate(from, to, {
-              type: 'spring', stiffness: 420, damping: 24, mass: 0.65,
+              ...PLUNGER_RETURN,
               onUpdate, onComplete,
             }),
           },

@@ -99,11 +99,9 @@ function NightsStepper({
         aria-label='Remove one night'
         disabled={nights <= 1}
         onClick={() => onChange(-1)}
-        className='grid size-11 shrink-0 text-white cursor-pointer place-items-center rounded-full bg-transparent enabled:hover:[&>span]:bg-[#202020]/95 disabled:cursor-default disabled:opacity-40 focus-visible:outline-2 focus-visible:outline-offset-2'
+        className='grid size-11 shrink-0 cursor-pointer place-items-center rounded-full text-white bg-[#202020] enabled:hover:bg-[#202020]/95 disabled:cursor-default disabled:opacity-40 focus-visible:outline-2 focus-visible:outline-offset-2'
       >
-        <span className='pointer-events-none grid size-8 place-items-center rounded-full bg-[#202020]'>
-          <MinusIcon />
-        </span>
+        <MinusIcon />
       </Button>
       <span className='flex h-11 min-w-24 flex-1 items-center justify-center gap-1 tabular-nums'>
         <AnimatedNights nights={nights} direction={direction} extra announce />
@@ -112,11 +110,9 @@ function NightsStepper({
         aria-label='Add one night'
         disabled={nights >= 3}
         onClick={() => onChange(1)}
-        className='grid size-11 shrink-0 cursor-pointer place-items-center rounded-full text-white bg-transparent enabled:hover:[&>span]:bg-[#202020]/95 disabled:cursor-default disabled:opacity-40 focus-visible:outline-2 focus-visible:outline-offset-2'
+        className='grid size-11 shrink-0 cursor-pointer place-items-center rounded-full text-white bg-[#202020] enabled:hover:bg-[#202020]/95 disabled:cursor-default disabled:opacity-40 focus-visible:outline-2 focus-visible:outline-offset-2'
       >
-        <span className='pointer-events-none grid size-8 place-items-center rounded-full bg-[#202020]'>
-          <PlusIcon />
-        </span>
+        <PlusIcon />
       </Button>
     </div>
   );
