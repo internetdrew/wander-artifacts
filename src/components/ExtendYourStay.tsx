@@ -66,7 +66,7 @@ export default function ExtendYourStay() {
           duration: reducedMotion ? 0 : 0.3,
           ease: [0.22, 1, 0.36, 1],
         }}
-        className='tabular-nums bg-[#202020] mx-auto max-w-5/6 sm:max-w-4/6 text-white rounded-[28px] mt-8 overflow-hidden'
+        className='tabular-nums mx-auto max-w-5/6 sm:max-w-4/6 ring-[0.5px] ring-neutral-200 rounded-xl mt-8 overflow-hidden shadow'
         onKeyDown={event => {
           if (event.key === 'Escape' && screen !== 'invitation') {
             event.stopPropagation();
