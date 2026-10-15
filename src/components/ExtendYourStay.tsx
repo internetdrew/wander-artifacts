@@ -4,11 +4,25 @@ import StayInvitation from './extend-your-stay/StayInvitation';
 import ChooseNights from './extend-your-stay/ChooseNights';
 import ReviewStayExtension from './extend-your-stay/ReviewStayExtension';
 
+const NIGHTLY_RATE = 1150;
+
 type Screen = 'invitation' | 'choose-nights' | 'review' | 'confirmed';
 
 export default function ExtendYourStay() {
   const id = useId();
   const [screen, setScreen] = useState<Screen>('invitation');
+  const [{ nights, direction }, setCount] = useState({ nights: 1, direction: 1 });
+  const changeNights = (delta: number) => setCount(previous => ({
+    nights: Math.min(3, Math.max(1, previous.nights + delta)),
+    direction: delta,
+  }));
+  const [today] = useState(() => new Date());
+  const checkout = new Date(today);
+  checkout.setHours(11, 0, 0, 0);
+  checkout.setDate(checkout.getDate() + 1 + nights);
+  const checkoutLabel = checkout.toLocaleDateString(undefined, {
+    weekday: 'short', month: 'short', day: 'numeric',
+  });
   const content = useRef<HTMLDivElement>(null);
   const previousScreen = useRef(screen);
   const [height, setHeight] = useState<number>();
@@ -37,6 +51,11 @@ export default function ExtendYourStay() {
       case 'choose-nights':
         return (
           <ChooseNights
+            nightlyRate={NIGHTLY_RATE}
+            nights={nights}
+            direction={direction}
+            onChangeNights={changeNights}
+            checkoutLabel={checkoutLabel}
             onBack={() => setScreen('invitation')}
             onNext={() => setScreen('review')}
           />
@@ -44,6 +63,9 @@ export default function ExtendYourStay() {
       case 'review':
         return (
           <ReviewStayExtension
+            nights={nights}
+            nightlyRate={NIGHTLY_RATE}
+            checkoutLabel={checkoutLabel}
             onBack={() => setScreen('choose-nights')}
             onNext={() => {}}
           />

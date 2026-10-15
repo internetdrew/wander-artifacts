@@ -1,4 +1,4 @@
-import { useState, type ComponentProps } from 'react';
+import { type ComponentProps } from 'react';
 import { Button } from '@base-ui/react/button';
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import NumberFlow from '@number-flow/react';
@@ -6,29 +6,20 @@ import NumberFlow from '@number-flow/react';
 export default function ChooseNights({
   onBack,
   onNext,
+  nights,
+  direction,
+  onChangeNights,
+  checkoutLabel,
+  nightlyRate,
 }: {
   onBack: () => void;
   onNext: () => void;
+  nights: number;
+  direction: number;
+  onChangeNights: (delta: number) => void;
+  checkoutLabel: string;
+  nightlyRate: number;
 }) {
-  const [{ nights, direction }, setCount] = useState({
-    nights: 1,
-    direction: 1,
-  });
-  const changeNights = (delta: number) =>
-    setCount(previous => ({
-      nights: Math.min(3, Math.max(1, previous.nights + delta)),
-      direction: delta,
-    }));
-  const [today] = useState(() => new Date());
-  const checkout = new Date(today);
-  checkout.setHours(11, 0, 0, 0);
-  checkout.setDate(checkout.getDate() + 1 + nights);
-  const checkoutLabel = checkout.toLocaleDateString(undefined, {
-    weekday: 'short',
-    month: 'short',
-    day: 'numeric',
-  });
-
   return (
     <>
       <p className='font-[550] text-lg'>Stay a little longer</p>
@@ -39,16 +30,16 @@ export default function ChooseNights({
         <NightsStepper
           nights={nights}
           direction={direction}
-          onChange={changeNights}
+          onChange={onChangeNights}
         />
       </div>
 
       <div className='flex items-center justify-between'>
         <span className='inline-flex items-center gap-1 text-sm font-[450]'>
-          $1,150 × <AnimatedNights nights={nights} direction={direction} />
+          {nightlyRate.toLocaleString(undefined, { style: 'currency', currency: 'USD', maximumFractionDigits: 0 })} × <AnimatedNights nights={nights} direction={direction} />
         </span>
         <NumberFlow
-          value={1150 * nights}
+          value={nightlyRate * nights}
           format={{
             style: 'currency',
             currency: 'USD',
