@@ -67,8 +67,17 @@ export default function ExtendYourStay() {
             nightlyRate={NIGHTLY_RATE}
             checkoutLabel={checkoutLabel}
             onBack={() => setScreen('choose-nights')}
-            onNext={() => {}}
+            onNext={() => setScreen('confirmed')}
           />
+        );
+      case 'confirmed':
+        return (
+          <div role='status'>
+            <p className='text-lg font-[550]'>Your stay is extended</p>
+            <p className='mt-1 text-sm text-neutral-500'>
+              Your new checkout is {checkoutLabel} at 11 AM.
+            </p>
+          </div>
         );
     }
   }
@@ -90,7 +99,7 @@ export default function ExtendYourStay() {
         }}
         className='tabular-nums mx-auto max-w-5/6 sm:max-w-4/6 ring-[0.5px] ring-neutral-200 rounded-xl mt-8 overflow-hidden shadow'
         onKeyDown={event => {
-          if (event.key === 'Escape' && screen !== 'invitation') {
+          if (event.key === 'Escape' && (screen === 'choose-nights' || screen === 'review')) {
             event.stopPropagation();
             setScreen(screen === 'review' ? 'choose-nights' : 'invitation');
           }
