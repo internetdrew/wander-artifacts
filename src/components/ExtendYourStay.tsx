@@ -1,5 +1,5 @@
 import { useEffect, useId, useLayoutEffect, useRef, useState } from 'react';
-import { motion, useReducedMotion } from 'motion/react';
+import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import StayInvitation from './extend-your-stay/StayInvitation';
 import ChooseNights from './extend-your-stay/ChooseNights';
 import ReviewStayExtension from './extend-your-stay/ReviewStayExtension';
@@ -75,7 +75,19 @@ export default function ExtendYourStay() {
         }}
       >
         <div ref={content} tabIndex={-1} className='flow-root p-4 outline-none'>
-          {renderScreen()}
+          <AnimatePresence initial={false}>
+            <motion.div
+              key={screen}
+              initial={{ opacity: reducedMotion ? 1 : 0 }}
+              animate={{ opacity: 1 }}
+              transition={{
+                duration: reducedMotion ? 0 : 0.16,
+                ease: 'easeOut',
+              }}
+            >
+              {renderScreen()}
+            </motion.div>
+          </AnimatePresence>
         </div>
       </motion.div>
     </section>
