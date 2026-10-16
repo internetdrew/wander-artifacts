@@ -1,4 +1,4 @@
-import { useEffect, useId, useLayoutEffect, useRef, useState } from 'react';
+import { useEffect, useId, useRef, useState } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import StayInvitation from './extend-your-stay/StayInvitation';
 import ChooseNights from './extend-your-stay/ChooseNights';
@@ -7,11 +7,11 @@ import CheckoutPass from './extend-your-stay/CheckoutPass';
 
 const NIGHTLY_RATE = 1150;
 
-type Screen = 'invitation' | 'choose-nights' | 'review' | 'confirmed';
+type View = 'invitation' | 'choose-nights' | 'review' | 'confirmed';
 
 export default function ExtendYourStay() {
   const id = useId();
-  const [screen, setScreen] = useState<Screen>('invitation');
+  const [view, setView] = useState<View>('invitation');
   const [{ nights, direction }, setCount] = useState({
     nights: 1,
     direction: 1,
@@ -31,30 +31,19 @@ export default function ExtendYourStay() {
     day: 'numeric',
   });
   const content = useRef<HTMLDivElement>(null);
-  const previousScreen = useRef(screen);
-  const [height, setHeight] = useState<number>();
+  const previousView = useRef(view);
   const reducedMotion = useReducedMotion();
 
-  useLayoutEffect(() => {
-    const element = content.current;
-    if (!element) return;
-    const measure = () => setHeight(element.offsetHeight);
-    measure();
-    const observer = new ResizeObserver(measure);
-    observer.observe(element);
-    return () => observer.disconnect();
-  }, []);
-
   useEffect(() => {
-    if (previousScreen.current === screen) return;
+    if (previousView.current === view) return;
     content.current?.focus({ preventScroll: true });
-    previousScreen.current = screen;
-  }, [screen]);
+    previousView.current = view;
+  }, [view]);
 
-  function renderScreen() {
-    switch (screen) {
+  function renderView() {
+    switch (view) {
       case 'invitation':
-        return <StayInvitation onNext={() => setScreen('choose-nights')} />;
+        return <StayInvitation onNext={() => setView('choose-nights')} />;
       case 'choose-nights':
         return (
           <ChooseNights
@@ -63,8 +52,8 @@ export default function ExtendYourStay() {
             direction={direction}
             onChangeNights={changeNights}
             checkoutLabel={checkoutLabel}
-            onBack={() => setScreen('invitation')}
-            onNext={() => setScreen('review')}
+            onBack={() => setView('invitation')}
+            onNext={() => setView('review')}
           />
         );
       case 'review':
@@ -73,8 +62,8 @@ export default function ExtendYourStay() {
             nights={nights}
             nightlyRate={NIGHTLY_RATE}
             checkoutLabel={checkoutLabel}
-            onBack={() => setScreen('choose-nights')}
-            onNext={() => setScreen('confirmed')}
+            onBack={() => setView('choose-nights')}
+            onNext={() => setView('confirmed')}
           />
         );
       case 'confirmed':
@@ -89,47 +78,43 @@ export default function ExtendYourStay() {
   }
 
   return (
-    <section className='mx-4 mt-20 md:mx-0' aria-labelledby={`${id}-title`}>
+    <section
+      className='mx-4 mt-20 min-h-96 md:mx-0'
+      aria-labelledby={`${id}-title`}
+    >
       <h2
         id={`${id}-title`}
         className='text-[24px] font-[450] leading-7 tracking-[-0.5px]'
       >
         Stay a Little Longer
       </h2>
-      <motion.div
-        initial={false}
-        animate={{ height: height ?? 'auto' }}
-        transition={{
-          duration: reducedMotion ? 0 : 0.3,
-          ease: [0.22, 1, 0.36, 1],
-        }}
-        className='tabular-nums mx-auto max-w-5/6 sm:max-w-4/6 ring-[0.5px] ring-neutral-200 rounded-lg mt-8 overflow-hidden shadow'
-        onKeyDown={event => {
-          if (
-            event.key === 'Escape' &&
-            (screen === 'choose-nights' || screen === 'review')
-          ) {
-            event.stopPropagation();
-            setScreen(screen === 'review' ? 'choose-nights' : 'invitation');
-          }
-        }}
-      >
-        <div ref={content} tabIndex={-1} className='flow-root p-4 outline-none'>
-          <AnimatePresence initial={false}>
+      <div className='relative tabular-nums mx-auto sm:max-w-4/6 ring-1 ring-neutral-200/80 rounded-2xl mt-8 overflow-hidden'>
+        <div
+          ref={content}
+          tabIndex={-1}
+          className='relative flow-root p-4 pt-3 outline-none'
+        >
+          <AnimatePresence initial={false} mode='popLayout'>
             <motion.div
-              key={screen}
+              key={view}
               initial={{ opacity: reducedMotion ? 1 : 0 }}
               animate={{ opacity: 1 }}
-              transition={{
-                duration: reducedMotion ? 0 : 0.16,
-                ease: 'easeOut',
+              exit={{
+                opacity: 0,
+                pointerEvents: 'none',
+                transition: { duration: reducedMotion ? 0 : 0.1 },
               }}
+              transition={{
+                duration: reducedMotion ? 0 : 0.15,
+                ease: [0.23, 1, 0.32, 1],
+              }}
+              className='flow-root'
             >
-              {renderScreen()}
+              {renderView()}
             </motion.div>
           </AnimatePresence>
         </div>
-      </motion.div>
+      </div>
     </section>
   );
 }

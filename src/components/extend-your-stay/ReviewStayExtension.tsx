@@ -2,13 +2,12 @@ import { useEffect, useState } from 'react';
 import {
   AnimatePresence,
   motion,
-  useMotionValue,
   useReducedMotion,
 } from 'motion/react';
 import { Button } from '@base-ui/react/button';
-import TextSwap from '../../TextSwap';
 
-const PROCESSING_MS = 5000;
+const PROCESSING_MS = 4000;
+const BUTTON_LAYOUT = { type: 'spring', duration: 0.25, bounce: 0 } as const;
 
 export default function ReviewStayExtension({
   onNext,
@@ -42,10 +41,6 @@ export default function ReviewStayExtension({
       : status === 'paid'
         ? 'Done'
         : `Confirm and pay ${currency.format(nightlyRate * nights)}`;
-  const buttonLabel = useMotionValue(label);
-  useEffect(() => {
-    buttonLabel.set(label);
-  }, [buttonLabel, label]);
 
   const rows = [
     { label: 'New checkout', value: `${checkoutLabel} at 11 AM` },
@@ -67,7 +62,7 @@ export default function ReviewStayExtension({
     >
       <p className='font-[550] text-lg'>Review your stay extension</p>
 
-      <dl className='mt-6 space-y-4 text-sm font-[450]'>
+      <dl className='mt-8 space-y-4 text-sm font-[450]'>
         {rows.map(({ label, value }) => (
           <div
             key={label}
@@ -190,17 +185,33 @@ export default function ReviewStayExtension({
             : ''}
       </p>
 
-      <div className='mt-8 space-y-2'>
+      <div className='mt-8 flex items-center justify-between text-sm gap-4'>
+        {status !== 'paid' && (
+          <Button
+            onClick={onBack}
+            disabled={status === 'processing'}
+            className='px-4 py-2.5 w-fit rounded-full hover:bg-neutral-200 enabled:cursor-pointer disabled:cursor-default disabled:text-neutral-400 focus-visible:outline-2 focus-visible:outline-offset-2'
+          >
+            Back
+          </Button>
+        )}
         <Button
+          render={
+            <motion.button
+              layout={!reducedMotion}
+              transition={{ layout: BUTTON_LAYOUT }}
+              style={{ borderRadius: 9999 }}
+            />
+          }
           onClick={() =>
             status === 'paid' ? onNext() : setStatus('processing')
           }
           disabled={status === 'processing'}
           aria-busy={status === 'processing'}
           aria-label={label}
-          className={`relative inline-flex h-11 w-full items-center justify-center overflow-hidden rounded-full font-[450] focus-visible:outline-2 focus-visible:outline-offset-2 motion-safe:transition-colors motion-safe:duration-150 ${status === 'processing' ? 'cursor-wait bg-[#d7e5db] text-[#2e6b44]' : status === 'paid' ? 'cursor-pointer bg-[#2e6b44] text-white' : 'cursor-pointer bg-[#00733D] text-white enabled:hover:bg-[#005A2E]'}`}
+          className={`relative inline-flex px-4 py-2.5 w-fit ml-auto items-center justify-center overflow-hidden font-[450] focus-visible:outline-2 focus-visible:outline-offset-2 motion-safe:transition-colors motion-safe:duration-150 ${status === 'processing' ? 'cursor-wait bg-[#d7e5db] text-[#2e6b44]' : status === 'paid' ? 'cursor-pointer bg-[#2e6b44] text-white' : 'cursor-pointer bg-[#00733D] text-white enabled:hover:bg-[#005A2E]'}`}
         >
-          <TextSwap value={buttonLabel} />
+          <PaymentLabel label={label} reducedMotion={!!reducedMotion} />
           <motion.span
             aria-hidden='true'
             className='pointer-events-none absolute inset-0 grid place-items-center bg-[#2e6b44] text-white'
@@ -219,19 +230,32 @@ export default function ReviewStayExtension({
               ease: 'linear',
             }}
           >
-            <TextSwap value={buttonLabel} />
+            <PaymentLabel label={label} reducedMotion={!!reducedMotion} />
           </motion.span>
         </Button>
-        {status !== 'paid' && (
-          <Button
-            onClick={onBack}
-            disabled={status === 'processing'}
-            className='inline-flex h-11 w-full items-center justify-center rounded-full enabled:cursor-pointer disabled:cursor-default disabled:text-neutral-400 focus-visible:outline-2 focus-visible:outline-offset-2'
-          >
-            Back
-          </Button>
-        )}
       </div>
     </div>
+  );
+}
+
+function PaymentLabel({ label, reducedMotion }: { label: string; reducedMotion: boolean }) {
+  return (
+    <AnimatePresence initial={false} mode='popLayout'>
+      <motion.span
+        key={label}
+        layout={reducedMotion ? false : 'position'}
+        className='inline-block whitespace-nowrap'
+        initial={{ opacity: 0, y: reducedMotion ? 0 : 4 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: reducedMotion ? 0 : -4, transition: { duration: 0.1 } }}
+        transition={{
+          layout: BUTTON_LAYOUT,
+          duration: 0.15,
+          ease: [0.23, 1, 0.32, 1],
+        }}
+      >
+        {label}
+      </motion.span>
+    </AnimatePresence>
   );
 }

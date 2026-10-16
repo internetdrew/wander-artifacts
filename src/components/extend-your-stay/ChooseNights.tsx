@@ -52,23 +52,23 @@ export default function ChooseNights({
             minimumFractionDigits: 0,
             maximumFractionDigits: 0,
           }}
-          className='tabular-nums font-[450]'
+          className='tabular-nums font-[550]'
         />
       </div>
       <p className='text-xs text-neutral-500 font-[450] -mt-1'>
-        Additional charge. Taxes included.
+        Taxes included
       </p>
 
-      <div className='mt-8 space-y-2'>
+      <div className='mt-8 flex flex-row-reverse items-center justify-between text-sm gap-4'>
         <Button
           onClick={onNext}
-          className='h-11 w-full cursor-pointer rounded-full bg-[#202020] text-white hover:bg-[#202020]/95 font-[450] focus-visible:outline-2 focus-visible:outline-offset-2 transition-colors duration-150'
+          className='px-4 py-2.5 w-fit cursor-pointer rounded-full bg-[#202020] text-white hover:bg-[#202020]/95 font-[450] focus-visible:outline-2 focus-visible:outline-offset-2 transition-colors duration-150'
         >
           Review stay extension
         </Button>
         <Button
           onClick={onBack}
-          className='h-11 w-full rounded-full cursor-pointer text-[#202020] hover:text-[#202020]/95 font-[450] focus-visible:outline-2 focus-visible:outline-offset-2 motion-safe:transition-colors motion-safe:duration-150'
+          className='px-4 py-2.5 w-fit cursor-pointer hover:bg-neutral-200 transition-colors duration-200 rounded-full text-[#202020] hover:text-[#202020]/95 font-[450] focus-visible:outline-2 focus-visible:outline-offset-2 motion-safe:transition-colors motion-safe:duration-150'
         >
           Back
         </Button>
@@ -96,18 +96,18 @@ function NightsStepper({
         aria-label='Remove one night'
         disabled={nights <= 1}
         onClick={() => onChange(-1)}
-        className='grid size-11 shrink-0 cursor-pointer place-items-center rounded-full text-white bg-[#202020] enabled:hover:bg-[#202020]/95 disabled:cursor-default disabled:opacity-40 focus-visible:outline-2 focus-visible:outline-offset-2'
+        className='grid p-2.5 shrink-0 cursor-pointer place-items-center rounded-full text-white bg-[#202020] enabled:hover:bg-[#202020]/95 disabled:cursor-default disabled:opacity-40 focus-visible:outline-2 focus-visible:outline-offset-2'
       >
         <MinusIcon />
       </Button>
-      <span className='flex h-11 min-w-24 flex-1 items-center justify-center gap-1 tabular-nums'>
+      <span className='flex min-w-24 flex-1 items-center justify-center gap-1 tabular-nums'>
         <AnimatedNights nights={nights} direction={direction} extra announce />
       </span>
       <Button
         aria-label='Add one night'
         disabled={nights >= 3}
         onClick={() => onChange(1)}
-        className='grid size-11 shrink-0 cursor-pointer place-items-center rounded-full text-white bg-[#202020] enabled:hover:bg-[#202020]/95 disabled:cursor-default disabled:opacity-40 focus-visible:outline-2 focus-visible:outline-offset-2'
+        className='grid p-2.5 shrink-0 cursor-pointer place-items-center rounded-full text-white bg-[#202020] enabled:hover:bg-[#202020]/95 disabled:cursor-default disabled:opacity-40 focus-visible:outline-2 focus-visible:outline-offset-2'
       >
         <PlusIcon />
       </Button>
