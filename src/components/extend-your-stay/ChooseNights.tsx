@@ -34,9 +34,15 @@ export default function ChooseNights({
         />
       </div>
 
-      <div className='flex items-center justify-between'>
+      <div className='flex items-baseline justify-between'>
         <span className='inline-flex items-center gap-1 text-sm font-[450]'>
-          {nightlyRate.toLocaleString(undefined, { style: 'currency', currency: 'USD', maximumFractionDigits: 0 })} × <AnimatedNights nights={nights} direction={direction} />
+          {nightlyRate.toLocaleString(undefined, {
+            style: 'currency',
+            currency: 'USD',
+            maximumFractionDigits: 0,
+          })}
+          <span>×</span>
+          <AnimatedNights nights={nights} direction={direction} />
         </span>
         <NumberFlow
           value={nightlyRate * nights}
@@ -53,16 +59,16 @@ export default function ChooseNights({
         Additional charge. Taxes included.
       </p>
 
-      <div className='mt-8'>
+      <div className='mt-8 space-y-2'>
         <Button
           onClick={onNext}
-          className='inline-flex h-11 w-full items-center justify-center cursor-pointer rounded-full bg-[#202020] text-white hover:bg-[#202020]/95 font-[450] focus-visible:outline-2 focus-visible:outline-offset-2 transition-colors duration-150'
+          className='h-11 w-full cursor-pointer rounded-full bg-[#202020] text-white hover:bg-[#202020]/95 font-[450] focus-visible:outline-2 focus-visible:outline-offset-2 transition-colors duration-150'
         >
           Review stay extension
         </Button>
         <Button
           onClick={onBack}
-          className='mt-2 inline-flex h-11 w-full items-center justify-center cursor-pointer rounded-full text-[#202020] hover:text-[#202020]/95 font-[450] focus-visible:outline-2 focus-visible:outline-offset-2 motion-safe:transition-colors motion-safe:duration-150'
+          className='h-11 w-full rounded-full cursor-pointer text-[#202020] hover:text-[#202020]/95 font-[450] focus-visible:outline-2 focus-visible:outline-offset-2 motion-safe:transition-colors motion-safe:duration-150'
         >
           Back
         </Button>
