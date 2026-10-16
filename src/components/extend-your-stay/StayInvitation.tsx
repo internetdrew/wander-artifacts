@@ -5,15 +5,17 @@ export default function StayInvitation({ onNext }: { onNext: () => void }) {
     <>
       <p className='font-[550] text-lg'>Checkout is tomorrow at 11 AM</p>
       <p className='text-sm font-[450] mt-0.5 text-neutral-500 text-pretty'>
-        Not ready to go yet? You can extend your stay{' '}
-        <span className='font-[550]'>up to 3 more nights</span>.
+        Want to stay longer? You can extend your stay{' '}
+        <span className='font-[550]'>up to 3 extra nights</span>.
       </p>
-      <Button
-        onClick={onNext}
-        className='mt-8 h-11 w-full cursor-pointer rounded-full text-white bg-[#202020] hover:bg-[#202020]/95 font-[450] focus-visible:outline-2 focus-visible:outline-offset-2 transition-colors duration-150'
-      >
-        Explore extra nights
-      </Button>
+      <div className='flex'>
+        <Button
+          onClick={onNext}
+          className='mt-8 py-2 px-4 ml-auto w-full cursor-pointer rounded-full text-white bg-[#202020] hover:bg-[#202020]/95 font-[450] focus-visible:outline-2 focus-visible:outline-offset-2 transition-colors duration-150'
+        >
+          Explore extra nights
+        </Button>
+      </div>
     </>
   );
 }

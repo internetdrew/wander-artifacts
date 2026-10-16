@@ -3,6 +3,7 @@ import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import StayInvitation from './extend-your-stay/StayInvitation';
 import ChooseNights from './extend-your-stay/ChooseNights';
 import ReviewStayExtension from './extend-your-stay/ReviewStayExtension';
+import CheckoutPass from './extend-your-stay/CheckoutPass';
 
 const NIGHTLY_RATE = 1150;
 
@@ -11,17 +12,23 @@ type Screen = 'invitation' | 'choose-nights' | 'review' | 'confirmed';
 export default function ExtendYourStay() {
   const id = useId();
   const [screen, setScreen] = useState<Screen>('invitation');
-  const [{ nights, direction }, setCount] = useState({ nights: 1, direction: 1 });
-  const changeNights = (delta: number) => setCount(previous => ({
-    nights: Math.min(3, Math.max(1, previous.nights + delta)),
-    direction: delta,
-  }));
+  const [{ nights, direction }, setCount] = useState({
+    nights: 1,
+    direction: 1,
+  });
+  const changeNights = (delta: number) =>
+    setCount(previous => ({
+      nights: Math.min(3, Math.max(1, previous.nights + delta)),
+      direction: delta,
+    }));
   const [today] = useState(() => new Date());
   const checkout = new Date(today);
   checkout.setHours(11, 0, 0, 0);
   checkout.setDate(checkout.getDate() + 1 + nights);
   const checkoutLabel = checkout.toLocaleDateString(undefined, {
-    weekday: 'short', month: 'short', day: 'numeric',
+    weekday: 'short',
+    month: 'short',
+    day: 'numeric',
   });
   const content = useRef<HTMLDivElement>(null);
   const previousScreen = useRef(screen);
@@ -72,12 +79,11 @@ export default function ExtendYourStay() {
         );
       case 'confirmed':
         return (
-          <div role='status'>
-            <p className='text-lg font-[550]'>Your stay is extended</p>
-            <p className='mt-1 text-sm text-neutral-500'>
-              Your new checkout is {checkoutLabel} at 11 AM.
-            </p>
-          </div>
+          <CheckoutPass
+            checkout={checkout}
+            nights={nights}
+            nightlyRate={NIGHTLY_RATE}
+          />
         );
     }
   }
@@ -97,9 +103,12 @@ export default function ExtendYourStay() {
           duration: reducedMotion ? 0 : 0.3,
           ease: [0.22, 1, 0.36, 1],
         }}
-        className='tabular-nums mx-auto max-w-5/6 sm:max-w-4/6 ring-[0.5px] ring-neutral-200 rounded-xl mt-8 overflow-hidden shadow'
+        className='tabular-nums mx-auto max-w-5/6 sm:max-w-4/6 ring-[0.5px] ring-neutral-200 rounded-lg mt-8 overflow-hidden shadow'
         onKeyDown={event => {
-          if (event.key === 'Escape' && (screen === 'choose-nights' || screen === 'review')) {
+          if (
+            event.key === 'Escape' &&
+            (screen === 'choose-nights' || screen === 'review')
+          ) {
             event.stopPropagation();
             setScreen(screen === 'review' ? 'choose-nights' : 'invitation');
           }
