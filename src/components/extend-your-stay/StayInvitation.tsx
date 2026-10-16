@@ -11,7 +11,7 @@ export default function StayInvitation({ onNext }: { onNext: () => void }) {
       <div className='flex'>
         <Button
           onClick={onNext}
-          className='mt-8 py-2 px-4 ml-auto w-full cursor-pointer rounded-full text-white bg-[#202020] hover:bg-[#202020]/95 font-[450] focus-visible:outline-2 focus-visible:outline-offset-2 transition-colors duration-150'
+          className='mt-8 h-11 w-full cursor-pointer rounded-full text-white bg-[#202020] hover:bg-[#202020]/95 font-[450] focus-visible:outline-2 focus-visible:outline-offset-2 transition-colors duration-150'
         >
           Explore extra nights
         </Button>
