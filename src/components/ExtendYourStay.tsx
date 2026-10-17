@@ -101,7 +101,7 @@ export default function ExtendYourStay() {
       >
         Stay a Little Longer
       </h2>
-      <div className='relative tabular-nums mx-auto sm:max-w-4/6 ring-1 ring-neutral-200/80 rounded-2xl mt-8 overflow-hidden'>
+      <div className='relative tabular-nums mx-auto sm:max-w-4/6 ring-1 ring-neutral-200/80 rounded-2xl mt-8'>
         <div
           ref={content}
           tabIndex={-1}
