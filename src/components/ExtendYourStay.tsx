@@ -3,28 +3,39 @@ import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import StayInvitation from './extend-your-stay/StayInvitation';
 import ChooseNights from './extend-your-stay/ChooseNights';
 import ReviewStayExtension from './extend-your-stay/ReviewStayExtension';
-import CheckoutPass from './extend-your-stay/CheckoutPass';
 
 const NIGHTLY_RATE = 1150;
 
-type View = 'invitation' | 'choose-nights' | 'review' | 'confirmed';
+type View = 'invitation' | 'choose-nights' | 'review';
 
 export default function ExtendYourStay() {
   const id = useId();
   const [view, setView] = useState<View>('invitation');
-  const [{ nights, direction }, setCount] = useState({
+  const [{ nights, direction }, setSelection] = useState({
     nights: 1,
     direction: 1,
   });
-  const changeNights = (delta: number) =>
-    setCount(previous => ({
-      nights: Math.min(3, Math.max(1, previous.nights + delta)),
-      direction: delta,
+  const changeNights = (next: number) =>
+    setSelection(previous => ({
+      nights: Math.min(3, Math.max(1, next)),
+      direction: Math.sign(next - previous.nights) || previous.direction,
     }));
   const [today] = useState(() => new Date());
-  const checkout = new Date(today);
+  const [completedNights, setCompletedNights] = useState(0);
+  const currentCheckout = new Date(today);
+  currentCheckout.setHours(11, 0, 0, 0);
+  currentCheckout.setDate(currentCheckout.getDate() + 1 + completedNights);
+  const currentCheckoutLabel =
+    completedNights === 0
+      ? 'tomorrow'
+      : currentCheckout.toLocaleDateString(undefined, {
+          weekday: 'short',
+          month: 'short',
+          day: 'numeric',
+        });
+  const checkout = new Date(currentCheckout);
   checkout.setHours(11, 0, 0, 0);
-  checkout.setDate(checkout.getDate() + 1 + nights);
+  checkout.setDate(checkout.getDate() + nights);
   const checkoutLabel = checkout.toLocaleDateString(undefined, {
     weekday: 'short',
     month: 'short',
@@ -43,7 +54,12 @@ export default function ExtendYourStay() {
   function renderView() {
     switch (view) {
       case 'invitation':
-        return <StayInvitation onNext={() => setView('choose-nights')} />;
+        return (
+          <StayInvitation
+            checkoutLabel={currentCheckoutLabel}
+            onNext={() => setView('choose-nights')}
+          />
+        );
       case 'choose-nights':
         return (
           <ChooseNights
@@ -51,7 +67,7 @@ export default function ExtendYourStay() {
             nights={nights}
             direction={direction}
             onChangeNights={changeNights}
-            checkoutLabel={checkoutLabel}
+            currentCheckout={currentCheckout}
             onBack={() => setView('invitation')}
             onNext={() => setView('review')}
           />
@@ -59,19 +75,16 @@ export default function ExtendYourStay() {
       case 'review':
         return (
           <ReviewStayExtension
+            checkout={checkout}
             nights={nights}
             nightlyRate={NIGHTLY_RATE}
             checkoutLabel={checkoutLabel}
             onBack={() => setView('choose-nights')}
-            onNext={() => setView('confirmed')}
-          />
-        );
-      case 'confirmed':
-        return (
-          <CheckoutPass
-            checkout={checkout}
-            nights={nights}
-            nightlyRate={NIGHTLY_RATE}
+            onNext={() => {
+              setCompletedNights(previous => previous + nights);
+              setSelection({ nights: 1, direction: 1 });
+              setView('invitation');
+            }}
           />
         );
     }
