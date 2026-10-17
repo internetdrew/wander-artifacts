@@ -53,3 +53,101 @@
     transition: none;
   }
 }
+
+.invoice-stage {
+  --invoice-scale: 0.9;
+  --invoice-height: calc(535px * var(--invoice-scale));
+  position: relative;
+  width: 100%;
+  max-width: calc(400px * var(--invoice-scale));
+  height: var(--invoice-height);
+  margin: 24px auto 0;
+  perspective: 2000px;
+  color: #1c1917;
+}
+
+@media (min-width: 768px) {
+  .invoice-stage {
+    --invoice-scale: 1;
+  }
+}
+
+/* Morph only the folded silhouette, never an opaque full-height sheet. */
+.invoice-folded-footprint {
+  position: absolute;
+  top: calc(100% / 3);
+  width: 100%;
+  height: calc(100% / 3);
+  perspective: 2000px;
+  transform-style: preserve-3d;
+}
+
+.invoice-paper {
+  position: relative;
+  top: -100%;
+  height: 300%;
+  transform-style: preserve-3d;
+}
+
+.invoice-panel {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: calc(100% / 3);
+  transform-style: preserve-3d;
+}
+
+.invoice-panel-0 {
+  top: 0;
+  transform-origin: center bottom;
+  z-index: 4;
+}
+.invoice-panel-1 {
+  top: calc(100% / 3);
+  z-index: 1;
+}
+.invoice-panel-2 {
+  top: calc(200% / 3);
+  transform-origin: center top;
+  z-index: 3;
+}
+
+.invoice-face {
+  position: absolute;
+  inset: 0;
+  background: #fbf7f0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.invoice-front {
+  overflow: hidden;
+}
+.invoice-back {
+  transform: rotateX(180deg);
+}
+.invoice-slice {
+  position: absolute;
+  width: 100%;
+  height: var(--invoice-height);
+}
+.invoice-content {
+  display: flex;
+  flex-direction: column;
+  width: calc(100% / var(--invoice-scale));
+  height: 535px;
+  transform: scale(var(--invoice-scale));
+  transform-origin: top left;
+  padding: 24px clamp(16px, 5vw, 28px);
+  background: #fbf7f0;
+}
+
+.invoice-shade {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(transparent, #000);
+}
+.invoice-shade-0 {
+  background: linear-gradient(#000, transparent);
+}
