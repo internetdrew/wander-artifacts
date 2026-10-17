@@ -1,3 +1,4 @@
+import StayExtensionHeader from './StayExtensionHeader';
 import { Button } from '@base-ui/react/button';
 
 export default function StayInvitation({
@@ -9,7 +10,7 @@ export default function StayInvitation({
 }) {
   return (
     <>
-      <p className='font-[550] text-lg'>Checkout is {checkoutLabel} at 11 AM</p>
+      <StayExtensionHeader title={`Checkout is ${checkoutLabel} at 11 AM`} />
       <p className='text-sm font-[450] mt-0.5 text-neutral-500 text-pretty'>
         Want to stay longer? You can extend your stay{' '}
         <span className='font-[550]'>up to 3 extra nights</span>.
