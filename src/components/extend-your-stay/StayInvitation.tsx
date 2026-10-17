@@ -1,9 +1,15 @@
 import { Button } from '@base-ui/react/button';
 
-export default function StayInvitation({ onNext }: { onNext: () => void }) {
+export default function StayInvitation({
+  onNext,
+  checkoutLabel,
+}: {
+  onNext: () => void;
+  checkoutLabel: string;
+}) {
   return (
     <>
-      <p className='font-[550] text-lg'>Checkout is tomorrow at 11 AM</p>
+      <p className='font-[550] text-lg'>Checkout is {checkoutLabel} at 11 AM</p>
       <p className='text-sm font-[450] mt-0.5 text-neutral-500 text-pretty'>
         Want to stay longer? You can extend your stay{' '}
         <span className='font-[550]'>up to 3 extra nights</span>.
