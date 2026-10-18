@@ -1,4 +1,4 @@
-import StayExtensionHeader from './StayExtensionHeader';
+import StayExtensionHeader from '../shared/StayExtensionHeader';
 import { Button } from '@base-ui/react/button';
 
 export default function StayInvitation({

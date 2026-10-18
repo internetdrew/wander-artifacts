@@ -1,6 +1,6 @@
 import { useId, useRef, useState } from 'react';
 import { Drawer } from '@base-ui/react/drawer';
-import BellFigure from './bell/BellFigure';
+import BellFigure from './BellFigure';
 
 export default function ConciergeBell() {
   const id = useId();

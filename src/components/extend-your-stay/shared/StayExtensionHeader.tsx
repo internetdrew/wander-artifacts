@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useMotionValue } from 'motion/react';
-import TextSwap from '../../TextSwap';
+import TextSwap from '../../shared/TextSwap';
 
 export default function StayExtensionHeader({
   title,

@@ -10,9 +10,9 @@ import {
   type MotionValue,
 } from 'motion/react';
 import { Switch } from '@base-ui/react/switch';
-import daytime from './assets/home-0.webp';
-import evening from './assets/home-1.webp';
-import nighttime from './assets/home-2.webp';
+import daytime from '../../assets/home-0.webp';
+import evening from '../../assets/home-1.webp';
+import nighttime from '../../assets/home-2.webp';
 
 const TILT = { max: 12, depth: -6, spring: { stiffness: 200, damping: 24 } };
 

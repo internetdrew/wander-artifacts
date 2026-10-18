@@ -1,8 +1,8 @@
 import { useEffect, useId, useRef, useState, type RefObject } from 'react';
 import { Button } from '@base-ui/react/button';
 import { animate, motion, useMotionValue, useReducedMotion } from 'motion/react';
-import { loadBell, type HairlineBellHandle } from './hairline/loadBell';
-import TextSwap from '../TextSwap';
+import { loadBell, type HairlineBellHandle } from '../../bell/hairline/loadBell';
+import TextSwap from '../shared/TextSwap';
 
 // Underdamped return: one clear rebound, then a smaller settling bounce.
 const PLUNGER_RETURN = { type: 'spring' as const, stiffness: 420, damping: 14, mass: 0.65 };

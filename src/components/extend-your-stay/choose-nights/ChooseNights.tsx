@@ -1,4 +1,4 @@
-import StayExtensionHeader from './StayExtensionHeader';
+import StayExtensionHeader from '../shared/StayExtensionHeader';
 import { useId } from 'react';
 import { Button } from '@base-ui/react/button';
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
@@ -183,7 +183,7 @@ function AnimatedNights({
 
   return (
     <span aria-hidden='true' className='inline-flex items-center tabular-nums'>
-      <span className='relative inline-block h-[1lh] w-[1ch] overflow-hidden'>
+      <span className='relative inline-block h-lh w-[1ch] overflow-hidden'>
         <AnimatePresence initial={false} custom={direction}>
           <motion.span
             key={nights}
@@ -216,7 +216,7 @@ function AnimatedNights({
           </motion.span>
         </AnimatePresence>
       </span>
-      <span className='inline-flex h-[1lh] items-center overflow-hidden whitespace-pre'>
+      <span className='inline-flex h-lh items-center overflow-hidden whitespace-pre'>
         {' extra night'}
         <motion.span
           className='inline-block shrink-0 overflow-hidden'

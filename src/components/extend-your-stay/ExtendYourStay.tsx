@@ -7,9 +7,9 @@ import {
   useState,
 } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
-import StayInvitation from './extend-your-stay/StayInvitation';
-import ChooseNights from './extend-your-stay/ChooseNights';
-import ReviewStayExtension from './extend-your-stay/ReviewStayExtension';
+import StayInvitation from './invitation/StayInvitation';
+import ChooseNights from './choose-nights/ChooseNights';
+import ReviewStayExtension from './review/ReviewStayExtension';
 
 const NIGHTLY_RATE = 1150;
 const VIEW_TRANSITION = {

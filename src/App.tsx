@@ -1,8 +1,8 @@
-import ExtendYourStay from './components/ExtendYourStay';
-import DayAndNightPhoto from './DayAndNightPhoto';
+import ExtendYourStay from './components/extend-your-stay/ExtendYourStay';
+import DayAndNightPhoto from './components/day-and-night-photo/DayAndNightPhoto';
 import { lazy, Suspense } from 'react';
 
-const ConciergeBell = lazy(() => import('./ConciergeBell'));
+const ConciergeBell = lazy(() => import('./components/concierge-bell/ConciergeBell'));
 
 function App() {
   return (
