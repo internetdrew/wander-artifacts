@@ -1,22 +1,15 @@
-import { useId, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { Drawer } from '@base-ui/react/drawer';
 import BellFigure from './BellFigure';
 
 export default function ConciergeBell() {
-  const id = useId();
   const [open, setOpen] = useState(false);
   const experiment = useRef<HTMLDivElement>(null);
   const bell = useRef<HTMLButtonElement>(null);
 
   return (
     <Drawer.Root open={open} onOpenChange={setOpen} swipeDirection='down'>
-      <section className='my-24 mx-4 md:mx-0' aria-labelledby={`${id}-title`}>
-        <h2
-          id={`${id}-title`}
-          className='text-xl font-[550] leading-7 tracking-[-0.5px]'
-        >
-          The Concierge Bell
-        </h2>
+      <section className='mx-4 md:mx-0' aria-label='Concierge bell'>
         <div
           ref={experiment}
           className='relative isolate min-h-105 overflow-hidden rounded-2xl'

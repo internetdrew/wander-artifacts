@@ -20,7 +20,7 @@ export default function StayInvitation({
         </p>
         <Button
           onClick={onNext}
-          className='py-2.5 px-4 w-fit cursor-pointer rounded-full text-white bg-[#202020] hover:bg-[#202020]/95 font-[550] focus-visible:outline-2 focus-visible:outline-offset-2 transition-colors duration-150'
+          className='py-2 px-4 w-fit cursor-pointer rounded-full text-white bg-[#202020] hover:bg-[#202020]/95 font-[550] focus-visible:outline-2 focus-visible:outline-offset-2 transition-colors duration-150'
         >
           Explore dates
         </Button>

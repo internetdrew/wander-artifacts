@@ -157,13 +157,13 @@ export default function ChooseNights({
       <div className='mt-6 flex items-center justify-between gap-3 font-[550] text-sm'>
         <Button
           onClick={onBack}
-          className='w-fit cursor-pointer rounded-full px-4 py-2.5 text-[#202020] hover:bg-[#ECEFF0] motion-safe:transition-colors motion-safe:duration-150 motion-safe:ease-[ease] focus-visible:outline-2 focus-visible:outline-offset-2'
+          className='w-fit cursor-pointer rounded-full px-4 py-2 text-[#202020] hover:bg-[#ECEFF0] motion-safe:transition-colors motion-safe:duration-150 motion-safe:ease-[ease] focus-visible:outline-2 focus-visible:outline-offset-2'
         >
           Back
         </Button>
         <Button
           onClick={onNext}
-          className='w-fit cursor-pointer rounded-full bg-[#202020] px-4 py-2.5 text-white hover:bg-black focus-visible:outline-2 focus-visible:outline-offset-2'
+          className='w-fit cursor-pointer rounded-full bg-[#202020] px-4 py-2 text-white hover:bg-black focus-visible:outline-2 focus-visible:outline-offset-2'
         >
           Review extension
         </Button>

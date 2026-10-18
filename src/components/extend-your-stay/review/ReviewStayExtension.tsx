@@ -5,7 +5,11 @@ import StayDetails from './StayDetails';
 import PaymentDetails from './PaymentDetails';
 import InvoiceRow from './InvoiceRow';
 import ReviewActions from './ReviewActions';
-import { PROCESSING_MS, INVOICE_DELAY, type PaymentStatus } from './paymentTiming';
+import {
+  PROCESSING_MS,
+  INVOICE_DELAY,
+  type PaymentStatus,
+} from './paymentTiming';
 
 export default function ReviewStayExtension({
   onNext,
@@ -77,10 +81,10 @@ export default function ReviewStayExtension({
         nightlyRate={nightlyRate}
       />
 
-      <div className='mt-3 min-h-36'>
+      <div className='mt-3 min-h-32'>
         <dl
           aria-label='Payment and invoice'
-          className='rounded-xl bg-[#ECEFF0] p-4 text-sm font-[450]'
+          className='rounded-lg bg-[#ECEFF0] p-2.5 text-sm font-[450]'
         >
           <PaymentDetails status={status} />
           <InvoiceRow

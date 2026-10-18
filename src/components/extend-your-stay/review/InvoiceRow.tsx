@@ -4,7 +4,12 @@ import { Dialog } from '@base-ui/react/dialog';
 import StayInvoice from '../invoice/StayInvoice';
 import { PAID_TIMING } from './paymentTiming';
 
-export default function InvoiceRow({ invoiceVisible, checkout, nights, nightlyRate }: {
+export default function InvoiceRow({
+  invoiceVisible,
+  checkout,
+  nights,
+  nightlyRate,
+}: {
   invoiceVisible: boolean;
   checkout: Date;
   nights: number;
@@ -16,7 +21,11 @@ export default function InvoiceRow({ invoiceVisible, checkout, nights, nightlyRa
   const [invoiceReturning, setInvoiceReturning] = useState(false);
   const invoiceId = useId();
   const wiggleInvoice =
-    invoiceVisible && invoiceRowEntered && !invoiceOpen && !invoiceReturning && !reducedMotion;
+    invoiceVisible &&
+    invoiceRowEntered &&
+    !invoiceOpen &&
+    !invoiceReturning &&
+    !reducedMotion;
 
   return (
     <motion.div
@@ -38,8 +47,13 @@ export default function InvoiceRow({ invoiceVisible, checkout, nights, nightlyRa
       className={`grid grid-cols-[1fr_auto] items-center gap-x-4 gap-y-2 ${invoiceRowEntered || (invoiceVisible && reducedMotion) ? 'overflow-visible' : 'overflow-hidden'} ${!invoiceVisible ? 'invisible' : ''}`}
     >
       <dt className='contents'>
-        <span aria-hidden='true' className='col-span-2 row-start-1 h-px bg-[#D9DFE1]' />
-        <span className='col-start-1 row-start-2 text-neutral-500'>Get invoice</span>
+        <span
+          aria-hidden='true'
+          className='col-span-2 row-start-1 h-px bg-[#D9DFE1]'
+        />
+        <span className='col-start-1 row-start-2 text-neutral-500'>
+          Get invoice
+        </span>
       </dt>
       <dd className='col-start-2 row-start-2'>
         <Dialog.Root
@@ -51,7 +65,7 @@ export default function InvoiceRow({ invoiceVisible, checkout, nights, nightlyRa
         >
           <Dialog.Trigger
             aria-label='View invoice'
-            className='flex h-10 w-16 cursor-pointer items-center justify-center rounded-sm focus-visible:outline-2 focus-visible:outline-offset-2'
+            className='flex w-16 cursor-pointer items-center justify-center rounded-sm focus-visible:outline-2 focus-visible:outline-offset-2'
           >
             <motion.span
               className='flex items-center justify-center'
@@ -60,9 +74,7 @@ export default function InvoiceRow({ invoiceVisible, checkout, nights, nightlyRa
                 rotate: wiggleInvoice ? [0, -4, 3, -1.5, 0] : 0,
               }}
               transition={{
-                duration: reducedMotion
-                  ? 0
-                  : PAID_TIMING.invoiceWiggleDuration,
+                duration: reducedMotion ? 0 : PAID_TIMING.invoiceWiggleDuration,
                 delay: reducedMotion ? 0 : PAID_TIMING.invoiceWiggleDelay,
                 times: [0, 0.25, 0.5, 0.75, 1],
                 ease: 'easeInOut',
@@ -78,9 +90,7 @@ export default function InvoiceRow({ invoiceVisible, checkout, nights, nightlyRa
                     duration: 0.4,
                     bounce: 0,
                   }}
-                  onLayoutAnimationComplete={() =>
-                    setInvoiceReturning(false)
-                  }
+                  onLayoutAnimationComplete={() => setInvoiceReturning(false)}
                   aria-hidden='true'
                   className='relative h-7 w-16 border border-[#e5dfd3] bg-[#F9F7F6] shadow-sm'
                   style={{

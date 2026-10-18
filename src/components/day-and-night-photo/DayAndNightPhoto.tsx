@@ -1,4 +1,4 @@
-import { useEffect, useId, useRef, useState, type PointerEvent } from 'react';
+import { useEffect, useRef, useState, type PointerEvent } from 'react';
 import {
   animate,
   motion,
@@ -99,7 +99,6 @@ function MoonIcon() {
 }
 
 export default function DayAndNightPhoto() {
-  const id = useId();
   const cardBounds = useRef<HTMLDivElement>(null);
   const touchPointer = useRef<number | null>(null);
   const rotateX = useSpring(0, TILT.spring);
@@ -163,18 +162,12 @@ export default function DayAndNightPhoto() {
 
   return (
     <section
-      className='mx-4 mt-20 md:mx-0'
-      aria-labelledby={`${id}-experience-title`}
+      className='mx-4 md:mx-0'
+      aria-label='Day and night'
     >
-      <h2
-        id={`${id}-experience-title`}
-        className='text-xl font-[550] leading-7 tracking-[-0.5px]'
-      >
-        Day and Night
-      </h2>
       <div
         ref={cardBounds}
-        className='@container mx-auto mt-8 w-full max-w-5/6 sm:max-w-4/6 perspective-[900px]'
+        className='@container mx-auto w-full max-w-5/6 sm:max-w-4/6 perspective-[900px]'
         onPointerMove={event => {
           if (reducedMotion) return;
           if (event.pointerType !== 'mouse') {
