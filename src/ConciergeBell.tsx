@@ -13,7 +13,7 @@ export default function ConciergeBell() {
       <section className='my-24 mx-4 md:mx-0' aria-labelledby={`${id}-title`}>
         <h2
           id={`${id}-title`}
-          className='mb-6 text-2xl font-medium tracking-tight'
+          className='text-xl font-[550] leading-7 tracking-[-0.5px]'
         >
           The Concierge Bell
         </h2>

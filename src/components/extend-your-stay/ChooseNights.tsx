@@ -1,4 +1,5 @@
-import { type ComponentProps } from 'react';
+import StayExtensionHeader from './StayExtensionHeader';
+import { useId } from 'react';
 import { Button } from '@base-ui/react/button';
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import NumberFlow from '@number-flow/react';
@@ -9,139 +10,183 @@ export default function ChooseNights({
   nights,
   direction,
   onChangeNights,
-  checkoutLabel,
+  currentCheckout,
   nightlyRate,
 }: {
   onBack: () => void;
   onNext: () => void;
   nights: number;
   direction: number;
-  onChangeNights: (delta: number) => void;
-  checkoutLabel: string;
+  onChangeNights: (nights: number) => void;
+  currentCheckout: Date;
   nightlyRate: number;
 }) {
+  const id = useId();
+  const reducedMotion = useReducedMotion();
+  const choices = [1, 2, 3].map(extraNights => {
+    const checkout = new Date(currentCheckout);
+    checkout.setDate(checkout.getDate() + extraNights);
+    return {
+      nights: extraNights,
+      weekday: checkout.toLocaleDateString(undefined, { weekday: 'short' }),
+      date: checkout.toLocaleDateString(undefined, {
+        month: 'short',
+        day: 'numeric',
+      }),
+      fullDate: checkout.toLocaleDateString(undefined, {
+        weekday: 'long',
+        month: 'long',
+        day: 'numeric',
+        year: 'numeric',
+      }),
+    };
+  });
+  const total = nightlyRate * nights;
+  const currency = new Intl.NumberFormat(undefined, {
+    style: 'currency',
+    currency: 'USD',
+    maximumFractionDigits: 0,
+  });
+
   return (
     <>
-      <p className='font-[550] text-lg'>Stay a little longer</p>
-      <p className='text-sm font-[450] mt-0.5 text-neutral-500'>
-        Checkout on {checkoutLabel} at 11 AM.
-      </p>
-      <div className='my-8'>
-        <NightsStepper
-          nights={nights}
-          direction={direction}
-          onChange={onChangeNights}
-        />
-      </div>
-
-      <div className='flex items-baseline justify-between'>
-        <span className='inline-flex items-center gap-1 text-sm font-[450]'>
-          {nightlyRate.toLocaleString(undefined, {
-            style: 'currency',
-            currency: 'USD',
-            maximumFractionDigits: 0,
-          })}
-          <span>×</span>
-          <AnimatedNights nights={nights} direction={direction} />
-        </span>
-        <NumberFlow
-          value={nightlyRate * nights}
-          format={{
-            style: 'currency',
-            currency: 'USD',
-            minimumFractionDigits: 0,
-            maximumFractionDigits: 0,
-          }}
-          className='tabular-nums font-[550]'
-        />
-      </div>
-      <p className='text-xs text-neutral-500 font-[450] -mt-1'>
-        Taxes included
+      <StayExtensionHeader
+        id={`${id}-title`}
+        title='Choose your checkout date'
+      />
+      <p
+        id={`${id}-hint`}
+        className='mt-0.5 text-sm font-[450] text-neutral-500'
+      >
+        Checkout at 11 AM
       </p>
 
-      <div className='mt-8 flex flex-row-reverse items-center justify-between text-sm gap-4'>
-        <Button
-          onClick={onNext}
-          className='px-4 py-2.5 w-fit cursor-pointer rounded-full bg-[#202020] text-white hover:bg-[#202020]/95 font-[450] focus-visible:outline-2 focus-visible:outline-offset-2 transition-colors duration-150'
-        >
-          Review stay extension
-        </Button>
+      <fieldset
+        aria-labelledby={`${id}-title`}
+        aria-describedby={`${id}-hint`}
+        className='my-4 flex gap-2'
+      >
+        {choices.map(choice => (
+          <label
+            key={choice.nights}
+            className='relative min-w-0 flex-1 cursor-pointer'
+          >
+            <input
+              type='radio'
+              name={`${id}-checkout`}
+              value={choice.nights}
+              checked={nights === choice.nights}
+              onChange={() => onChangeNights(choice.nights)}
+              aria-label={`${choice.fullDate}, ${choice.nights} extra ${choice.nights === 1 ? 'night' : 'nights'}`}
+              className='peer sr-only'
+            />
+            <span className='relative flex flex-col items-center justify-center gap-0.5 rounded-xl border border-transparent bg-[#ECEFF0] px-2 py-2.5 text-[#202020] motion-safe:transition-colors motion-safe:duration-150 peer-checked:bg-[#D9DFE1] peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 hover:bg-[#D9DFE1]'>
+              <motion.span
+                aria-hidden='true'
+                className='pointer-events-none absolute -inset-px rounded-[inherit] border border-[#202020]/40'
+                initial={false}
+                animate={{ opacity: nights === choice.nights ? 1 : 0 }}
+                transition={{ duration: reducedMotion ? 0 : 0.15 }}
+              />
+              <motion.span
+                aria-hidden='true'
+                className='pointer-events-none absolute right-1.5 top-1.5 grid size-4 place-items-center rounded-full bg-[#202020] text-white'
+                initial={false}
+                animate={{ opacity: nights === choice.nights ? 1 : 0 }}
+                transition={{
+                  duration: reducedMotion
+                    ? 0
+                    : nights === choice.nights
+                      ? 0.12
+                      : 0.15,
+                  delay: !reducedMotion && nights === choice.nights ? 0.04 : 0,
+                }}
+              >
+                <svg viewBox='0 0 16 16' fill='none' className='size-3'>
+                  <path
+                    d='m4 8 2.5 2.5L12 5'
+                    stroke='currentColor'
+                    strokeWidth='1.8'
+                    strokeLinecap='round'
+                    strokeLinejoin='round'
+                  />
+                </svg>
+              </motion.span>
+              <span className='text-xs font-[450] opacity-70'>
+                {choice.weekday}
+              </span>
+              <span className='whitespace-nowrap font-[550]'>
+                {choice.date}
+              </span>
+            </span>
+          </label>
+        ))}
+      </fieldset>
+      <div className='h-[0.5px] bg-neutral-200 w-full' />
+
+      <div className='mt-4'>
+        <div className='flex items-center justify-between font-[550]'>
+          <p>Extension total</p>
+          <NumberFlow
+            value={total}
+            animated={!reducedMotion}
+            format={{
+              style: 'currency',
+              currency: 'USD',
+              minimumFractionDigits: 0,
+              maximumFractionDigits: 0,
+            }}
+            className='tabular-nums'
+          />
+        </div>
+        <div className='flex flex-wrap items-center justify-between gap-x-4 gap-y-1 text-[13px] leading-5 font-[450] text-neutral-500'>
+          <p className='flex flex-wrap items-center'>
+            <span className='sr-only'>
+              {currency.format(nightlyRate)} per night for {nights} extra{' '}
+              {nights === 1 ? 'night' : 'nights'}.
+            </span>
+            <span aria-hidden='true' className='whitespace-pre'>
+              {currency.format(nightlyRate)} ×{' '}
+            </span>
+            <AnimatedNights nights={nights} direction={direction} />
+          </p>
+          <p>Tax included</p>
+        </div>
+      </div>
+
+      <div className='mt-6 flex items-center justify-between gap-3 font-[550] text-sm'>
         <Button
           onClick={onBack}
-          className='px-4 py-2.5 w-fit cursor-pointer hover:bg-neutral-200 transition-colors duration-200 rounded-full text-[#202020] hover:text-[#202020]/95 font-[450] focus-visible:outline-2 focus-visible:outline-offset-2 motion-safe:transition-colors motion-safe:duration-150'
+          className='w-fit cursor-pointer rounded-full px-4 py-2.5 text-[#202020] hover:bg-[#ECEFF0] motion-safe:transition-colors motion-safe:duration-150 motion-safe:ease-[ease] focus-visible:outline-2 focus-visible:outline-offset-2'
         >
           Back
+        </Button>
+        <Button
+          onClick={onNext}
+          className='w-fit cursor-pointer rounded-full bg-[#202020] px-4 py-2.5 text-white hover:bg-black focus-visible:outline-2 focus-visible:outline-offset-2'
+        >
+          Review extension
         </Button>
       </div>
     </>
   );
 }
 
-function NightsStepper({
-  nights,
-  direction,
-  onChange,
-}: {
-  nights: number;
-  direction: number;
-  onChange: (delta: number) => void;
-}) {
-  return (
-    <div
-      role='group'
-      aria-label='Extra nights'
-      className='flex w-full items-center justify-between'
-    >
-      <Button
-        aria-label='Remove one night'
-        disabled={nights <= 1}
-        onClick={() => onChange(-1)}
-        className='grid p-2.5 shrink-0 cursor-pointer place-items-center rounded-full text-white bg-[#202020] enabled:hover:bg-[#202020]/95 disabled:cursor-default disabled:opacity-40 focus-visible:outline-2 focus-visible:outline-offset-2'
-      >
-        <MinusIcon />
-      </Button>
-      <span className='flex min-w-24 flex-1 items-center justify-center gap-1 tabular-nums'>
-        <AnimatedNights nights={nights} direction={direction} extra announce />
-      </span>
-      <Button
-        aria-label='Add one night'
-        disabled={nights >= 3}
-        onClick={() => onChange(1)}
-        className='grid p-2.5 shrink-0 cursor-pointer place-items-center rounded-full text-white bg-[#202020] enabled:hover:bg-[#202020]/95 disabled:cursor-default disabled:opacity-40 focus-visible:outline-2 focus-visible:outline-offset-2'
-      >
-        <PlusIcon />
-      </Button>
-    </div>
-  );
-}
-
 function AnimatedNights({
   nights,
   direction,
-  announce = false,
-  extra = false,
 }: {
   nights: number;
   direction: number;
-  announce?: boolean;
-  extra?: boolean;
 }) {
   const reducedMotion = useReducedMotion();
-  const label = `${nights} ${extra ? 'extra ' : ''}${nights === 1 ? 'night' : 'nights'}`;
+
   return (
-    <span className='inline-flex items-center gap-1 font-[450] tabular-nums'>
-      <span
-        className='sr-only'
-        aria-live={announce ? 'polite' : undefined}
-        aria-atomic='true'
-      >
-        {label}
-      </span>
-      <span className='relative h-8 w-[1ch] overflow-hidden' aria-hidden='true'>
+    <span aria-hidden='true' className='inline-flex items-center tabular-nums'>
+      <span className='relative inline-block h-[1lh] w-[1ch] overflow-hidden'>
         <AnimatePresence initial={false} custom={direction}>
           <motion.span
             key={nights}
-            aria-hidden='true'
             custom={direction}
             className='absolute inset-0 grid place-items-center'
             variants={{
@@ -171,23 +216,18 @@ function AnimatedNights({
           </motion.span>
         </AnimatePresence>
       </span>
-      {extra && <span aria-hidden='true'>more</span>}
-      <span
-        aria-hidden='true'
-        className='inline-flex h-8 items-center overflow-hidden'
-      >
-        night
+      <span className='inline-flex h-[1lh] items-center overflow-hidden whitespace-pre'>
+        {' extra night'}
         <motion.span
+          className='inline-block shrink-0 overflow-hidden'
           initial={false}
           animate={{
-            transform:
-              nights > 1 || reducedMotion
-                ? 'translateY(0px)'
-                : 'translateY(8px)',
+            width: nights > 1 ? 'auto' : 0,
+            y: nights > 1 || reducedMotion ? 0 : 8,
             opacity: nights > 1 ? 1 : 0,
           }}
           transition={{
-            duration: reducedMotion ? 0 : nights > 1 ? 0.15 : 0.12,
+            duration: reducedMotion ? 0 : 0.2,
             ease: [0.215, 0.61, 0.355, 1],
           }}
         >
@@ -195,41 +235,5 @@ function AnimatedNights({
         </motion.span>
       </span>
     </span>
-  );
-}
-
-function PlusIcon(props: ComponentProps<'svg'>) {
-  return (
-    <svg
-      width='16'
-      height='16'
-      viewBox='0 0 16 16'
-      fill='none'
-      stroke='currentColor'
-      strokeLinecap='square'
-      strokeLinejoin='round'
-      {...props}
-      style={{ display: 'block', ...props.style }}
-    >
-      <path d='M1.5 8h13M8 14.5v-13' />
-    </svg>
-  );
-}
-
-function MinusIcon(props: ComponentProps<'svg'>) {
-  return (
-    <svg
-      width='16'
-      height='16'
-      viewBox='0 0 16 16'
-      fill='none'
-      stroke='currentColor'
-      strokeLinecap='square'
-      strokeLinejoin='round'
-      {...props}
-      style={{ display: 'block', ...props.style }}
-    >
-      <path d='M1.5 8h13' />
-    </svg>
   );
 }

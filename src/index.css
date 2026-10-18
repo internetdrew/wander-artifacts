@@ -5,6 +5,8 @@
 @layer base {
   html {
     font-family: 'Instrument Sans Variable', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 }
 
@@ -115,7 +117,7 @@
 .invoice-face {
   position: absolute;
   inset: 0;
-  background: #fbf7f0;
+  background: #F9F7F6;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
 }
@@ -139,7 +141,7 @@
   transform: scale(var(--invoice-scale));
   transform-origin: top left;
   padding: 24px clamp(16px, 5vw, 28px);
-  background: #fbf7f0;
+  background: #F9F7F6;
 }
 
 .invoice-shade {

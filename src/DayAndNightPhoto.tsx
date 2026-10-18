@@ -168,7 +168,7 @@ export default function DayAndNightPhoto() {
     >
       <h2
         id={`${id}-experience-title`}
-        className='text-[24px] font-[450] leading-7 tracking-[-0.5px]'
+        className='text-xl font-[550] leading-7 tracking-[-0.5px]'
       >
         Day and Night
       </h2>
