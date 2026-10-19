@@ -7,8 +7,7 @@
     "dev": "vite --host",
     "build": "tsc -b && vite build",
     "lint": "oxlint",
-    "preview": "vite preview",
-    "bell:build": "node src/bell/hairline/build.mjs bell.js"
+    "preview": "vite preview"
   },
   "dependencies": {
     "@base-ui/react": "^1.9.0",

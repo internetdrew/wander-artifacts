@@ -228,7 +228,7 @@ export default function DayAndNightPhoto() {
                 setScrubberStart(progress.get() * 100);
                 setControlsOpen(open => !open);
               }}
-              className='absolute right-3 bottom-3 grid size-10 cursor-pointer place-items-center rounded-full bg-neutral-800/40 text-white hover:bg-neutral-800/50 focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-white'
+              className='absolute right-3 bottom-3 grid size-10 cursor-pointer place-items-center rounded-full bg-neutral-800/30 text-white hover:bg-neutral-800/40 focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-white'
             >
               <svg
                 aria-hidden='true'
@@ -292,7 +292,7 @@ export default function DayAndNightPhoto() {
                       onChange={event =>
                         progress.set(event.currentTarget.valueAsNumber / 100)
                       }
-                      className='day-night-scrubber h-11 min-w-0 flex-1 cursor-ew-resize appearance-none bg-transparent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#81765d]'
+                      className='day-night-scrubber h-10 min-w-0 flex-1 cursor-ew-resize appearance-none bg-transparent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#81765d]'
                     />
                     <MoonIcon />
                   </div>
