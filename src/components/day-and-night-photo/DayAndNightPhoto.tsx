@@ -161,13 +161,10 @@ export default function DayAndNightPhoto() {
   };
 
   return (
-    <section
-      className='mx-4 md:mx-0'
-      aria-label='Day and night'
-    >
+    <section className='mx-4 md:mx-0' aria-label='Day and night'>
       <div
         ref={cardBounds}
-        className='@container mx-auto w-full max-w-5/6 sm:max-w-4/6 perspective-[900px]'
+        className='@container mx-auto w-full perspective-[900px]'
         onPointerMove={event => {
           if (reducedMotion) return;
           if (event.pointerType !== 'mouse') {

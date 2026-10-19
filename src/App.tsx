@@ -16,7 +16,7 @@ const demos = [
 function App() {
   const [keyboardNavigation, setKeyboardNavigation] = useState(false);
   return (
-    <main className='max-w-sm mx-auto'>
+    <main className='max-w-2xl mx-auto'>
       <Tabs.Root
         defaultValue='stay'
         data-keyboard-navigation={keyboardNavigation || undefined}
