@@ -13,15 +13,14 @@ import ReviewStayExtension from './review/ReviewStayExtension';
 const NIGHTLY_RATE = 1150;
 const RESIZE_TRANSITION = {
   type: 'spring',
-  bounce: 0,
+  bounce: 0.15,
 } as const;
-const MIN_RESIZE_DURATION = 0.24;
-const MAX_RESIZE_DURATION = 0.3;
+const MIN_RESIZE_DURATION = 0.45;
+const MAX_RESIZE_DURATION = 0.55;
 const FULL_RESIZE_DISTANCE = 400;
-// Keep the content handoff close to the resize's settling time.
-const CONTENT_ENTER_DURATION = 0.24;
-const CONTENT_EXIT_DURATION = 0.19;
-const CONTENT_ENTER_DELAY = 0.04;
+const CONTENT_ENTER_DURATION = 0.3;
+const CONTENT_EXIT_DURATION = 0.14;
+const CONTENT_ENTER_DELAY = 0.1;
 const CONTENT_EASE = [0.215, 0.61, 0.355, 1] as const;
 
 type View = 'invitation' | 'choose-nights' | 'review';
@@ -142,7 +141,7 @@ export default function ExtendYourStay() {
   }
 
   return (
-    <section className='mx-4 md:mx-0' aria-label='Extend your stay'>
+    <section aria-label='Extend your stay'>
       <motion.div
         initial={false}
         animate={{ height: resize.height || 'auto' }}
@@ -166,24 +165,20 @@ export default function ExtendYourStay() {
           <AnimatePresence initial={false} mode='popLayout'>
             <motion.div
               key={view}
-              initial={{ opacity: 0, scale: reducedMotion ? 1 : 0.99 }}
-              animate={{ opacity: 1, scale: 1 }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
               exit={{
                 opacity: 0,
-                scale: reducedMotion ? 1 : 0.99,
                 transition: {
-                  type: 'tween',
                   duration: reducedMotion ? 0 : CONTENT_EXIT_DURATION,
                   ease: CONTENT_EASE,
                 },
               }}
               transition={{
-                type: 'tween',
                 duration: reducedMotion ? 0 : CONTENT_ENTER_DURATION,
                 delay: reducedMotion ? 0 : CONTENT_ENTER_DELAY,
                 ease: CONTENT_EASE,
               }}
-              style={{ transformOrigin: 'top center' }}
               className='flow-root'
             >
               {renderView()}

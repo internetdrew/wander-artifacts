@@ -52,14 +52,8 @@ export default function ChooseNights({
     <>
       <StayExtensionHeader
         id={`${id}-title`}
-        title='Choose your checkout date'
+        title='Choose a new checkout date'
       />
-      <p
-        id={`${id}-hint`}
-        className='mt-0.5 text-sm font-[450] text-neutral-500'
-      >
-        Checkout at 11 AM
-      </p>
 
       <fieldset
         aria-labelledby={`${id}-title`}
@@ -80,7 +74,7 @@ export default function ChooseNights({
               aria-label={`${choice.fullDate}, ${choice.nights} extra ${choice.nights === 1 ? 'night' : 'nights'}`}
               className='peer sr-only'
             />
-            <span className='relative flex flex-col items-center justify-center gap-0.5 rounded-xl border border-transparent bg-[#ECEFF0] px-2 py-2.5 text-[#202020] motion-safe:transition-colors motion-safe:duration-150 peer-checked:bg-[#D9DFE1] peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 hover:bg-[#D9DFE1]'>
+            <span className='relative flex flex-col items-center justify-center gap-0.5 rounded-xl border border-transparent bg-[#ECEFF0] p-1.5 text-[#202020] motion-safe:transition-colors motion-safe:duration-150 peer-checked:bg-[#D9DFE1] peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 hover:bg-[#D9DFE1]'>
               <motion.span
                 aria-hidden='true'
                 className='pointer-events-none absolute -inset-px rounded-[inherit] border border-[#202020]/40'
@@ -122,9 +116,9 @@ export default function ChooseNights({
           </label>
         ))}
       </fieldset>
-      <div className='h-[0.5px] bg-neutral-200 w-full' />
+      <div className='h-[0.5px] bg-neutral-200 w-full my-4' />
 
-      <div className='mt-4'>
+      <div>
         <div className='flex items-center justify-between font-[550]'>
           <p>Extension total</p>
           <NumberFlow

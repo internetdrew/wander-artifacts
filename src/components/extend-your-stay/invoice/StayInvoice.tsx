@@ -105,6 +105,7 @@ export default function StayInvoice({
                     >
                       <InvoiceContent
                         ref={panel === 1 ? invoiceContent : undefined}
+                        animateLogo={unfoldComplete}
                         date={date}
                         issued={issued}
                         nightsLabel={nightsLabel}

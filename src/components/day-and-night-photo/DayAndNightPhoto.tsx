@@ -161,7 +161,7 @@ export default function DayAndNightPhoto() {
   };
 
   return (
-    <section className='mx-4 md:mx-0' aria-label='Day and night'>
+    <section aria-label='Day and night'>
       <div
         ref={cardBounds}
         className='@container mx-auto w-full perspective-[900px]'

@@ -1,12 +1,52 @@
 @import 'tailwindcss';
-@import '@fontsource-variable/instrument-sans';
 @import '@fontsource-variable/caveat';
+
+@font-face {
+  font-family: 'instrumentSans';
+  src: url('./assets/fonts/instrument-sans-450.otf') format('opentype');
+  font-weight: 450;
+  font-style: normal;
+  font-display: swap;
+  font-feature-settings: 'ss01', 'ss03', 'ss12', 'ss09', 'kern';
+}
+
+@font-face {
+  font-family: 'instrumentSans';
+  src: url('./assets/fonts/instrument-sans-550.otf') format('opentype');
+  font-weight: 550;
+  font-style: normal;
+  font-display: swap;
+  font-feature-settings: 'ss01', 'ss03', 'ss12', 'ss09', 'kern';
+}
+
+@font-face {
+  font-family: 'instrumentSans';
+  src: url('./assets/fonts/instrument-sans-700.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+  font-feature-settings: 'ss01', 'ss03', 'ss12', 'ss09', 'kern';
+}
+
+@font-face {
+  font-family: 'instrumentSans Fallback';
+  src: local('Arial');
+  ascent-override: 93.27%;
+  descent-override: 24.04%;
+  line-gap-override: 0%;
+  size-adjust: 104%;
+}
+
+@theme {
+  --font-sans:
+    'instrumentSans', 'instrumentSans Fallback', system-ui, sans-serif;
+  --default-font-feature-settings: 'ss01', 'ss03', 'ss12', 'ss09', 'kern';
+}
 
 @layer base {
   html {
-    font-family: 'Instrument Sans Variable', sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+    font-family: var(--font-sans);
+    font-feature-settings: var(--default-font-feature-settings);
   }
 }
 
@@ -117,7 +157,7 @@
 .invoice-face {
   position: absolute;
   inset: 0;
-  background: #F9F7F6;
+  background: #f9f7f6;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
 }
@@ -141,7 +181,7 @@
   transform: scale(var(--invoice-scale));
   transform-origin: top left;
   padding: 24px clamp(16px, 5vw, 28px);
-  background: #F9F7F6;
+  background: #f9f7f6;
 }
 
 .invoice-shade {
@@ -152,69 +192,4 @@
 }
 .invoice-shade-0 {
   background: linear-gradient(#000, transparent);
-}
-
-/* Forward navigation enters from the right; backward navigation reverses it. */
-.demo-panel {
-  padding-block: 2rem;
-  display: flow-root;
-  opacity: 1;
-  transform: translateX(0);
-  transition: transform 240ms cubic-bezier(0.22, 1, 0.36, 1),
-    opacity 180ms ease-out;
-}
-
-.demo-panel[data-hidden] {
-  display: none;
-}
-
-.demo-panel[data-starting-style][data-activation-direction='right'],
-.demo-panel[data-ending-style][data-activation-direction='left'] {
-  opacity: 0;
-  transform: translateX(36px);
-}
-
-.demo-panel[data-starting-style][data-activation-direction='left'],
-.demo-panel[data-ending-style][data-activation-direction='right'] {
-  opacity: 0;
-  transform: translateX(-36px);
-}
-
-.demo-panel[data-ending-style] {
-  position: absolute;
-  inset: 0 0 auto;
-  pointer-events: none;
-}
-
-[data-keyboard-navigation] .demo-panel {
-  transition: none;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .demo-panel {
-    transition: opacity 120ms ease-out;
-  }
-
-  .demo-panel[data-activation-direction] {
-    transform: none;
-  }
-}
-
-.demo-tab-indicator {
-  width: var(--active-tab-width);
-  height: var(--active-tab-height);
-  translate: var(--active-tab-left) var(--active-tab-top);
-  transition: translate 240ms cubic-bezier(0.22, 1, 0.36, 1),
-    width 240ms cubic-bezier(0.22, 1, 0.36, 1),
-    height 240ms cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-[data-keyboard-navigation] .demo-tab-indicator {
-  transition: none;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .demo-tab-indicator {
-    transition: none;
-  }
 }
