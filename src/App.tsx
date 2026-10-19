@@ -1,9 +1,10 @@
 import ExtendYourStay from './components/extend-your-stay/ExtendYourStay';
 import DayAndNightPhoto from './components/day-and-night-photo/DayAndNightPhoto';
+import WelcomeStack from './components/welcome-stack/WelcomeStack';
 
 function App() {
   return (
-    <main className='max-w-xl mx-auto space-y-20 py-8 px-4'>
+    <main className='max-w-xl mx-auto space-y-16 py-8 px-4'>
       <section aria-labelledby='extended-stay-title'>
         <h2 id='extended-stay-title' className='font-[450]'>
           Extended Stay
@@ -35,11 +36,12 @@ function App() {
           The Welcome Stack
         </h2>
         <p className='text-neutral-500 text-[15px] font-[450] text-pretty'>
-          An informative card stack for guests to learn more about the property
-          and amenities, so they can make the most of their stay as soon as they
-          arrive.
+          An informative card stack accessible and sharable after booking, so
+          guests can make the most of their stay as soon as they arrive.
         </p>
-        <div />
+        <div className='mt-6 sm:max-w-md mx-auto'>
+          <WelcomeStack />
+        </div>
       </section>
     </main>
   );

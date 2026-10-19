@@ -155,7 +155,7 @@ export default function ExtendYourStay() {
           if (!reducedMotion) setResizing(true);
         }}
         onAnimationComplete={() => setResizing(false)}
-        className={`relative tabular-nums mx-auto ring-[0.5px] ring-neutral-200 shadow rounded-2xl ${resizing && !reducedMotion ? 'overflow-hidden' : 'overflow-visible'}`}
+        className={`relative tabular-nums mx-auto ring-[0.5px] bg-white ring-neutral-200 shadow rounded-2xl ${resizing && !reducedMotion ? 'overflow-hidden' : 'overflow-visible'}`}
       >
         <div
           ref={content}
