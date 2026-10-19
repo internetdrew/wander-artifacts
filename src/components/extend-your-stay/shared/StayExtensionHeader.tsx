@@ -20,7 +20,7 @@ export default function StayExtensionHeader({
   return (
     <h3
       id={id}
-      className='text-lg font-[550]'
+      className='text font-[450]'
       aria-live={announce ? 'polite' : undefined}
       aria-atomic={announce || undefined}
     >

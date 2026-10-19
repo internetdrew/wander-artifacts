@@ -36,7 +36,7 @@ export default function StayDetails({
         </div>
       ))}
       <div className='flex items-baseline justify-between gap-4 border-t border-neutral-200 pt-4 font-[550]'>
-        <dt>Total added</dt>
+        <dt className='font-[450]'>Total added</dt>
         <dd className='text-right'>
           <span className='text-lg'>
             {currency.format(nightlyRate * nights)}

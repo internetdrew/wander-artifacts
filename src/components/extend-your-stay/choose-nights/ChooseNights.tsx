@@ -119,8 +119,8 @@ export default function ChooseNights({
       <div className='h-[0.5px] bg-neutral-200 w-full my-4' />
 
       <div>
-        <div className='flex items-center justify-between font-[550]'>
-          <p>Extension total</p>
+        <div className='flex items-center justify-between font-[450]'>
+          <p className='text-[15px]'>Extension total</p>
           <NumberFlow
             value={total}
             animated={!reducedMotion}
@@ -130,7 +130,7 @@ export default function ChooseNights({
               minimumFractionDigits: 0,
               maximumFractionDigits: 0,
             }}
-            className='tabular-nums'
+            className='tabular-nums font-[550]'
           />
         </div>
         <div className='flex flex-wrap items-center justify-between gap-x-4 gap-y-1 text-[13px] leading-5 font-[450] text-neutral-500'>
@@ -148,7 +148,7 @@ export default function ChooseNights({
         </div>
       </div>
 
-      <div className='mt-6 flex items-center justify-between gap-3 font-[550] text-sm'>
+      <div className='mt-6 flex items-center justify-between gap-3 font-[450] text-sm'>
         <Button
           onClick={onBack}
           className='w-fit cursor-pointer rounded-full px-4 py-2 text-[#202020] hover:bg-[#ECEFF0] motion-safe:transition-colors motion-safe:duration-150 motion-safe:ease-[ease] focus-visible:outline-2 focus-visible:outline-offset-2'

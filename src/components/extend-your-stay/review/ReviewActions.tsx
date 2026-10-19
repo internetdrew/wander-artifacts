@@ -19,7 +19,7 @@ export default function ReviewActions({
 }) {
   const reducedMotion = useReducedMotion();
   return (
-    <div className='mt-2 flex items-center justify-between text-sm font-[550] gap-4'>
+    <div className='mt-2 flex items-center justify-between text-sm font-[450] gap-4'>
       {status !== 'paid' && (
         <Button
           onClick={onBack}
