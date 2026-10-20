@@ -39,7 +39,7 @@ const WelcomeCard = () => {
 
   return (
     <div
-      className='bg-white md:max-w-4/7 rounded-2xl shadow-md'
+      className='bg-white md:max-w-88 rounded-2xl shadow-md'
       style={{
         boxShadow:
           '0 0 0 1px rgba(0,0,0,.04), 0 8px 32px -4px rgba(0,0,0,.06), 0 1px 3px 0 rgba(0,0,0,.04)',

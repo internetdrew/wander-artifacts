@@ -3,7 +3,7 @@ import WelcomeCard from './welcome-card/WelcomeCard';
 
 const WelcomeStack = () => {
   return (
-    <div>
+    <div className='space-y-4'>
       <WelcomeCard />
       <ComeOnInCard />
     </div>

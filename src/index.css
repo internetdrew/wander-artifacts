@@ -279,7 +279,7 @@
   width: 3px;
   flex: 1 1 3px;
   max-width: 3px;
-  height: 32px;
+  height: 28px;
   transform: scaleY(calc(0.125 + var(--l) * 0.875));
   transition: transform 140ms ease-out;
   border-radius: 2px;
