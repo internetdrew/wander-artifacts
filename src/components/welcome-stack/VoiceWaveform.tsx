@@ -46,10 +46,23 @@ export default function VoiceWaveform({
       ends[index] = Math.min(data.length, Math.max(starts[index] + 1,
         Math.ceil(80 * (4000 / 80) ** ((index + 1) / bars.length) / binHz)));
     }
+    const frameInterval = 1000 / 60;
     let frame = 0;
     let previous = performance.now();
+    let lastPaint = previous;
+    let onscreen = !('IntersectionObserver' in window);
+    let disposed = false;
+    function schedule() {
+      if (!disposed && !document.hidden && onscreen && !frame) {
+        frame = requestAnimationFrame(draw);
+      }
+    }
     function draw(now: number) {
-      if (!analyser || !bars) return;
+      frame = 0;
+      if (disposed || document.hidden || !onscreen || !analyser || !bars) return;
+      // Keep 120Hz/144Hz displays from doubling the analysis and DOM writes.
+      if (now - lastPaint < frameInterval - 0.5) { schedule(); return; }
+      lastPaint = now;
       const elapsed = Math.min((now - previous) / 1000, 0.05);
       previous = now;
       analyser.getByteFrequencyData(data);
@@ -62,17 +75,27 @@ export default function VoiceWaveform({
         envelopes[index] += (target - envelopes[index]) * response;
         bars[index].style.transform = `scaleY(${0.125 + envelopes[index] * 0.875})`;
       }
-      frame = requestAnimationFrame(draw);
+      schedule();
     }
-    function visibility() {
+    function updateVisibility() {
       cancelAnimationFrame(frame);
-      if (!document.hidden) { previous = performance.now(); frame = requestAnimationFrame(draw); }
+      frame = 0;
+      previous = performance.now();
+      lastPaint = previous - frameInterval;
+      schedule();
     }
-    if (!document.hidden) frame = requestAnimationFrame(draw);
-    document.addEventListener('visibilitychange', visibility);
+    const observer = 'IntersectionObserver' in window ? new IntersectionObserver(entries => {
+      onscreen = entries.some(entry => entry.isIntersecting);
+      updateVisibility();
+    }) : null;
+    if (root.current) observer?.observe(root.current);
+    schedule();
+    document.addEventListener('visibilitychange', updateVisibility);
     return () => {
+      disposed = true;
       cancelAnimationFrame(frame);
-      document.removeEventListener('visibilitychange', visibility);
+      observer?.disconnect();
+      document.removeEventListener('visibilitychange', updateVisibility);
       for (const bar of bars) bar.style.removeProperty('transform');
     };
   }, [live, analyser, levels.length]);
