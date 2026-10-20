@@ -2,8 +2,8 @@ import { Button } from '@base-ui/react';
 import { useEffect, useRef, useState } from 'react';
 import VoiceWaveform from './VoiceWaveform';
 import PlayPauseIcon from './PlayPauseIcon';
-import welcomeAudio from '../../assets/watchmere.mp3';
-import waveform from '../../assets/watchmere-waveform.json';
+import welcomeAudio from '../../../assets/watchmere.mp3';
+import waveform from '../../../assets/watchmere-waveform.json';
 
 function timestamp(seconds: number) {
   const wholeSeconds = Number.isFinite(seconds)

@@ -1,6 +1,6 @@
 import { Button } from '@base-ui/react';
 import { useEffect, useRef, useState } from 'react';
-import watchmere from '../../assets/home-0.webp';
+import watchmere from '../../../assets/home-0.webp';
 import WelcomeAudioPlayer from './WelcomeAudioPlayer';
 
 const WelcomeCard = () => {
@@ -60,8 +60,12 @@ const WelcomeCard = () => {
       </div>
 
       <div className='font-[450] p-4 pt-3'>
-        <span className='block text-xs leading-4 text-neutral-500'>Welcome to</span>
-        <h3 className='mt-0.5 text-xl leading-6 font-[550] tracking-[-0.2px] text-[#202020]'>Watchmere</h3>
+        <span className='block text-xs leading-4 text-neutral-500'>
+          Welcome to
+        </span>
+        <h3 className='mt-0.5 text-xl leading-6 font-[550] tracking-[-0.2px] text-[#202020]'>
+          Watchmere
+        </h3>
 
         <div className='mt-2 flex items-center gap-1.5 text-[13px] leading-5 text-neutral-500'>
           <svg
