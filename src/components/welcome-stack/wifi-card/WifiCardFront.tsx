@@ -47,7 +47,7 @@ export default function WifiCardFront({
         type='button'
         onClick={onFlip}
         aria-label='Show Wi-Fi QR code'
-        className='mt-2 w-full bg-neutral-100 ring-[0.5px] ring-neutral-300/50 cursor-pointer text-sm rounded-full py-2'
+        className='mt-2 py-2.5 w-full bg-neutral-100 ring-[0.5px] ring-neutral-300/50 cursor-pointer text-sm rounded-full hover:bg-neutral-200 duration-150 transition-colors'
       >
         Flip for QR code
       </Button>

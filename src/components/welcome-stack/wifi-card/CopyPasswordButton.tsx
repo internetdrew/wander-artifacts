@@ -45,7 +45,7 @@ export default function CopyPasswordButton({ password }: { password: string }) {
         type='button'
         onClick={copyPassword}
         aria-label={copied ? 'Password copied' : 'Copy password'}
-        className='bg-[#202020] cursor-pointer mt-8 text-sm text-white w-full rounded-full py-2 focus-visible:outline-2 focus-visible:outline-offset-2'
+        className='bg-[#202020] cursor-pointer mt-8 text-sm text-white w-full rounded-full py-2.5 focus-visible:outline-2 focus-visible:outline-offset-2'
       >
         <span className='inline-block' aria-hidden='true'>
           <AnimatePresence initial={false} mode='wait' custom={copied ? 1 : -1}>

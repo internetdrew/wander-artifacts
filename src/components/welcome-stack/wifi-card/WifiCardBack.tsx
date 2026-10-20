@@ -38,7 +38,7 @@ export default function WifiCardBack({
         ref={buttonRef}
         type='button'
         onClick={onFlip}
-        className='w-full bg-neutral-100 ring-[0.5px] ring-neutral-300/50 cursor-pointer rounded-full py-2 text-sm focus-visible:outline-2 focus-visible:outline-offset-2'
+        className='w-full bg-neutral-100 ring-[0.5px] ring-neutral-300/50 cursor-pointer rounded-full py-2.5 text-sm transition-colors duration-150 hover:bg-neutral-200 focus-visible:outline-2 focus-visible:outline-offset-2'
       >
         Back to Wi-Fi details
       </Button>
