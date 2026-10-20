@@ -1,10 +1,26 @@
 import { Button } from '@base-ui/react';
+import type { Ref } from 'react';
 import WifiSignal from './WifiSignal';
+import CopyPasswordButton from './CopyPasswordButton';
 
-const WifiCard = () => {
+const WIFI_PASSWORD = 'slowmornings';
+
+interface WifiCardFrontProps {
+  hidden: boolean;
+  onFlip: () => void;
+  buttonRef: Ref<HTMLButtonElement>;
+}
+
+export default function WifiCardFront({
+  hidden,
+  onFlip,
+  buttonRef,
+}: WifiCardFrontProps) {
   return (
     <div
-      className='bg-white md:max-w-88 rounded-2xl shadow-md font-[450] p-4 pt-3'
+      className='col-start-1 row-start-1 bg-white rounded-2xl shadow-md p-4 pt-3 backface-hidden [-webkit-backface-visibility:hidden] transform-[rotateY(0deg)_translateZ(0)]'
+      aria-hidden={hidden}
+      inert={hidden}
       style={{
         boxShadow:
           '0 0 0 1px rgba(0,0,0,.04), 0 8px 32px -4px rgba(0,0,0,.06), 0 1px 3px 0 rgba(0,0,0,.04)',
@@ -22,11 +38,18 @@ const WifiCard = () => {
         </div>
         <div>
           <p className='text-neutral-500'>Password</p>
-          <p className='tracking-wide'>slowmornings</p>
+          <p className='tracking-wide'>{WIFI_PASSWORD}</p>
         </div>
       </div>
-      <Button className='bg-[#202020] mt-8 text-white w-full rounded-full py-2'>
-        Copy password
+      <CopyPasswordButton password={WIFI_PASSWORD} />
+      <Button
+        ref={buttonRef}
+        type='button'
+        onClick={onFlip}
+        aria-label='Show Wi-Fi QR code'
+        className='mt-3 w-full bg-neutral-100 ring-[0.5px] ring-neutral-300/50 cursor-pointer text-sm rounded-full py-2'
+      >
+        Flip for QR code
       </Button>
 
       <div className='h-px bg-neutral-200 my-4'></div>
@@ -40,9 +63,9 @@ const WifiCard = () => {
             viewBox='0 0 24 24'
             fill='none'
             stroke='currentColor'
-            stroke-width='2'
-            stroke-linecap='round'
-            stroke-linejoin='round'
+            strokeWidth='2'
+            strokeLinecap='round'
+            strokeLinejoin='round'
             className='size-4 stroke-[#202020]'
           >
             <path d='M18 5a2 2 0 0 1 2 2v8.526a2 2 0 0 0 .212.897l1.068 2.127a1 1 0 0 1-.9 1.45H3.62a1 1 0 0 1-.9-1.45l1.068-2.127A2 2 0 0 0 4 15.526V7a2 2 0 0 1 2-2z' />
@@ -58,6 +81,4 @@ const WifiCard = () => {
       </div>
     </div>
   );
-};
-
-export default WifiCard;
+}

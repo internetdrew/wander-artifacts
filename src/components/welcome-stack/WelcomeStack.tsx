@@ -1,6 +1,6 @@
 import ComeOnInCard from './ComeOnInCard';
 import WelcomeCard from './welcome-card/WelcomeCard';
-import WifiCard from './WifiCard';
+import WifiCard from './wifi-card/WifiCard';
 
 const WelcomeStack = () => {
   return (
