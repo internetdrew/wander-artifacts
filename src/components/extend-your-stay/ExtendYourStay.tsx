@@ -145,6 +145,10 @@ export default function ExtendYourStay() {
       <motion.div
         initial={false}
         animate={{ height: resize.height || 'auto' }}
+        style={{
+          boxShadow:
+            '0 0 0 1px rgba(0,0,0,.04), 0 8px 32px -4px rgba(0,0,0,.06), 0 1px 3px 0 rgba(0,0,0,.04)',
+        }}
         transition={transition}
         onUpdate={latest => {
           if (typeof latest.height === 'number') {
@@ -155,7 +159,7 @@ export default function ExtendYourStay() {
           if (!reducedMotion) setResizing(true);
         }}
         onAnimationComplete={() => setResizing(false)}
-        className={`relative tabular-nums mx-auto ring-[0.5px] bg-white ring-neutral-200 shadow rounded-2xl ${resizing && !reducedMotion ? 'overflow-hidden' : 'overflow-visible'}`}
+        className={`relative tabular-nums mx-auto bg-white rounded-2xl ${resizing && !reducedMotion ? 'overflow-hidden' : 'overflow-visible'}`}
       >
         <div
           ref={content}

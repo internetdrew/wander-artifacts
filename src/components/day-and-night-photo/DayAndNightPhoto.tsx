@@ -220,7 +220,7 @@ export default function DayAndNightPhoto() {
             <button
               ref={settingsButton}
               type='button'
-              aria-label='Adjust time of day'
+              aria-label={controlsOpen ? 'Close time-of-day controls' : 'Adjust time of day'}
               aria-expanded={controlsOpen}
               aria-controls={controlsId}
               onClick={() => {
@@ -230,6 +230,8 @@ export default function DayAndNightPhoto() {
               }}
               className='absolute right-3 bottom-3 grid size-10 cursor-pointer place-items-center rounded-full bg-neutral-800/30 text-white hover:bg-neutral-800/40 focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-white'
             >
+              <span className='t-icon-swap' data-state={controlsOpen ? 'b' : 'a'} aria-hidden='true'>
+                <span className='t-icon' data-icon='a'>
               <svg
                 aria-hidden='true'
                 viewBox='0 0 24 24'
@@ -243,6 +245,14 @@ export default function DayAndNightPhoto() {
                 <path d='m9.5 3-.7 2.3-2 .9-2.2-.6-2.5 4.3 1.6 1.7v2.3l-1.6 1.7 2.5 4.3 2.2-.6 2 .9.7 2.3h5l.7-2.3 2-.9 2.2.6 2.5-4.3-1.6-1.7v-2.3l1.6-1.7-2.5-4.3-2.2.6-2-.9-.7-2.3z' />
                 <circle cx='12' cy='12.75' r='3' />
               </svg>
+                </span>
+                <span className='t-icon' data-icon='b'>
+                  <svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' strokeWidth='2' strokeLinecap='round' strokeLinejoin='round' className='size-4'>
+                    <path d='M18 6 6 18' />
+                    <path d='m6 6 12 12' />
+                  </svg>
+                </span>
+              </span>
             </button>
           </div>
           <AnimatePresence initial={false}>

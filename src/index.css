@@ -227,3 +227,72 @@
   background: #202020;
   box-shadow: 0 1px 4px rgb(0 0 0 / 20%);
 }
+
+.t-icon-swap {
+  position: relative;
+  display: inline-grid;
+  --icon-swap-dur: 250ms;
+  --icon-swap-blur: 2px;
+  --icon-swap-start-scale: 0.25;
+  --icon-swap-ease: ease-in-out;
+}
+
+.t-icon-swap .t-icon {
+  grid-area: 1 / 1;
+  transition:
+    opacity var(--icon-swap-dur) var(--icon-swap-ease),
+    filter var(--icon-swap-dur) var(--icon-swap-ease),
+    transform var(--icon-swap-dur) var(--icon-swap-ease);
+}
+
+.t-icon-swap[data-state='a'] .t-icon[data-icon='a'],
+.t-icon-swap[data-state='b'] .t-icon[data-icon='b'] {
+  opacity: 1;
+  filter: blur(0);
+  transform: scale(1);
+}
+
+.t-icon-swap[data-state='a'] .t-icon[data-icon='b'],
+.t-icon-swap[data-state='b'] .t-icon[data-icon='a'] {
+  opacity: 0;
+  filter: blur(var(--icon-swap-blur));
+  transform: scale(var(--icon-swap-start-scale));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .t-icon-swap .t-icon {
+    transition: none;
+  }
+}
+
+/* Played bars brighten as the playhead passes their index. */
+.welcome-waveform {
+  flex: 1;
+  min-width: 0;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.welcome-waveform-bar {
+  width: 3px;
+  flex: 1 1 3px;
+  max-width: 3px;
+  height: 32px;
+  transform: scaleY(calc(0.125 + var(--l) * 0.875));
+  transition: transform 140ms ease-out;
+  border-radius: 2px;
+  background: currentColor;
+  opacity: clamp(0.3, calc((var(--prog) * var(--n) - var(--i)) * 99), 1);
+}
+
+.welcome-waveform[data-live] .welcome-waveform-bar {
+  transition: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .welcome-waveform-bar {
+    transition: none;
+  }
+}

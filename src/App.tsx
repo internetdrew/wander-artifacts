@@ -36,10 +36,11 @@ function App() {
           The Welcome Stack
         </h2>
         <p className='text-neutral-500 text-[15px] font-[450] text-pretty'>
-          An informative card stack accessible and sharable after booking, so
-          guests can make the most of their stay as soon as they arrive.
+          A shareable stack of stay essentials that helps every guest feel at
+          home before they arrive and lets the person who booked enjoy their
+          stay without fielding everyone's questions.
         </p>
-        <div className='mt-6 sm:max-w-md mx-auto'>
+        <div className='mt-6'>
           <WelcomeStack />
         </div>
       </section>
