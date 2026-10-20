@@ -79,7 +79,7 @@ const ComeOnInCard = () => {
         <ol className='mt-2 space-y-1 text-pretty list-decimal list-inside text-neutral-500 text-xs'>
           <li>
             Enter your guest code, then press{' '}
-            <span className='ring-[0.5px] ml-1 ring-neutral-400 px-2 py-0.5 rounded-sm inline-flex items-center align-middle'>
+            <span className='ring-[0.5px] mx-1 ring-neutral-400 px-2 py-0.5 rounded-sm inline-flex items-center align-middle'>
               <svg
                 xmlns='http://www.w3.org/2000/svg'
                 width='24'
@@ -95,6 +95,7 @@ const ComeOnInCard = () => {
                 <path d='M20 6 9 17l-5-5' />
               </svg>
             </span>
+            .
           </li>
           <li>Wait for the lock to release, then open the door.</li>
         </ol>
