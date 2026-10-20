@@ -39,6 +39,7 @@ export default function ReviewActions({
         }
         onClick={() => (status === 'paid' ? onNext() : onPay())}
         disabled={status === 'processing'}
+        focusableWhenDisabled
         aria-busy={status === 'processing'}
         aria-label={label}
         className={`group relative inline-flex px-4 py-2 w-fit ml-auto items-center justify-center overflow-hidden focus-visible:outline-2 focus-visible:outline-offset-2 motion-safe:transition-colors motion-safe:duration-150 ${status === 'processing' ? 'cursor-wait bg-[#d7e5db] text-[#2e6b44]' : status === 'paid' ? 'cursor-pointer bg-[#202020] text-white enabled:hover:bg-black' : 'cursor-pointer bg-[#00733D] text-white enabled:hover:bg-[#005A2E]'}`}

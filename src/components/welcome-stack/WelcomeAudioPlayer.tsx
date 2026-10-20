@@ -132,7 +132,7 @@ export default function WelcomeAudioPlayer() {
           aria-label={playing ? 'Pause welcome audio' : 'Play welcome audio'}
           aria-pressed={playing}
           onClick={togglePlayback}
-          className='bg-[#202020] rounded-full grid place-items-center p-1.5 shrink-0'
+          className='bg-[#202020] rounded-full cursor-pointer grid place-items-center p-1.5 shrink-0 hover:bg-[#202020]/90 focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-[#202020] transition-colors'
         >
           <PlayPauseIcon playing={playing} />
         </Button>
@@ -142,6 +142,7 @@ export default function WelcomeAudioPlayer() {
           levels={waveform.levels}
           progress={duration > 0 ? currentTime / duration : 0}
           onSeek={duration > 0 ? seek : undefined}
+          onTogglePlayback={togglePlayback}
           currentTime={currentTime}
           duration={duration}
         />

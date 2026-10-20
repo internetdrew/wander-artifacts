@@ -60,10 +60,10 @@ const WelcomeCard = () => {
       </div>
 
       <div className='font-[450] p-4 pt-3'>
-        <span className='text-neutral-500 text-sm'>Welcome to</span>
-        <h3 className='text-[17px] -mt-1.5 font-[550]'>Watchmere</h3>
+        <span className='block text-xs leading-4 text-neutral-500'>Welcome to</span>
+        <h3 className='mt-0.5 text-xl leading-6 font-[550] tracking-[-0.2px] text-[#202020]'>Watchmere</h3>
 
-        <div className='flex items-center gap-1 my-0.5 text-neutral-500 text-sm'>
+        <div className='mt-2 flex items-center gap-1.5 text-[13px] leading-5 text-neutral-500'>
           <svg
             xmlns='http://www.w3.org/2000/svg'
             width='24'
@@ -74,7 +74,7 @@ const WelcomeCard = () => {
             strokeWidth='2'
             strokeLinecap='round'
             strokeLinejoin='round'
-            className='size-3'
+            className='size-3.5 shrink-0'
           >
             <path d='M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0' />
             <circle cx='12' cy='10' r='3' />
@@ -84,7 +84,7 @@ const WelcomeCard = () => {
             type='button'
             aria-label={showCheck ? 'Address copied' : 'Copy address'}
             onClick={copyAddress}
-            className='ml-1 flex items-center gap-1 cursor-pointer'
+            className='relative ml-1 inline-flex size-5 shrink-0 cursor-pointer items-center justify-center rounded-sm before:absolute before:top-1/2 before:left-1/2 before:size-11 before:-translate-x-1/2 before:-translate-y-1/2 focus-visible:outline-2 focus-visible:outline-offset-2'
           >
             <span
               className='t-icon-swap'
