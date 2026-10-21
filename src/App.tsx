@@ -6,7 +6,7 @@ function App() {
   return (
     <main className='max-w-xl mx-auto space-y-16 py-8 px-4'>
       <header className=''>
-        <h1 className='text-[17px] font-[550]'>Small details. Better stays.</h1>
+        <h1 className='text-[17px] font-[550]'>Wander x Andrew Rowley</h1>
         <p className='text-neutral-500'>
           A collection of thoughtful interfaces and playful interactions for
           Wander, designed and built by Andrew Rowley.

@@ -94,7 +94,7 @@ export default function MakeItYoursCard({
             <Tabs.Tab
               key={amenity.id}
               value={amenity.id}
-              className='relative z-1 flex min-h-9 min-w-0 flex-1 cursor-pointer items-center justify-center gap-1.5 rounded-md px-2 text-xs text-neutral-500 before:absolute before:-inset-y-1 before:inset-x-0 outline-offset-2 data-active:text-[#202020] focus-visible:outline-2 focus-visible:outline-[#202020]'
+              className='relative z-1 flex min-w-0 flex-1 cursor-pointer items-center justify-center gap-1.5 rounded-md px-2 py-2 text-xs text-neutral-500 before:absolute before:-inset-y-1 before:inset-x-0 outline-offset-2 data-active:text-[#202020] focus-visible:outline-2 focus-visible:outline-[#202020]'
             >
               <AmenityIcon amenity={amenity} className='size-3.5 shrink-0' />
               {amenity.label}
