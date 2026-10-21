@@ -18,13 +18,9 @@ export default function WifiCardFront({
 }: WifiCardFrontProps) {
   return (
     <div
-      className='col-start-1 row-start-1 bg-white rounded-2xl shadow-md p-4 pt-3 backface-hidden [-webkit-backface-visibility:hidden] transform-[rotateY(0deg)_translateZ(0)]'
+      className='col-start-1 row-start-1 bg-white rounded-2xl p-4 pt-3 backface-hidden [-webkit-backface-visibility:hidden] transform-[rotateY(0deg)_translateZ(0)]'
       aria-hidden={hidden}
       inert={hidden}
-      style={{
-        boxShadow:
-          '0 0 0 1px rgba(0,0,0,.04), 0 8px 32px -4px rgba(0,0,0,.06), 0 1px 3px 0 rgba(0,0,0,.04)',
-      }}
     >
       <h3 className='font-[550] text-lg text-[#202020]'>Get connected</h3>
       <div className='my-8 flex justify-center'>

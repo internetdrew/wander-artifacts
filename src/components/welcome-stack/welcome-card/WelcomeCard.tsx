@@ -39,11 +39,7 @@ const WelcomeCard = () => {
 
   return (
     <div
-      className='bg-white md:max-w-88 rounded-2xl shadow-md'
-      style={{
-        boxShadow:
-          '0 0 0 1px rgba(0,0,0,.04), 0 8px 32px -4px rgba(0,0,0,.06), 0 1px 3px 0 rgba(0,0,0,.04)',
-      }}
+      className='bg-white md:max-w-88 rounded-2xl'
     >
       <div className='relative h-28 overflow-hidden rounded-t-2xl'>
         <img
@@ -51,6 +47,7 @@ const WelcomeCard = () => {
           alt='Watchmere coastal home in daylight'
           width={1449}
           height={1085}
+          draggable={false}
           className='block h-full w-full object-cover object-center'
         />
         <div

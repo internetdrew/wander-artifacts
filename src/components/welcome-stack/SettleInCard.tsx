@@ -59,11 +59,7 @@ const hints = [
 const SettleInCard = () => {
   return (
     <div
-      className='bg-white md:max-w-88 rounded-2xl shadow-md font-[450] p-4 pt-3'
-      style={{
-        boxShadow:
-          '0 0 0 1px rgba(0,0,0,.04), 0 8px 32px -4px rgba(0,0,0,.06), 0 1px 3px 0 rgba(0,0,0,.04)',
-      }}
+      className='bg-white md:max-w-88 rounded-2xl font-[450] p-4 pt-3'
     >
       <h3 className='font-[550] text-lg text-[#202020]'>
         Make yourself at home...

@@ -18,10 +18,6 @@ export default function WifiCardBack({
       aria-hidden={hidden}
       inert={hidden}
       className='col-start-1 row-start-1 flex flex-col bg-white rounded-2xl p-4 pt-3 backface-hidden [-webkit-backface-visibility:hidden] transform-[rotateY(180deg)_translateZ(0)]'
-      style={{
-        boxShadow:
-          '0 0 0 1px rgba(0,0,0,.04), 0 8px 32px -4px rgba(0,0,0,.06), 0 1px 3px 0 rgba(0,0,0,.04)',
-      }}
     >
       <h3 className='font-[550] text-lg text-[#202020]'>Scan to connect</h3>
       <p className='text-neutral-500 text-sm'>
