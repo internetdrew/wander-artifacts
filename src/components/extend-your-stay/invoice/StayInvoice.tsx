@@ -105,6 +105,7 @@ export default function StayInvoice({
                     >
                       <InvoiceContent
                         ref={panel === 1 ? invoiceContent : undefined}
+                        animateLogo={unfoldComplete}
                         date={date}
                         issued={issued}
                         nightsLabel={nightsLabel}
@@ -138,7 +139,14 @@ export default function StayInvoice({
       </article>
       <div className='mt-5 flex h-10 justify-center w-fit mx-auto'>
         {(unfoldComplete || reducedMotion) && (
-          <DownloadPdfButton onDownload={downloadPdf} />
+          <motion.div
+            className='flex'
+            initial={{ opacity: reducedMotion ? 1 : 0, y: reducedMotion ? 0 : 4 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: reducedMotion ? 0 : 0.2, ease: 'easeOut' }}
+          >
+            <DownloadPdfButton onDownload={downloadPdf} />
+          </motion.div>
         )}
       </div>
       {downloadError && (

@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, type Ref } from 'react';
 import { useMotionValue } from 'motion/react';
 import TextSwap from '../../shared/TextSwap';
 
@@ -6,10 +6,14 @@ export default function StayExtensionHeader({
   title,
   id,
   announce = false,
+  ref,
+  tabIndex,
 }: {
   title: string;
   id?: string;
   announce?: boolean;
+  ref?: Ref<HTMLHeadingElement>;
+  tabIndex?: number;
 }) {
   const displayedTitle = useMotionValue(title);
 
@@ -20,7 +24,9 @@ export default function StayExtensionHeader({
   return (
     <h3
       id={id}
-      className='text-lg font-[550]'
+      ref={ref}
+      tabIndex={tabIndex}
+      className='text font-[450]'
       aria-live={announce ? 'polite' : undefined}
       aria-atomic={announce || undefined}
     >

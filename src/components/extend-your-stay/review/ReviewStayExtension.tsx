@@ -1,11 +1,13 @@
-import { useEffect, useState } from 'react';
-import { useReducedMotion } from 'motion/react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import StayExtensionHeader from '../shared/StayExtensionHeader';
 import StayDetails from './StayDetails';
 import PaymentDetails from './PaymentDetails';
 import InvoiceRow from './InvoiceRow';
 import ReviewActions from './ReviewActions';
-import { PROCESSING_MS, INVOICE_DELAY, type PaymentStatus } from './paymentTiming';
+import {
+  PROCESSING_MS,
+  type PaymentStatus,
+} from './paymentTiming';
 
 export default function ReviewStayExtension({
   onNext,
@@ -23,8 +25,19 @@ export default function ReviewStayExtension({
   nightlyRate: number;
 }) {
   const [status, setStatus] = useState<PaymentStatus>('idle');
-  const reducedMotion = useReducedMotion();
-  const [invoiceVisible, setInvoiceVisible] = useState(false);
+  const review = useRef<HTMLDivElement>(null);
+  const confirmationHeading = useRef<HTMLHeadingElement>(null);
+  const [invoiceAvailable, setInvoiceAvailable] = useState(false);
+  const invoiceVisible = status === 'paid';
+
+  useLayoutEffect(() => {
+    if (status !== 'paid') return;
+    // Move focus as the confirmation replaces review, not after an animation.
+    // If the user has moved elsewhere during processing, leave their focus alone.
+    if (review.current?.contains(document.activeElement)) {
+      confirmationHeading.current?.focus({ preventScroll: true });
+    }
+  }, [status]);
 
   useEffect(() => {
     if (status !== 'processing') return;
@@ -32,15 +45,6 @@ export default function ReviewStayExtension({
     const timer = window.setTimeout(() => setStatus('paid'), PROCESSING_MS);
     return () => window.clearTimeout(timer);
   }, [status]);
-
-  useEffect(() => {
-    if (status !== 'paid') return;
-    const timer = window.setTimeout(
-      () => setInvoiceVisible(true),
-      reducedMotion ? 0 : INVOICE_DELAY * 1000,
-    );
-    return () => window.clearTimeout(timer);
-  }, [status, reducedMotion]);
 
   const currency = new Intl.NumberFormat(undefined, {
     style: 'currency',
@@ -56,6 +60,7 @@ export default function ReviewStayExtension({
 
   return (
     <div
+      ref={review}
       aria-busy={status === 'processing'}
       onKeyDown={event => {
         if (event.key === 'Escape' && status !== 'idle')
@@ -63,12 +68,13 @@ export default function ReviewStayExtension({
       }}
     >
       <StayExtensionHeader
+        ref={confirmationHeading}
+        tabIndex={status === 'paid' ? -1 : undefined}
         title={
           status === 'paid'
             ? 'Your stay is extended'
             : 'Review your stay extension'
         }
-        announce
       />
 
       <StayDetails
@@ -77,14 +83,15 @@ export default function ReviewStayExtension({
         nightlyRate={nightlyRate}
       />
 
-      <div className='mt-3 min-h-36'>
+      <div className='mt-3 min-h-32'>
         <dl
           aria-label='Payment and invoice'
-          className='rounded-xl bg-[#ECEFF0] p-4 text-sm font-[450]'
+          className='rounded-lg bg-[#ECEFF0] p-2.5 text-sm font-[450]'
         >
           <PaymentDetails status={status} />
           <InvoiceRow
             invoiceVisible={invoiceVisible}
+            onAvailable={() => setInvoiceAvailable(true)}
             checkout={checkout}
             nights={nights}
             nightlyRate={nightlyRate}
@@ -95,7 +102,9 @@ export default function ReviewStayExtension({
         {status === 'processing'
           ? 'Processing payment'
           : status === 'paid'
-            ? 'Payment complete. Visa ending 4242 charged. Invoice available.'
+            ? invoiceAvailable
+              ? 'Payment complete. Visa ending 4242 charged. Invoice available.'
+              : 'Payment complete. Visa ending 4242 charged.'
             : ''}
       </p>
 

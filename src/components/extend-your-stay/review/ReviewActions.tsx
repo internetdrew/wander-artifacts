@@ -4,7 +4,13 @@ import ButtonStateLabel from './ButtonStateLabel';
 import { BUTTON_LAYOUT } from './buttonMotion';
 import { PROCESSING_MS, type PaymentStatus } from './paymentTiming';
 
-export default function ReviewActions({ status, label, onBack, onNext, onPay }: {
+export default function ReviewActions({
+  status,
+  label,
+  onBack,
+  onNext,
+  onPay,
+}: {
   status: PaymentStatus;
   label: string;
   onBack: () => void;
@@ -13,12 +19,12 @@ export default function ReviewActions({ status, label, onBack, onNext, onPay }: 
 }) {
   const reducedMotion = useReducedMotion();
   return (
-    <div className='mt-8 flex items-center justify-between text-sm font-[550] gap-4'>
+    <div className='mt-2 flex items-center justify-between text-sm font-[450] gap-4'>
       {status !== 'paid' && (
         <Button
           onClick={onBack}
           disabled={status === 'processing'}
-          className='px-4 py-2.5 w-fit rounded-full enabled:hover:bg-[#ECEFF0] enabled:cursor-pointer disabled:cursor-default disabled:text-neutral-400 motion-safe:transition-colors motion-safe:duration-150 motion-safe:ease-[ease] focus-visible:outline-2 focus-visible:outline-offset-2'
+          className='px-4 py-2 w-fit rounded-full enabled:hover:bg-[#ECEFF0] enabled:cursor-pointer disabled:cursor-default disabled:text-neutral-400 motion-safe:transition-colors motion-safe:duration-150 motion-safe:ease-[ease] focus-visible:outline-2 focus-visible:outline-offset-2'
         >
           Back
         </Button>
@@ -31,13 +37,12 @@ export default function ReviewActions({ status, label, onBack, onNext, onPay }: 
             style={{ borderRadius: 9999 }}
           />
         }
-        onClick={() =>
-          status === 'paid' ? onNext() : onPay()
-        }
+        onClick={() => (status === 'paid' ? onNext() : onPay())}
         disabled={status === 'processing'}
+        focusableWhenDisabled
         aria-busy={status === 'processing'}
         aria-label={label}
-        className={`group relative inline-flex px-4 py-2.5 w-fit ml-auto items-center justify-center overflow-hidden focus-visible:outline-2 focus-visible:outline-offset-2 motion-safe:transition-colors motion-safe:duration-150 ${status === 'processing' ? 'cursor-wait bg-[#d7e5db] text-[#2e6b44]' : status === 'paid' ? 'cursor-pointer bg-[#202020] text-white enabled:hover:bg-black' : 'cursor-pointer bg-[#00733D] text-white enabled:hover:bg-[#005A2E]'}`}
+        className={`group relative inline-flex px-4 py-2 w-fit ml-auto items-center justify-center overflow-hidden focus-visible:outline-2 focus-visible:outline-offset-2 motion-safe:transition-colors motion-safe:duration-150 ${status === 'processing' ? 'cursor-wait bg-[#d7e5db] text-[#2e6b44]' : status === 'paid' ? 'cursor-pointer bg-[#202020] text-white enabled:hover:bg-black' : 'cursor-pointer bg-[#00733D] text-white enabled:hover:bg-[#005A2E]'}`}
       >
         <ButtonStateLabel label={label} reducedMotion={!!reducedMotion} />
         <motion.span

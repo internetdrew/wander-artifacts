@@ -1,11 +1,18 @@
-import { useId, useState } from 'react';
+import { useId, useRef, useState } from 'react';
 import { motion, useReducedMotion } from 'motion/react';
 import { Dialog } from '@base-ui/react/dialog';
 import StayInvoice from '../invoice/StayInvoice';
-import { PAID_TIMING } from './paymentTiming';
+import { INVOICE_DELAY, PAID_TIMING } from './paymentTiming';
 
-export default function InvoiceRow({ invoiceVisible, checkout, nights, nightlyRate }: {
+export default function InvoiceRow({
+  invoiceVisible,
+  onAvailable,
+  checkout,
+  nights,
+  nightlyRate,
+}: {
   invoiceVisible: boolean;
+  onAvailable: () => void;
   checkout: Date;
   nights: number;
   nightlyRate: number;
@@ -15,12 +22,23 @@ export default function InvoiceRow({ invoiceVisible, checkout, nights, nightlyRa
   const [invoiceRowEntered, setInvoiceRowEntered] = useState(false);
   const [invoiceReturning, setInvoiceReturning] = useState(false);
   const invoiceId = useId();
+  const invoiceTrigger = useRef<HTMLButtonElement>(null);
   const wiggleInvoice =
-    invoiceVisible && invoiceRowEntered && !invoiceOpen && !invoiceReturning && !reducedMotion;
+    invoiceVisible &&
+    invoiceRowEntered &&
+    !invoiceOpen &&
+    !invoiceReturning &&
+    !reducedMotion;
 
   return (
     <motion.div
       initial={false}
+      onFocusCapture={() => {
+        if (invoiceVisible) {
+          setInvoiceRowEntered(true);
+          onAvailable();
+        }
+      }}
       aria-hidden={!invoiceVisible}
       animate={{
         height: invoiceVisible ? 'auto' : 0,
@@ -29,17 +47,26 @@ export default function InvoiceRow({ invoiceVisible, checkout, nights, nightlyRa
         y: invoiceVisible || reducedMotion ? 0 : -8,
       }}
       transition={{
-        duration: reducedMotion ? 0 : PAID_TIMING.invoiceDuration,
+        duration: reducedMotion || invoiceRowEntered ? 0 : PAID_TIMING.invoiceDuration,
+        delay: invoiceVisible && !invoiceRowEntered && !reducedMotion ? INVOICE_DELAY : 0,
         ease: [0.22, 1, 0.36, 1],
       }}
       onAnimationComplete={() => {
-        if (invoiceVisible) setInvoiceRowEntered(true);
+        if (invoiceVisible) {
+          setInvoiceRowEntered(true);
+          onAvailable();
+        }
       }}
       className={`grid grid-cols-[1fr_auto] items-center gap-x-4 gap-y-2 ${invoiceRowEntered || (invoiceVisible && reducedMotion) ? 'overflow-visible' : 'overflow-hidden'} ${!invoiceVisible ? 'invisible' : ''}`}
     >
       <dt className='contents'>
-        <span aria-hidden='true' className='col-span-2 row-start-1 h-px bg-[#D9DFE1]' />
-        <span className='col-start-1 row-start-2 text-neutral-500'>Get invoice</span>
+        <span
+          aria-hidden='true'
+          className='col-span-2 row-start-1 h-px bg-[#D9DFE1]'
+        />
+        <span className='col-start-1 row-start-2 text-neutral-500'>
+          Get invoice
+        </span>
       </dt>
       <dd className='col-start-2 row-start-2'>
         <Dialog.Root
@@ -50,8 +77,9 @@ export default function InvoiceRow({ invoiceVisible, checkout, nights, nightlyRa
           }}
         >
           <Dialog.Trigger
+            ref={invoiceTrigger}
             aria-label='View invoice'
-            className='flex h-10 w-16 cursor-pointer items-center justify-center rounded-sm focus-visible:outline-2 focus-visible:outline-offset-2'
+            className='flex w-16 cursor-pointer items-center justify-center rounded-sm focus-visible:outline-2 focus-visible:outline-offset-2'
           >
             <motion.span
               className='flex items-center justify-center'
@@ -60,9 +88,7 @@ export default function InvoiceRow({ invoiceVisible, checkout, nights, nightlyRa
                 rotate: wiggleInvoice ? [0, -4, 3, -1.5, 0] : 0,
               }}
               transition={{
-                duration: reducedMotion
-                  ? 0
-                  : PAID_TIMING.invoiceWiggleDuration,
+                duration: reducedMotion ? 0 : PAID_TIMING.invoiceWiggleDuration,
                 delay: reducedMotion ? 0 : PAID_TIMING.invoiceWiggleDelay,
                 times: [0, 0.25, 0.5, 0.75, 1],
                 ease: 'easeInOut',
@@ -78,9 +104,7 @@ export default function InvoiceRow({ invoiceVisible, checkout, nights, nightlyRa
                     duration: 0.4,
                     bounce: 0,
                   }}
-                  onLayoutAnimationComplete={() =>
-                    setInvoiceReturning(false)
-                  }
+                  onLayoutAnimationComplete={() => setInvoiceReturning(false)}
                   aria-hidden='true'
                   className='relative h-7 w-16 border border-[#e5dfd3] bg-[#F9F7F6] shadow-sm'
                   style={{
@@ -95,7 +119,7 @@ export default function InvoiceRow({ invoiceVisible, checkout, nights, nightlyRa
             <Dialog.Backdrop className='fixed inset-0 z-40 bg-black/25' />
             <Dialog.Viewport className='fixed inset-0 z-50 overflow-y-auto'>
               <div className='flex min-h-full items-center justify-center px-4 py-12'>
-                <Dialog.Popup className='pointer-events-none relative w-full max-w-90 md:max-w-100 outline-none'>
+                <Dialog.Popup finalFocus={invoiceTrigger} className='pointer-events-none relative w-full max-w-90 md:max-w-100 outline-none'>
                   <Dialog.Title className='sr-only'>
                     Stay extension invoice
                   </Dialog.Title>

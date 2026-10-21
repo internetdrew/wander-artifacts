@@ -1,0 +1,28 @@
+.fireplace-figure > svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* The masonry stays still. Each flame breathes at its own rhythm from its base. */
+.fireplace-figure [data-flame] {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: hearth-flame var(--flame-duration) ease-in-out var(--flame-delay) infinite;
+  animation-play-state: paused;
+}
+
+.fireplace-figure[data-dancing='true'] [data-flame] {
+  animation-play-state: running;
+}
+
+@keyframes hearth-flame {
+  0%, 100% { transform: scaleX(1) scaleY(0.98) rotate(-1deg); }
+  32% { transform: scaleX(0.94) scaleY(1.04) rotate(1.5deg); }
+  68% { transform: scaleX(1.04) scaleY(0.94) rotate(-1.5deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fireplace-figure [data-flame] {
+    animation: none;
+  }
+}

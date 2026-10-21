@@ -21,7 +21,7 @@ export default function DownloadPdfButton({
   return (
     <Button
       onClick={download}
-      className='pointer-events-auto flex min-w-40 cursor-pointer items-center justify-center rounded-full bg-white px-5 py-2.5 text-sm font-[550] text-[#202020] shadow-sm hover:bg-neutral-100 focus-visible:outline-2 focus-visible:outline-offset-2'
+      className='pointer-events-auto flex min-w-40 cursor-pointer items-center justify-center rounded-full bg-white px-5 py-2 text-sm font-[550] text-[#202020] shadow-sm hover:bg-neutral-100 focus-visible:outline-2 focus-visible:outline-offset-2'
     >
       Download PDF
     </Button>

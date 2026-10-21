@@ -1,7 +1,6 @@
 import {
   useCallback,
   useEffect,
-  useId,
   useLayoutEffect,
   useRef,
   useState,
@@ -12,18 +11,21 @@ import ChooseNights from './choose-nights/ChooseNights';
 import ReviewStayExtension from './review/ReviewStayExtension';
 
 const NIGHTLY_RATE = 1150;
-const VIEW_TRANSITION = {
-  type: 'tween',
-  ease: [0.455, 0.03, 0.515, 0.955],
+const RESIZE_TRANSITION = {
+  type: 'spring',
+  bounce: 0.15,
 } as const;
-const MIN_RESIZE_DURATION = 0.15;
-const MAX_RESIZE_DURATION = 0.27;
+const MIN_RESIZE_DURATION = 0.45;
+const MAX_RESIZE_DURATION = 0.55;
 const FULL_RESIZE_DISTANCE = 400;
+const CONTENT_ENTER_DURATION = 0.3;
+const CONTENT_EXIT_DURATION = 0.14;
+const CONTENT_ENTER_DELAY = 0.1;
+const CONTENT_EASE = [0.215, 0.61, 0.355, 1] as const;
 
 type View = 'invitation' | 'choose-nights' | 'review';
 
 export default function ExtendYourStay() {
-  const id = useId();
   const [view, setView] = useState<View>('invitation');
   const [{ nights, direction }, setSelection] = useState({
     nights: 1,
@@ -62,9 +64,10 @@ export default function ExtendYourStay() {
     if (!height || Math.abs(height - targetHeight.current) < 0.5) return;
 
     const distance = Math.abs(height - displayedHeight.current);
-    const duration = MIN_RESIZE_DURATION +
+    const duration =
+      MIN_RESIZE_DURATION +
       (MAX_RESIZE_DURATION - MIN_RESIZE_DURATION) *
-      Math.min(distance / FULL_RESIZE_DISTANCE, 1);
+        Math.min(distance / FULL_RESIZE_DISTANCE, 1);
 
     if (!targetHeight.current) displayedHeight.current = height;
     targetHeight.current = height;
@@ -89,7 +92,7 @@ export default function ExtendYourStay() {
   }, [updateHeight]);
 
   const transition = {
-    ...VIEW_TRANSITION,
+    ...RESIZE_TRANSITION,
     duration: reducedMotion ? 0 : resize.duration,
   };
 
@@ -138,19 +141,14 @@ export default function ExtendYourStay() {
   }
 
   return (
-    <section
-      className='mx-4 mt-20 min-h-150 md:mx-0'
-      aria-labelledby={`${id}-title`}
-    >
-      <h2
-        id={`${id}-title`}
-        className='text-xl font-[550] leading-7 tracking-[-0.5px]'
-      >
-        Stay a Little Longer
-      </h2>
+    <section aria-label='Extend your stay'>
       <motion.div
         initial={false}
         animate={{ height: resize.height || 'auto' }}
+        style={{
+          boxShadow:
+            '0 0 0 1px rgba(0,0,0,.04), 0 8px 32px -4px rgba(0,0,0,.06), 0 1px 3px 0 rgba(0,0,0,.04)',
+        }}
         transition={transition}
         onUpdate={latest => {
           if (typeof latest.height === 'number') {
@@ -161,34 +159,30 @@ export default function ExtendYourStay() {
           if (!reducedMotion) setResizing(true);
         }}
         onAnimationComplete={() => setResizing(false)}
-        className={`relative tabular-nums mx-auto sm:max-w-4/6 ring-1 ring-neutral-200/80 rounded-2xl mt-8 ${resizing && !reducedMotion ? 'overflow-hidden' : 'overflow-visible'}`}
+        className={`relative tabular-nums mx-auto bg-white rounded-2xl ${resizing && !reducedMotion ? 'overflow-hidden' : 'overflow-visible'}`}
       >
         <div
           ref={content}
           tabIndex={-1}
           className='relative flow-root p-4 outline-none'
         >
-          <AnimatePresence initial={false} mode='popLayout' custom={transition}>
+          <AnimatePresence initial={false} mode='popLayout'>
             <motion.div
               key={view}
-              initial={{ opacity: 0, scale: reducedMotion ? 1 : 0.985 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit='exit'
-              variants={{
-                exit: (exitTransition: typeof transition) => ({
-                  opacity: 0,
-                  scale: reducedMotion ? 1 : 0.985,
-                  transition: {
-                    ...exitTransition,
-                    opacity: {
-                      ...exitTransition,
-                      duration: exitTransition.duration * 0.8,
-                    },
-                  },
-                }),
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{
+                opacity: 0,
+                transition: {
+                  duration: reducedMotion ? 0 : CONTENT_EXIT_DURATION,
+                  ease: CONTENT_EASE,
+                },
               }}
-              transition={transition}
-              style={{ transformOrigin: 'top center' }}
+              transition={{
+                duration: reducedMotion ? 0 : CONTENT_ENTER_DURATION,
+                delay: reducedMotion ? 0 : CONTENT_ENTER_DELAY,
+                ease: CONTENT_EASE,
+              }}
               className='flow-root'
             >
               {renderView()}

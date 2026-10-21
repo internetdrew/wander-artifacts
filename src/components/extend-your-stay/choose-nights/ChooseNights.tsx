@@ -52,14 +52,8 @@ export default function ChooseNights({
     <>
       <StayExtensionHeader
         id={`${id}-title`}
-        title='Choose your checkout date'
+        title='Choose a new checkout date'
       />
-      <p
-        id={`${id}-hint`}
-        className='mt-0.5 text-sm font-[450] text-neutral-500'
-      >
-        Checkout at 11 AM
-      </p>
 
       <fieldset
         aria-labelledby={`${id}-title`}
@@ -80,7 +74,7 @@ export default function ChooseNights({
               aria-label={`${choice.fullDate}, ${choice.nights} extra ${choice.nights === 1 ? 'night' : 'nights'}`}
               className='peer sr-only'
             />
-            <span className='relative flex flex-col items-center justify-center gap-0.5 rounded-xl border border-transparent bg-[#ECEFF0] px-2 py-2.5 text-[#202020] motion-safe:transition-colors motion-safe:duration-150 peer-checked:bg-[#D9DFE1] peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 hover:bg-[#D9DFE1]'>
+            <span className='relative flex flex-col items-center justify-center gap-0.5 rounded-xl border border-transparent bg-[#ECEFF0] p-1.5 text-[#202020] motion-safe:transition-colors motion-safe:duration-150 peer-checked:bg-[#D9DFE1] peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 hover:bg-[#D9DFE1]'>
               <motion.span
                 aria-hidden='true'
                 className='pointer-events-none absolute -inset-px rounded-[inherit] border border-[#202020]/40'
@@ -122,11 +116,11 @@ export default function ChooseNights({
           </label>
         ))}
       </fieldset>
-      <div className='h-[0.5px] bg-neutral-200 w-full' />
+      <div className='h-[0.5px] bg-neutral-200 w-full my-4' />
 
-      <div className='mt-4'>
-        <div className='flex items-center justify-between font-[550]'>
-          <p>Extension total</p>
+      <div>
+        <div className='flex items-center justify-between font-[450]'>
+          <p className='text-[15px]'>Extension total</p>
           <NumberFlow
             value={total}
             animated={!reducedMotion}
@@ -136,7 +130,7 @@ export default function ChooseNights({
               minimumFractionDigits: 0,
               maximumFractionDigits: 0,
             }}
-            className='tabular-nums'
+            className='tabular-nums font-[550]'
           />
         </div>
         <div className='flex flex-wrap items-center justify-between gap-x-4 gap-y-1 text-[13px] leading-5 font-[450] text-neutral-500'>
@@ -154,16 +148,16 @@ export default function ChooseNights({
         </div>
       </div>
 
-      <div className='mt-6 flex items-center justify-between gap-3 font-[550] text-sm'>
+      <div className='mt-6 flex items-center justify-between gap-3 font-[450] text-sm'>
         <Button
           onClick={onBack}
-          className='w-fit cursor-pointer rounded-full px-4 py-2.5 text-[#202020] hover:bg-[#ECEFF0] motion-safe:transition-colors motion-safe:duration-150 motion-safe:ease-[ease] focus-visible:outline-2 focus-visible:outline-offset-2'
+          className='w-fit cursor-pointer rounded-full px-4 py-2 text-[#202020] hover:bg-[#ECEFF0] motion-safe:transition-colors motion-safe:duration-150 motion-safe:ease-[ease] focus-visible:outline-2 focus-visible:outline-offset-2'
         >
           Back
         </Button>
         <Button
           onClick={onNext}
-          className='w-fit cursor-pointer rounded-full bg-[#202020] px-4 py-2.5 text-white hover:bg-black focus-visible:outline-2 focus-visible:outline-offset-2'
+          className='w-fit cursor-pointer rounded-full bg-[#202020] px-4 py-2 text-white hover:bg-black focus-visible:outline-2 focus-visible:outline-offset-2'
         >
           Review extension
         </Button>

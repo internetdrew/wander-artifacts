@@ -4,27 +4,8 @@ import { PAID_TIMING, type PaymentStatus } from './paymentTiming';
 export default function PaymentDetails({ status }: { status: PaymentStatus }) {
   const reducedMotion = useReducedMotion();
   return (
-    <div className='grid grid-cols-[2.5rem_minmax(0,1fr)] items-center gap-x-4 gap-y-1'>
+    <div className='flex items-baseline justify-between gap-4'>
       <dt className='contents'>
-        <span
-          aria-hidden='true'
-          className='col-start-1 row-start-1 row-span-2 grid size-10 place-items-center rounded-lg bg-[#D9DFE1] p-2.5 text-[#202020]'
-        >
-          <svg
-            xmlns='http://www.w3.org/2000/svg'
-            className='size-full'
-            viewBox='0 0 24 24'
-            fill='none'
-            stroke='currentColor'
-            strokeWidth='2'
-            strokeLinecap='round'
-            strokeLinejoin='round'
-          >
-            <rect width='20' height='14' x='2' y='5' rx='2' />
-            <line x1='2' x2='22' y1='10' y2='10' />
-            <path d='M6 14h2' />
-          </svg>
-        </span>
         <motion.span
           initial={false}
           layout='position'
@@ -32,7 +13,7 @@ export default function PaymentDetails({ status }: { status: PaymentStatus }) {
           transition={{
             duration: reducedMotion ? 0 : PAID_TIMING.charge,
           }}
-          className='col-start-2 row-start-1 flex items-baseline text-neutral-500'
+          className='flex items-baseline text-neutral-500'
         >
           Charg
           <AnimatePresence initial={false}>
@@ -61,7 +42,7 @@ export default function PaymentDetails({ status }: { status: PaymentStatus }) {
           <span className='whitespace-pre'> to</span>
         </motion.span>
       </dt>
-      <dd className='col-start-2 row-start-2 flex items-center font-[450]'>
+      <dd className='flex items-center text-right font-[450]'>
         <motion.span
           className='grid h-3.5 shrink-0 place-items-center overflow-hidden'
           aria-hidden='true'
