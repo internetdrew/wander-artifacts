@@ -5,13 +5,20 @@ import WelcomeStack from './components/welcome-stack/WelcomeStack';
 function App() {
   return (
     <main className='max-w-xl mx-auto space-y-16 py-8 px-4'>
+      <header className=''>
+        <h1 className='text-[17px] font-[550]'>Wander x Andrew Rowley</h1>
+        <p className='text-neutral-500'>
+          Interfaces and small, playful details I built to show how I'd
+          contribute as a Design Engineer at Wander.
+        </p>
+      </header>
       <section aria-labelledby='extended-stay-title'>
-        <h2 id='extended-stay-title' className='font-[450]'>
+        <h2 id='extended-stay-title' className='font-[550] text-[15px]'>
           Extended Stay
         </h2>
         <p className='text-neutral-500 text-[15px] font-[450] text-pretty'>
-          A flow created to make that “I wish we could stay longer” moment a
-          reality in just a few taps.
+          Designed to make that “I wish we could stay longer” moment a reality
+          in just a few taps.
         </p>
 
         <div className='mt-6 sm:max-w-md mx-auto'>
@@ -19,7 +26,7 @@ function App() {
         </div>
       </section>
       <section aria-labelledby='day-night-title'>
-        <h2 id='day-night-title' className='font-[450]'>
+        <h2 id='day-night-title' className='font-[550]'>
           Watchmere, from day to night
         </h2>
         <p className='text-neutral-500 text-[15px] font-[450] text-pretty'>

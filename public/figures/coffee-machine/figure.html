@@ -1,0 +1,136 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Coffee machine</title></head><body>
+<script src="core.js"></script><script>
+/* Process: preloaded water tank -> vibration pump -> heated brass boiler -> group
+   -> coffee grounds in locked portafilter -> twin spout -> cup on the drip tray.
+   Based on the Gaggia Classic E24 single-boiler layout: https://www.gaggia.com/manual-machines/new-classic-e24/
+   Parts / mounts: case: rounded rear cabinet, upper hood, rear service cover, top plate.
+   Structure: base pan, four rubber feet, two chassis uprights, boiler bracket, pump bracket.
+   Mechanism: reservoir on base, reservoir lid, pickup tube, pump body and two rubber mounts,
+   inlet/outlet fittings, pressure valve, four pipe sections, boiler body, boiler caps,
+   heater, thermostat, group neck, group collar, filter basket, grounds, spouts, drip pan,
+   drain grate, steam valve and three wand sections. Power: rear inlet, switch, PCB,
+   heater leads and pump leads routed along chassis. Controls: brew switch, gauge, ready LED.
+   Cup center [75,35], rim z=33, nozzle z=48: clear vertical coffee path, no solid intersections.
+   Model units are enlarged centimeters; rear reservoir occupies almost the full cabinet height.
+*/
+const cfCream=matOf('#fff2ce'), cfBrass=matOf('#d7a252'), cfCoffee=matOf('#704027');
+const cfRear=rrUV(6,13,64,94,7), cfHood=rrUV(5,60,65,95,9);
+function cfSolid(prof,a,b,m){const ends=[...on(PX(a),prof),...on(PX(b),prof)];return extrude(prof,a,b,m)+(vis([1,0,0])?shape(on(PX(b),prof),tone([1,0,0],m),1.5):shape(on(PX(a),prof),tone([-1,0,0],m),1.5))+hullInk(ends,2.8);}
+function cfCup(st){
+ const aa=on(PZ(15.2),ellUV(75,35,8.4,8.4,40)), bb=on(PZ(33),ellUV(75,35,11,11,40));
+ const level=17+st.fill*13, rr=8.6+(level-16)*.15;
+ const liquid=shape(on(PZ(level),ellUV(75,35,rr,rr,40)),st.fill>0?'#704027':'#c5b79c',.7)+(st.fill>0?ink(pd(on(PZ(level+.1),ellUV(75,35,rr-.8,rr-.8,40))),1.5):'');
+ let mug=openShell(aa,bb,n=>toneI(n,cfCream),liquid)+ink(pd(bb),1.5)+hullInk([...aa,...bb],2);
+ // A continuous ceramic handle, with outlined inner and outer contours and no segment seams.
+ const outer=arcUV(44,24,7.5,-90,90,32), inner=arcUV(44,24,4.5,-90,90,32);
+ let handle='';
+ for(let i=0;i<32;i++){
+   const profile=[outer[i],outer[i+1],inner[i+1],inner[i]];
+   handle+=extrude(profile,73.5,76.5,cfCream,toneI);
+   const xx=vis([1,0,0])?76.5:73.5;
+   handle+=fill(pd(on(PX(xx),profile)),toneI([vis([1,0,0])?1:-1,0,0],cfCream));
+ }
+ for(const xx of [73.5,76.5]){handle+=ink(pd(on(PX(xx),outer),false),.8)+ink(pd(on(PX(xx),inner),false),.8);}
+ mug=byDepth([{box:[[64,24,16],[86,46,33]],svg:mug},{box:[[73,45,16],[77,54,32]],svg:handle}]);
+ if(st.brewing)mug+=rod([75,35,48],[75,35,level+.6],.65,cfCoffee,toneI,0);
+ return act('brew',mug,'role="button" aria-label="Fill coffee cup"');
+}
+function cfInside(st){const parts=[];
+ const add=(a,b,svg)=>parts.push({box:[a,b],svg});
+ const bx=(a,b,m)=>add(a,b,box(...a,...b,m));
+ const tube=(a,b,r,m)=>add(a.map((v,i)=>Math.min(v,b[i])-r),a.map((v,i)=>Math.max(v,b[i])+r),rod(a,b,r,m));
+ bx([9,10,13],[12,60,87],METAL);bx([45,10,13],[48,60,87],METAL);
+ bx([13,13,13],[31,57,84],CLEAR);bx([12,12,84],[32,58,86],METAL);
+ bx([14,14,14],[30,56,65-st.fill*3],matOf('#8dc9d5'));
+ bx([33,12,17],[46,28,20],METAL);
+ add([33,13,20],[45,27,40],cyl(39,20,20,40,6,matOf(st.brewing?'#eb7951':'#c86b51')));
+ for(const yy of [15,25])bx([34,yy-1,15],[44,yy+1,18],DARK);
+ bx([33,28,45],[49,53,48],METAL);
+ add([31,29,48],[55,53,76],cyl(43,41,48,76,11,cfBrass));
+ for(const zz of [48,73])add([30,28,zz],[56,54,zz+3],cyl(43,41,zz,zz+3,12,METAL));
+ add([38,36,76],[48,46,79],cyl(43,41,76,79,4,DARK));
+ for(const yy of [35,46])tube([39,yy,51],[39,yy,70],1.5,matOf(st.brewing?'#e77b40':'#b67945'));
+ const route=[[22,20,15],[22,20,41],[39,20,41],[39,20,45],[43,41,45],[43,41,48]];
+ for(let i=1;i<route.length;i++)tube(route[i-1],route[i],1.1,CLEAR);
+ const hot=[[54,41,63],[61,41,63],[61,35,63],[72,35,63],[72,35,56]];
+ for(let i=1;i<hot.length;i++)tube(hot[i-1],hot[i],1.3,cfBrass);
+ bx([33,54,29],[46,57,46],matOf('#41865c'));
+ for(let i=0;i<4;i++)bx([35+i*2.5,57,33],[36+i*2.5,58,38],DARK);
+ for(const zz of [23,27]){tube([39,20,zz],[47,20,zz],.45,matOf('#b95235'));tube([47,20,zz],[47,55,zz],.45,matOf('#b95235'));tube([47,55,zz],[41,55,34],.45,matOf('#b95235'));}
+ return byDepth(parts);
+}
+function cfScene(st,m){const k=ease(st.xr||0), parts=[];const add=(a,b,svg)=>parts.push({box:[a,b],svg});
+ let out=board(-5,-6,102,80,4,6,cfCream);
+ out+=castShadow([[5,5,11],[55,5,95],[55,65,95],[92,65,10],[92,5,10]],4,boardTop(-5,-6,102,80,4,6));
+ for(const x of [12,83])for(const y of [12,58])add([x-3,y-3,4],[x+3,y+3,8],cyl(x,y,4,8,3,DARK));
+ add([5,5,8],[92,65,13],cfSolid(rrUV(5,8,65,13,2),5,92,m));
+ out+=byDepth(parts);parts.length=0;
+ let rear=cfSolid(cfRear,5,54,m), hood=cfSolid(cfHood,54,82,m);
+ // Enamel side inset, rear service cover, and a polished brewing backsplash.
+ if(vis([0,1,0])){
+   rear+=shape(on(PY(64.15),rrUV(13,24,44,79,5)),tone([0,1,0],m),.7);
+   rear+=txY(28.5,64.3,64,'PICCOLO',3.5)+txY(28.5,64.3,58,'MILANO',1.7);
+   for(let j=0;j<6;j++)rear+=line([[20+j*3,64.3,32],[20+j*3,64.3,42]],.7);
+ }
+ if(vis([-1,0,0])){
+   rear+=shape(on(PX(4.8),rrUV(14,23,56,76,2)),tone([-1,0,0],m),1);
+   for(let j=0;j<9;j++)rear+=line([[4.7,20,31+j*3],[4.7,50,31+j*3]],.7);
+   for(const yy of [18,52])for(const zz of [27,72])rear+=shape(on(PX(4.6),ellUV(yy,zz,.7,.7)),METAL.m,.4);
+ }
+ if(vis([1,0,0])){
+   rear+=shape(on(PX(54.2),rrUV(12,18,58,61,3)),METAL.m,1);
+   rear+=shape(on(PX(54.3),rrUV(15,22,55,58,2)),METAL.l,.6);
+   rear+=line([[54.4,17,25],[54.4,17,55]],.45);
+   // A single wide fascia, with space reserved for each control.
+   hood+=shape(on(PX(82.2),rrUV(10,68,60,88,4)),cfCream.l,1.1);
+   hood+=tx(82.5,37,80,'PICCOLO',4.2)+tx(82.5,37,74.5,'MILANO  /  01',1.7);
+   // Brew rocker, indicator lamp, and a calibrated pressure gauge.
+   hood+=act('brew',cylX(82.4,84,54,78,3.5,METAL)+cylX(84,85.2,54,78,2.7,DARK));
+   hood+=shape(on(PX(85.3),ellUV(54,78,1.3,1.3)),st.brewing?'#e7a141':'#7ebc89',.4);
+   hood+=cylX(82.3,84,18,78,5.2,METAL)+shape(on(PX(84.1),ellUV(18,78,4.3,4.3)),cfCream.l,.7);
+   for(let j=0;j<9;j++){const a=(15+j*19)*Math.PI/180;hood+=line([[84.2,18+3.2*Math.cos(a),78+3.2*Math.sin(a)],[84.2,18+3.7*Math.cos(a),78+3.7*Math.sin(a)]],.4);}
+   hood+=line([[84.3,18,78],[84.3,st.brewing?15.7:20.2,80.2]],.7)+tx(84.3,18,76,'BAR',.9);
+   // Lower chrome lip sits flush on the underside of the hood.
+   hood+=shape(on(PX(82.3),rectUV(12,62,58,64)),METAL.m,.6);
+ }
+ rear+=box(8,9,94.8,51,61,96.5,METAL);
+ // Cup-warming deck: inset ribs and low retaining rails, physically joined to four standoffs.
+ for(let j=0;j<7;j++)rear+=line([[13,16+j*6,96.6],[46,16+j*6,96.6]],.45);
+ const railParts=[];
+ for(const yy of [12,58]){
+   for(const xx of [12,47])railParts.push({box:[[xx-1,yy-1,96.5],[xx+1,yy+1,100]],svg:cyl(xx,yy,96.5,100,.8,METAL,toneI,.6)});
+   railParts.push({box:[[11,yy-1,99],[48,yy+1,101]],svg:rod([12,yy,100],[47,yy,100],.8,METAL,toneI,.6)});
+ }
+ rear+=byDepth(railParts);
+ add([5,6,13],[54,64,101],`<g opacity="${1-.84*k}">${rear}</g>`);
+ add([54,5,60],[82,65,95],`<g opacity="${1-.84*k}">${hood}</g>`);
+ // Removable drip pan with a dark recess and a perforated steel insert.
+ let grate=box(58,9,13,94,61,14.5,DARK)+box(60,11,14.5,92,59,15.2,METAL);
+ for(let j=0;j<10;j++)grate+=shape(on(PZ(15.3),rrUV(64,14+j*4.5,88,15+j*4.5,.45,3)),DARK.m,0);
+ grate+=line([[61,11,15.3],[91,11,15.3]],.6);
+ add([58,9,13],[94,61,15.3],grate);
+ // Group, locking collar and basket share one assembly so their seams remain attached.
+ let group=cyl(72,35,55,61,8.5,METAL)+cyl(72,35,52,55,10,DARK)+cyl(72,35,49.5,52,8,METAL);
+ add([62,25,49.5],[82,45,61],group);
+ add([72,33,48],[78,37,50],rod([72,35,50],[75,35,48],1.6,METAL));
+ const grip=matOf('#78513b');
+ const handleParts=[
+   {box:[[75,33.5,51.5],[83,36.5,54.5]],svg:rod([75,35,53],[83,35,53],1.5,METAL)},
+   {box:[[82,32.6,50.6],[98,37.4,55.4]],svg:rod([83,35,53],[97,35,53],2.4,grip,toneI,1.1,2.1)}
+ ];
+ add([75,32.6,50.6],[98,37.4,55.4],byDepth(handleParts));
+ add([64,24,16],[86,54,48],cfCup(st));
+ // Steam valve and insulated grip support a slender bent stainless wand.
+ add([77,8,56],[85,16,64],cylX(77,82,12,60,3.5,METAL)+cylX(82,85,12,60,3,DARK));
+ const wand=[[79,12,57],[84,12,52],[86,12,39],[87,12,28],[84,15,25]];
+ for(let i=1;i<wand.length;i++)add(wand[i-1].map((v,j)=>Math.min(v,wand[i][j])-1),wand[i-1].map((v,j)=>Math.max(v,wand[i][j])+1),rod(wand[i-1],wand[i],.8,METAL,toneI,.7));
+ add([84.7,10.7,39],[87.3,13.3,45],rod([85.2,12,44.5],[86,12,39.5],1.4,DARK,toneI,.7));
+
+ out+=byDepth(parts);
+ if(k>0)out+=`<g opacity="${k}">${cfInside(st)}</g>`;
+ out+=xrCallouts(k>.6?[{at:[22,35,65],text:'WATER TANK'},{at:[39,20,30],text:'PUMP',on:st.brewing},{at:[43,41,65],text:'BOILER',on:st.brewing},{at:[72,35,54],text:'BREW GROUP',on:st.brewing}]:[{at:[75,35,30],text:'COFFEE CUP',on:st.brewing}],[5,92,5,65,4,97]);return out;
+}
+function cfBrew(st,ui){if(st.brewing)return;if(st.fill>=1)return ui.flash('Empty the cup for another coffee');st.brewing=true;let elapsed=0;const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;if(reduced){st.fill=1;st.brewing=false;return;}ui.animate(dt=>{elapsed+=dt;st.fill=Math.min(1,elapsed/1.9);if(st.fill>=1){st.brewing=false;return false;}return true;});}
+const ui=mountFigure({fig:'01',title:'Coffee machine',size:[107,86,105],center:[48,35],palette:'tomato',turn:'full',state:{fill:0,brewing:false},scene:cfScene,buttons:[{label:'Fill cup',onClick:cfBrew},{label:'Empty cup',onClick(st,ui){if(st.brewing)return ui.flash('Let the coffee finish pouring');st.fill=0;}}],acts:{brew(st,el,ui){cfBrew(st,ui);}},stats:st=>[{label:'IN THE CUP',value:Math.round(st.fill*60)+' ml'}],params(st,q){st.fill=Math.max(0,Math.min(1,Number(q.get('fill'))||0));},readout:()=>''});
+xrMount(()=>ui,()=> '');
+</script></body></html>

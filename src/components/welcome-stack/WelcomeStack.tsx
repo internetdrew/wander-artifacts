@@ -2,6 +2,7 @@ import { useId, useLayoutEffect, useRef, useState } from 'react';
 import { useInView, useReducedMotion } from 'motion/react';
 import GetAcquaintedCard from './GetAcquaintedCard';
 import SettleInCard from './SettleInCard';
+import MakeItYoursCard from './MakeItYoursCard';
 import WelcomeCard from './welcome-card/WelcomeCard';
 import WifiCard from './wifi-card/WifiCard';
 import WelcomeStackCard from './WelcomeStackCard';
@@ -18,6 +19,11 @@ const cards = [
     id: 'settle-in',
     title: 'Make yourself at home',
     content: <SettleInCard />,
+  },
+  {
+    id: 'make-it-yours',
+    title: 'Make it yours',
+    content: <MakeItYoursCard />,
   },
 ];
 
@@ -153,7 +159,7 @@ const WelcomeStack = () => {
                 setHoveredIndex(current => (current === index ? null : current))
               }
             >
-              {card.content}
+              {card.id === 'make-it-yours' ? <MakeItYoursCard active={active} /> : card.content}
             </WelcomeStackCard>
           );
         })}

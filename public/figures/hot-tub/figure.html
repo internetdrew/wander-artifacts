@@ -1,0 +1,103 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Hot tub</title></head><body>
+<script src="core.js"></script><script>
+/* Cedar-clad circular spa. Source for the circulation path:
+   https://www.hotspring.com/wp-content/uploads/2018/11/hot-spring_spas_owners_manual_2010.pdf
+   Water: surface skimmer -> cartridge filter -> circulation pump -> inline heater
+   -> return manifold -> submerged jets -> basin. Warm surface evaporates into cooler air;
+   the visible steam is condensed mist, shown as a few soft rising wisps.
+   Structure: base skirt, 24 cedar staves, upper/lower metal tension bands, acrylic
+   liner, curved bench, footwell, rounded rim, two entry steps and their four feet.
+   Mechanism: skimmer housing, cartridge/core/cap, pump motor/volute, two mounts,
+   heater tube and unions, thermostat, control box, wall return manifold, six jets,
+   intake elbow, four plumbing runs, two pump/heater leads and mounting brackets.
+   Everything sits on the base or fixes to the liner. Closed view hides the service
+   equipment beneath the bench. Steam starts inside the basin at z=41, above water z=38.
+   Model: basin center [40,40], outer radius 39, rim z=45; steps x=77..108.
+*/
+const htCedar={l:'#c79262',m:'#a67248',d:'#765035'}, htRim={l:'#f2e9d7',m:'#dfd2b9',d:'#b5a58b'};
+const htWater={l:'#a5d9dc',m:'#7fbfc7',d:'#5a9ca8'}, htSteel=matOf('#626d6b');
+const htRing=(z,r)=>on(PZ(z),ellUV(40,40,r,r,72));
+function htBand(z){const r0=37+(z-4)*.05+.15,r1=r0+.065,aa=htRing(z,r0),bb=htRing(z+1.3,r1);return loft(aa,bb,n=>toneI(n,htSteel))+line(on(PZ(z),arcUV(40,40,r0,...nearHalf(),36)),.65)+line(on(PZ(z+1.3),arcUV(40,40,r1,...nearHalf(),36)),.65);}
+
+function htSteam(st){if(!st.hot)return '';let out='';
+ for(const [i,x,y,h] of [[0,28,28,25],[1,49,29,31],[2,33,49,29],[3,55,49,24]]){
+  const [sx,sy]=P(x,y,42),top=P(x,y,42+h),height=sy-top[1];
+  out+=`<g data-steam="${i}" style="--steam-duration:${3.8+i*.47}s;--steam-delay:${-i*1.12}s"><path d="M${sx} ${sy} C${sx-7} ${sy-height*.23} ${sx+8} ${sy-height*.34} ${sx+2} ${sy-height*.52} S${sx-5} ${sy-height*.79} ${sx+2} ${sy-height}" fill="none" stroke="#8caaa9" stroke-width="2.1" stroke-linecap="round" opacity=".65"/></g>`;
+ }return out;
+}
+function htInside(st){const parts=[];const add=(a,b,svg)=>parts.push({box:[a,b],svg});const tube=(a,b,r=1.1)=>add(a.map((v,i)=>Math.min(v,b[i])-r),a.map((v,i)=>Math.max(v,b[i])+r),rod(a,b,r,METAL,toneI,.6));
+ add([18,15,6],[27,24,20],cyl(22.5,19.5,6,20,4.5,CLEAR));
+ add([19,16,7],[26,23,19],cyl(22.5,19.5,7,19,3.2,htRim));
+ for(let i=0;i<8;i++)tube([20+i*.7,17.5,8],[20+i*.7,17.5,18],.18);
+ add([18,15,20],[27,24,22],cyl(22.5,19.5,20,22,4.5,DARK));
+ add([31,12,5],[48,23,8],box(31,12,5,48,23,8,METAL));
+ add([32,12,8],[47,23,18],rod([33,17.5,13],[46,17.5,13],5,matOf('#648b81')));
+ for(const xx of [34,44])add([xx,13,5],[xx+2,22,8],box(xx,13,5,xx+2,22,8,DARK));
+ add([49,13,9],[65,21,16],rod([50,17,12.5],[64,17,12.5],3.2,METAL));
+ for(const xx of [50,63])add([xx-1,13,9],[xx+1,21,16],rod([xx-1,17,12.5],[xx+1,17,12.5],3.7,htRim));
+ add([55,24,6],[67,30,17],box(55,24,6,67,30,17,htSteel));
+ const route=[[22.5,19.5,6],[22.5,10,6],[32,10,6],[32,17.5,13]];
+ for(let i=1;i<route.length;i++)tube(route[i-1],route[i]);
+ tube([46,17.5,13],[50,17,12.5]);tube([64,17,12.5],[68,17,12.5]);tube([68,17,12.5],[68,17,29]);
+ for(let i=0;i<6;i++){let a=(i*60)*Math.PI/180;const end=[40+31*Math.cos(a),40+31*Math.sin(a),30];tube([40+33*Math.cos(a),40+33*Math.sin(a),26],end);add(end.map(v=>v-1.8),end.map(v=>v+1.8),rod(end,[40+29.5*Math.cos(a),40+29.5*Math.sin(a),30],1.8,METAL));}
+ for(const xx of [56,60]){tube([xx,25,9],[xx,25,5],.3);tube([xx,25,5],[40,19,5],.3);}
+ return byDepth(parts);
+}
+function htScene(st,m){let out='';const k=ease(st.xr||0);
+ out+=cyl(40,40,0,4,37,htSteel,toneI,1.1,72);
+ const aa=htRing(4,37),bb=htRing(44,39);
+ let wood=loft(aa,bb,n=>tone(n,htCedar))+hullInk([...aa,...bb],2.2);
+ for(let j=0;j<24;j++){
+   const angle=j/24*2*Math.PI,n=[Math.cos(angle),Math.sin(angle),0];
+   if(vis(n))wood+=line([[40+37.1*n[0],40+37.1*n[1],4.5],[40+39.1*n[0],40+39.1*n[1],43.5]],.65);
+ }
+ wood+=htBand(10)+htBand(35);
+ // Open container order: far inner wall, water and bench, then near exterior and rim.
+ let basin=loft(htRing(11,28),htRing(44,34.5),n=>toneI(n,htRim),true);
+ basin+=shape(htRing(12,28),htRim.d,.8);
+ basin+=shape(htRing(25,32),htWater.d,.6);
+ basin+=shape(htRing(38,33.5),htWater.l,.9);
+ // Water has a clear contour and just a few projected ripples.
+ basin+=ink(pd(htRing(38.1,33.4)),.7);
+ for(const [x,y,rx,ry] of [[30,28,8,4],[52,44,10,4],[30,57,6,2.7]]){
+   basin+=`<g data-ripple>${ink(pd(on(PZ(38.2),ellUV(x,y,rx,ry,40))),.55)}</g>`;
+ }
+ for(let j=0;j<6;j++){
+  const a=j/6*Math.PI*2,n=[Math.cos(a),Math.sin(a),0];
+  if(vis(n.map(v=>-v))){const a0=[40+32.8*n[0],40+32.8*n[1],40],a1=[40+32.1*n[0],40+32.1*n[1],40];basin+=rod(a0,a1,1.3,METAL,toneI,.6);}
+ }
+ out+=`<g opacity="${1-.82*k}">${basin}${wood}</g>`;
+ // The top is an annulus, built from convex quadrilateral pieces, not a filled disc.
+ const outer=htRing(45,40),inner=htRing(45,34.5),lower=htRing(43,40);
+ let rim=loft(lower,outer,n=>toneI(n,htRim));
+ for(let i=0;i<72;i++){const j=(i+1)%72;rim+=face(pd([outer[i],outer[j],inner[j],inner[i]]),htRim.l);}
+ rim+=ink(pd(outer),1.5)+ink(pd(inner),1.1)+hullInk([...outer,...lower],1.3);
+ out+=`<g opacity="${1-.8*k}">${rim}</g>`;
+ // Two timber steps: risers and treads meet the front of the tub at x=77.
+ const tub=out;out='';
+ const stairs=[{box:[[0,0,0],[80,80,45]],svg:tub}];for(const [x0,x1,z] of [[77,92,20],[92,108,10]]){
+  let step=box(x0,26,0,x1,54,z,htCedar,tone,1.1)+box(x0-.6,25.2,z,x1+.6,54.8,z+1.4,htCedar,tone,1);
+  for(let yy=31;yy<53;yy+=6)step+=line([[x0,yy,z+1.5],[x1,yy,z+1.5]],.55);
+  stairs.push({box:[[x0-.6,25.2,0],[x1+.6,54.8,z+1.5]],svg:step});
+ }
+ // A small digital controller is mounted on the front rim.
+ let control=box(72,31,45,80,49,47,htSteel);
+ control+=shape(on(PZ(47.1),rrUV(73,32.5,79,47.5,.7)),'#243d39',.4);
+ // Temperature is illustrative, not a connected sensor reading. The text lies on the screen plane.
+ const screen=P(76,40,47.2);
+ control+=`<text transform="${txM(screen,Dv(0,-1,0),Dv(1,0,0))}" y=".9" text-anchor="middle" font-size="3.2" font-weight="700" font-family="ui-monospace,Menlo,monospace" fill="#bce4cb">${st.hot?'100':'82'}&#176;F</text>`;
+ stairs.push({box:[[72,31,45],[80,49,47.2]],svg:control});
+ out+=byDepth(stairs);
+ if(k>0)out+=`<g opacity="${k}">${htInside(st)}</g>`;
+ out+=htSteam(st);
+ if(k>.6)out+=xrCallouts([{at:[22.5,19.5,15],text:'FILTER'},{at:[40,17.5,13],text:'CIRCULATION PUMP',on:st.jets},{at:[57,17,12.5],text:'HEATER',on:st.hot},{at:[68,40,30],text:'RETURN JETS',on:st.jets}], [0,109,0,80,0,77]);
+ return out;
+}
+const ui=mountFigure({fig:'03',title:'Hot tub',size:[112,82,82],center:[51,40],palette:'mint',turn:'full',state:{hot:true,jets:true},scene:htScene,buttons:[{label:'Heat on / off',onClick(st){st.hot=!st.hot;}},{label:'Jets on / off',onClick(st){st.jets=!st.jets;}}],params(st,q){if(q.get('hot')==='0')st.hot=false;if(q.get('jets')==='0')st.jets=false;},readout:()=>''});
+xrMount(()=>ui,()=> '');
+const htStyle=document.createElement('style');htStyle.textContent=`
+@keyframes ht-rise{0%{transform:translate(0,4px);opacity:0}22%{opacity:.85}72%{opacity:.6}100%{transform:translate(2px,-7px);opacity:0}}
+[data-steam]{animation:ht-rise var(--steam-duration) linear var(--steam-delay) infinite}
+@media(prefers-reduced-motion:reduce){[data-steam]{animation:none;opacity:.65}}
+`;document.head.append(htStyle);
+</script></body></html>

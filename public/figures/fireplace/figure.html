@@ -1,0 +1,103 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Fireplace</title></head><body>
+<script src="core.js"></script><script>
+/* Masonry fireplace. Reference: CSIA Homeowner's Guide, fireplace anatomy:
+   https://www.csia.org/uploads/9/0/7/3/90732795/homeownersguide3rdedition.pdf
+   Process: combustion air enters over the hearth and under the raised grate;
+   logs rest on the grate; flames rise within the firebrick-lined firebox;
+   combustion gases pass the throat damper into the smoke chamber, then the flue.
+   Toggle fire controls the illustrative flame; draft controls the damper/flame height.
+   Structure: stone hearth slab, rear masonry, two jambs, jamb plinths and capitals,
+   lintel, mantel bed, projecting mantel slab, firebox floor, firebrick back and returns.
+   Mechanism: four grate feet, two grate rails, seven grate bars, two logs, log rings,
+   ember bed, front log retainer; throat frame, damper plate and spindle, lever,
+   two smoke-chamber cheeks, smoke shelf, rectangular flue liner.
+   Every wall rests on the hearth; grate feet rest on the firebox floor; logs touch
+   grate bars at z=17. Damper spindle bears in both throat-frame sides at y=24/66.
+   This is a visual cutaway, not installation or operating guidance.
+*/
+const fpStone={l:'#eee5d2',m:'#d4c6ac',d:'#a9987b'}, fpBrick={l:'#bd7157',m:'#98513c',d:'#6b392d'};
+const fpIron={l:'#514b44',m:'#35312d',d:'#231f1c'}, fpLog=matOf('#704732');
+function fpFlame(y,z,w,h,index){
+ const pt=(yy,zz)=>P(30,yy,zz).map(v=>v.toFixed(2)).join(' ');
+ const flame=(ww,hh,col,offset=0)=>`<path d="M${pt(y-ww/2,z)} C${pt(y-ww*.9,z+hh*.24)} ${pt(y-ww*.35,z+hh*.46)} ${pt(y-ww*.2,z+hh*.62)} C${pt(y+ww*.15,z+hh*.48)} ${pt(y+ww*.25+offset,z+hh*.89)} ${pt(y+ww*.07+offset,z+hh)} C${pt(y+ww*.7,z+hh*.73)} ${pt(y+ww*.24,z+hh*.48)} ${pt(y+ww*.5,z+hh*.29)} C${pt(y+ww*.8,z+hh*.12)} ${pt(y+ww*.5,z)} ${pt(y-ww/2,z)} Z" fill="${col}"/>`;
+ return `<g data-flame="${index}" style="--flame-duration:${1.45+index*.27}s;--flame-delay:${-index*.63}s">${flame(w,h,'#e97736',index%2?1:-1)}${flame(w*.64,h*.73,'#f5b847')}${flame(w*.32,h*.43,'#ffe0a0')}</g>`;
+}
+function fpFire(st){
+ if(!st.lit)return '';
+ let svg='';
+ for(const [i,y,w,h] of [[0,29,10,22],[1,38,12,32],[2,47,11,27],[3,55,10,35],[4,63,8,20]])svg+=fpFlame(y,20,w,h*(st.draft===0?.78:1),i);
+ return `<g data-fire>${svg}</g>`;
+}
+function fpInterior(st){const parts=[];const add=(a,b,svg)=>parts.push({box:[a,b],svg});
+ add([12,19,66],[28,71,69],box(12,19,66,28,71,69,fpIron));
+ add([15,23,69],[25,67,72],rod([20,23,70],[20,67,70],.8,METAL));
+ const angle=st.draft===0?2:7;
+ add([15,24,69],[25,66,79],box(17,24,70,23,66,70+angle,fpIron));
+ add([20,65,52],[23,68,70],rod([21,66,70],[22,66,53],.7,METAL));
+ add([4,18,66],[14,72,78],box(4,18,66,14,72,78,fpBrick));
+ add([6,24,76],[25,28,89],box(6,24,76,25,28,89,fpBrick));
+ add([6,62,76],[25,66,89],box(6,62,76,25,66,89,fpBrick));
+ add([6,28,78],[10,62,92],box(6,28,78,10,62,92,fpIron));
+ return byDepth(parts);
+}
+function fpScene(st,m){const parts=[];const add=(a,b,svg)=>parts.push({box:[a,b],svg});const k=ease(st.xr||0);
+ let out='';
+ // Hearth is the support plane, below every other component.
+ out+=box(-3,-5,0,54,95,5,fpStone,tone,1.5);
+ out+=box(0,-2,5,49,92,7,fpStone,tone,1.2);
+ let rear=box(2,5,7,13,85,88,fpStone,tone,1.5);
+ // Mortar joints are attached to the inner back face, never drawn over the fire.
+ if(vis([1,0,0])){
+   rear+=shape(on(PX(13.1),rectUV(18,11,72,68)),fpBrick.d,1);
+   for(let row=0;row<7;row++)for(let col=0;col<4;col++){
+     const y0=18+col*16-(row%2)*8,y1=Math.min(72,y0+15);
+     if(y1<=18)continue;
+     rear+=shape(on(PX(13.2),rectUV(Math.max(18,y0),12+row*8,y1,19+row*8)),row%3===0?fpBrick.m:fpBrick.d,.4);
+   }
+ }
+ add([2,5,7],[13,85,88],`<g opacity="${1-.85*k}">${rear}</g>`);
+ for(const yy of [7,73]){
+   let jamb=box(13,yy,7,39,yy+10,72,fpStone,tone,1.2);
+   // Slender pilaster and a restrained inset flute.
+   jamb+=box(35,yy-1,12,41,yy+11,18,fpStone,tone,1);
+   jamb+=box(36,yy,18,40,yy+10,66,fpStone,tone,.8);
+   jamb+=box(34,yy-2,66,42,yy+12,72,fpStone,tone,1);
+   if(vis([1,0,0]))jamb+=line([[40.2,yy+3,23],[40.2,yy+3,61]],.55)+line([[40.2,yy+7,23],[40.2,yy+7,61]],.55);
+   add([13,yy-2,7],[42,yy+12,72],`<g opacity="${1-.85*k}">${jamb}</g>`);
+ }
+ let lintel=box(13,5,72,40,85,85,fpStone,tone,1.4);
+ if(vis([1,0,0]))lintel+=shape(on(PX(40.2),rrUV(20,75,70,81,1.2)),tone([1,0,0],fpStone),.6);
+ add([13,5,72],[40,85,85],`<g opacity="${1-.85*k}">${lintel}</g>`);
+ let mantel=box(0,2,85,43,88,88,fpStone,tone,1.2)+box(-2,-1,88,46,91,93,fpStone,tone,1.7);
+ add([-2,-1,85],[46,91,93],`<g opacity="${1-.85*k}">${mantel}</g>`);
+ add([13,18,7],[39,72,11],box(13,18,7,39,72,11,fpIron));
+ // Ember bed is contained on the firebox floor, under the grate.
+ let embers=shape(on(PZ(11.1),ellUV(27,45,10,23,28)),st.lit?'#a34b2f':'#514337',0);
+ for(let i=0;i<9;i++)embers+=shape(on(PZ(11.2),ellUV(21+(i%3)*5,25+i*4.8,1.5,2.1,7)),st.lit?(i%2?'#ef9b40':'#cb6435'):'#66503f',0);
+ add([16,20,11],[38,70,11.3],embers);
+ for(const xx of [19,34])for(const yy of [24,66])add([xx-1,yy-1,11],[xx+1,yy+1,16],rod([xx,yy,11],[xx,yy,16],1,fpIron));
+ for(const yy of [23,67])add([18,yy-1,15],[36,yy+1,17],rod([19,yy,16],[35,yy,16],.9,fpIron));
+ for(let j=0;j<7;j++){const yy=25+j*6.5;add([18,yy-.6,16],[36,yy+.6,17.2],rod([19,yy,16.6],[35,yy,16.6],.6,fpIron));}
+ const logs=[[[23,23,20],[27,62,20]],[[33,29,22],[25,67,23]]];
+ for(const [aa,bb] of logs){let log=rod(aa,bb,3.1,fpLog,toneI,1.1);const end=depthOf(aa)>depthOf(bb)?aa:bb;const toward=norm(sub(end,end===aa?bb:aa));const cap=end.map((v,i)=>v+toward[i]*.05);
+   log+=rod(cap,cap.map((v,i)=>v+toward[i]*.05),2.4,matOf('#c39868'),toneI,.5);
+   add(aa.map((v,i)=>Math.min(v,bb[i])-3.1),aa.map((v,i)=>Math.max(v,bb[i])+3.1),log);
+ }
+ add([29.8,23,20],[30.2,68,58],fpFire(st));
+ // Front log retainer stays in front of the fire and attaches to the grate frame.
+ for(const yy of [25,38,51,65])add([36,yy-1,12],[38,yy+1,24],rod([37,yy,12],[37,yy,24],.7,fpIron));
+ add([36,24,20],[38,66,22],rod([37,25,21],[37,65,21],.7,fpIron));
+ out+=byDepth(parts);
+ if(k>0)out+=`<g opacity="${k}">${fpInterior(st)}</g>`;
+ if(k>.6)out+=xrCallouts([{at:[20,45,70],text:'THROAT DAMPER'},{at:[10,45,83],text:'SMOKE CHAMBER'},{at:[27,45,17],text:'IRON GRATE'},{at:[27,45,22],text:'LOGS',on:st.lit}],[-3,54,-5,95,0,93]);
+ return out;
+}
+function fpToggle(st){st.lit=!st.lit;}
+const ui=mountFigure({fig:'02',title:'Fireplace',size:[60,104,97],center:[24,45],palette:'mustard',turn:'full',state:{lit:true,draft:1},scene:fpScene,buttons:[{label:'Fire on / off',onClick:fpToggle},{label:'Draft',choices:st=>[{label:'Gentle',current:st.draft===0,onClick(st){st.draft=0;}},{label:'Lively',current:st.draft===1,onClick(st){st.draft=1;}}]}],params(st,q){if(q.get('lit')==='0')st.lit=false;if(q.get('draft')==='0')st.draft=0;},readout:()=>''});
+xrMount(()=>ui,()=> '');
+const fpStyle=document.createElement('style');fpStyle.textContent=`
+@keyframes fireplace-dance{0%,100%{transform:scaleX(1) scaleY(.98) rotate(-1deg)}32%{transform:scaleX(.94) scaleY(1.04) rotate(1.5deg)}68%{transform:scaleX(1.04) scaleY(.94) rotate(-1.5deg)}}
+[data-flame]{transform-box:fill-box;transform-origin:50% 100%;animation:fireplace-dance var(--flame-duration) ease-in-out var(--flame-delay) infinite}
+@media(prefers-reduced-motion:reduce){[data-flame]{animation:none}}
+`;document.head.append(fpStyle);
+</script></body></html>
