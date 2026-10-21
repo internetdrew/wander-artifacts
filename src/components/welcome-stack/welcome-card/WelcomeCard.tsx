@@ -38,10 +38,8 @@ const WelcomeCard = () => {
   }
 
   return (
-    <div
-      className='bg-white md:max-w-88 rounded-2xl'
-    >
-      <div className='relative h-28 overflow-hidden rounded-t-2xl'>
+    <div className='flex min-h-full flex-col bg-white md:max-w-88 rounded-2xl'>
+      <div className='relative aspect-11/6 shrink-0 overflow-hidden rounded-t-2xl'>
         <img
           src={watchmere}
           alt='Watchmere coastal home in daylight'
@@ -56,7 +54,7 @@ const WelcomeCard = () => {
         />
       </div>
 
-      <div className='font-[450] p-4 pt-3'>
+      <div className='flex flex-1 flex-col font-[450] p-4 pb-6'>
         <span className='block text-xs leading-4 text-neutral-500'>
           Welcome to
         </span>
@@ -133,9 +131,11 @@ const WelcomeCard = () => {
           </span>
         </div>
 
-        <WelcomeAudioPlayer />
+        <div className='mt-6'>
+          <WelcomeAudioPlayer />
+        </div>
 
-        <div className='flex items-center'>
+        <div className='mt-auto flex items-center pt-6'>
           <div className='font-[450] flex flex-col flex-1'>
             <span className='text-neutral-500 text-xs'>Arrive on</span>
             <span className='text-sm font-[550]'>Tue, Oct 20</span>

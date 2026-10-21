@@ -126,7 +126,7 @@ export default function WelcomeAudioPlayer() {
           setError('Could not load the welcome audio. Please try again.');
         }}
       />
-      <div className='my-8 bg-[#ECEFF0] rounded-full w-full flex items-center justify-between gap-2 py-2 pl-2 pr-3'>
+      <div className='bg-[#ECEFF0] rounded-full w-full flex items-center justify-between gap-2 py-2 pl-2 pr-3'>
         <Button
           type='button'
           aria-label={playing ? 'Pause welcome audio' : 'Play welcome audio'}
@@ -151,7 +151,7 @@ export default function WelcomeAudioPlayer() {
         </span>
       </div>
       {error && (
-        <p role='alert' className='-mt-6 mb-4 text-xs text-red-700'>
+        <p role='alert' className='mt-2 text-xs text-red-700'>
           {error}
         </p>
       )}
