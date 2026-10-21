@@ -23,7 +23,6 @@ const cards = [
   {
     id: 'make-it-yours',
     title: 'Make it yours',
-    content: <MakeItYoursCard />,
   },
 ];
 

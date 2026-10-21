@@ -1,5 +1,4 @@
 @import 'tailwindcss';
-@import '@fontsource-variable/caveat';
 
 @font-face {
   font-family: 'instrumentSans';
@@ -51,10 +50,6 @@
     font-feature-settings: var(--default-font-feature-settings);
     background-color: #f9f9f9;
   }
-}
-
-.handwritten {
-  font-family: 'Caveat Variable', cursive;
 }
 
 /* Caption swap: exit upward, replace text, then enter from below. */

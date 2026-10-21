@@ -19,23 +19,14 @@ const SCENES = [
   {
     src: daytime,
     label: 'This morning',
-    caption: 'A slow, sunlit start',
-    description:
-      'Soft daylight fills the windows and spills across the decks. Take your coffee outside and ease into the day at Watchmere.',
   },
   {
     src: evening,
     label: 'This evening',
-    caption: 'Let the evening linger',
-    description:
-      'As daylight fades, the windows glow and the house takes on a warmer mood. Settle on the deck and let the evening linger.',
   },
   {
     src: nighttime,
     label: 'Tonight',
-    caption: 'Come in, get cozy',
-    description:
-      'Lit windows and the welcoming porch light stand out against the night. Head inside, get comfortable, and make yourself at home.',
   },
 ];
 

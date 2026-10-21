@@ -6,10 +6,10 @@ function App() {
   return (
     <main className='max-w-xl mx-auto space-y-16 py-8 px-4'>
       <header className=''>
-        <h1 className='text-[17px] font-[550]'>Wander x Andrew Rowley</h1>
+        <h1 className='text-[17px] font-[550]'>Small details. Better stays.</h1>
         <p className='text-neutral-500'>
-          Interfaces and small, playful details I built to show how I'd
-          contribute as a Design Engineer at Wander.
+          A collection of thoughtful interfaces and playful interactions for
+          Wander, designed and built by Andrew Rowley.
         </p>
       </header>
       <section aria-labelledby='extended-stay-title'>
