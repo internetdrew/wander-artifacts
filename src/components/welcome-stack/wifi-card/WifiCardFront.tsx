@@ -31,7 +31,7 @@ export default function WifiCardFront({
         <WifiSignal />
       </div>
 
-      <div className='p-3 pt-2 bg-neutral-100 rounded-lg mt-4 font-[450] space-y-2 text-sm'>
+      <div className='p-3 pt-2 bg-[#ECEFF0] rounded-lg mt-4 font-[450] space-y-2 text-sm'>
         <div>
           <p className='text-neutral-500'>Network</p>
           <p className='tracking-wide'>WatchmereGuest</p>
@@ -47,15 +47,15 @@ export default function WifiCardFront({
         type='button'
         onClick={onFlip}
         aria-label='Show Wi-Fi QR code'
-        className='mt-2 py-2.5 w-full bg-neutral-100 ring-[0.5px] ring-neutral-300/50 cursor-pointer text-sm rounded-full hover:bg-neutral-200 duration-150 transition-colors'
+        className='mt-2 py-2.5 w-full bg-[#ECEFF0] ring-[0.5px] ring-[#D9DFE1]/50 cursor-pointer text-sm rounded-full hover:bg-[#D9DFE1] duration-150 transition-colors'
       >
         Flip for QR code
       </Button>
 
       <div className='h-px bg-neutral-200 my-4'></div>
 
-      <div className='flex items-start gap-2'>
-        <div className='size-8 shrink-0 grid place-items-center bg-neutral-100 p-1 ring-[0.5px] ring-neutral-300/50 rounded-full'>
+      <div className='flex items-start gap-4'>
+        <div className='size-10 shrink-0 grid place-items-center bg-[#ECEFF0] p-1 ring-[0.5px] ring-neutral-300/50 rounded-full'>
           <svg
             xmlns='http://www.w3.org/2000/svg'
             width='24'
@@ -66,7 +66,7 @@ export default function WifiCardFront({
             strokeWidth='2'
             strokeLinecap='round'
             strokeLinejoin='round'
-            className='size-4 stroke-[#202020]'
+            className='size-5 stroke-[#202020]'
           >
             <path d='M18 5a2 2 0 0 1 2 2v8.526a2 2 0 0 0 .212.897l1.068 2.127a1 1 0 0 1-.9 1.45H3.62a1 1 0 0 1-.9-1.45l1.068-2.127A2 2 0 0 0 4 15.526V7a2 2 0 0 1 2-2z' />
             <path d='M20.054 15.987H3.946' />

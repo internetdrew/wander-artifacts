@@ -1,4 +1,4 @@
-const ComeOnInCard = () => {
+const GetAcquaintedCard = () => {
   return (
     <div
       className='bg-white md:max-w-88 rounded-2xl shadow-md font-[450] p-4 pt-3'
@@ -12,10 +12,10 @@ const ComeOnInCard = () => {
       </h3>
 
       {/* Two points */}
-      <div className='mt-6 space-y-4'>
+      <div className='my-6 space-y-4'>
         {/* Parking */}
-        <div className='flex items-start gap-2'>
-          <div className='size-8 shrink-0 grid place-items-center bg-neutral-100 p-1 ring-[0.5px] ring-neutral-300/50 rounded-full'>
+        <div className='flex items-center gap-4'>
+          <div className='size-10 shrink-0 grid place-items-center bg-[#ECEFF0] p-1 ring-[0.5px] ring-neutral-300/50 rounded-full'>
             <svg
               xmlns='http://www.w3.org/2000/svg'
               width='24'
@@ -26,7 +26,7 @@ const ComeOnInCard = () => {
               strokeWidth='2'
               strokeLinecap='round'
               strokeLinejoin='round'
-              className='stroke-[#202020] size-4'
+              className='stroke-[#202020] size-5'
             >
               <path d='M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2' />
               <circle cx='7' cy='17' r='2' />
@@ -43,8 +43,8 @@ const ComeOnInCard = () => {
         </div>
 
         {/* Front door */}
-        <div className='flex items-start gap-2'>
-          <div className='size-8 shrink-0 grid place-items-center bg-neutral-100 p-1 ring-[0.5px] ring-neutral-300/50 rounded-full'>
+        <div className='flex items-center gap-4'>
+          <div className='size-10 shrink-0 grid place-items-center bg-[#ECEFF0] p-1 ring-[0.5px] ring-neutral-300/50 rounded-full'>
             <svg
               xmlns='http://www.w3.org/2000/svg'
               width='24'
@@ -55,7 +55,7 @@ const ComeOnInCard = () => {
               strokeWidth='2'
               strokeLinecap='round'
               strokeLinejoin='round'
-              className='stroke-[#202020] size-4'
+              className='stroke-[#202020] size-5'
             >
               <path d='M10 21H2' />
               <path d='M10 3H7a2 2 0 00-2 2v16' />
@@ -67,14 +67,15 @@ const ComeOnInCard = () => {
           <div className='text-sm'>
             <p>Follow the lit path</p>
             <p className='text-neutral-500'>
-              Two spaces are yours. Please keep the driveway clear.
+              The front door is at the end. There are three steps at the
+              entrance.
             </p>
           </div>
         </div>
       </div>
 
       {/* Getting Inside */}
-      <div className='p-3 pt-2 bg-neutral-100 rounded-lg mt-4 font-[450]'>
+      <div className='p-3 pt-2 bg-[#ECEFF0] rounded-lg mt-4 font-[450]'>
         <p className='text-sm'>Getting inside</p>
         <ol className='mt-2 space-y-1 text-pretty list-decimal list-inside text-neutral-500 text-xs'>
           <li>
@@ -108,8 +109,8 @@ const ComeOnInCard = () => {
 
       <div className='h-px bg-neutral-200 my-4'></div>
 
-      <div className='flex items-start gap-2'>
-        <div className='size-8 shrink-0 grid place-items-center bg-neutral-100 p-1 ring-[0.5px] ring-neutral-300/50 rounded-full'>
+      <div className='flex items-start gap-4'>
+        <div className='size-10 shrink-0 grid place-items-center bg-[#ECEFF0] p-1 ring-[0.5px] ring-neutral-300/50 rounded-full'>
           <svg
             xmlns='http://www.w3.org/2000/svg'
             width='24'
@@ -120,7 +121,7 @@ const ComeOnInCard = () => {
             strokeWidth='2'
             strokeLinecap='round'
             strokeLinejoin='round'
-            className='size-4 stroke-[#202020]'
+            className='size-5 stroke-[#202020]'
           >
             <rect width='18' height='11' x='3' y='11' rx='2' ry='2' />
             <path d='M7 11V7a5 5 0 0 1 10 0v4' />
@@ -138,4 +139,4 @@ const ComeOnInCard = () => {
   );
 };
 
-export default ComeOnInCard;
+export default GetAcquaintedCard;

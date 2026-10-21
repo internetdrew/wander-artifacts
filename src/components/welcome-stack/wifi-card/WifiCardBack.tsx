@@ -24,6 +24,9 @@ export default function WifiCardBack({
       }}
     >
       <h3 className='font-[550] text-lg text-[#202020]'>Scan to connect</h3>
+      <p className='text-neutral-500 text-sm'>
+        Scan with another device's camera, then follow instructions to join.
+      </p>
       <div className='flex flex-col flex-1 items-center justify-center'>
         <img
           src={wifiQr}
@@ -38,9 +41,9 @@ export default function WifiCardBack({
         ref={buttonRef}
         type='button'
         onClick={onFlip}
-        className='w-full bg-neutral-100 ring-[0.5px] ring-neutral-300/50 cursor-pointer rounded-full py-2.5 text-sm transition-colors duration-150 hover:bg-neutral-200 focus-visible:outline-2 focus-visible:outline-offset-2'
+        className='w-full bg-[#ECEFF0] ring-[0.5px] ring-[#D9DFE1]/50 cursor-pointer rounded-full py-2.5 text-sm transition-colors duration-150 hover:bg-[#D9DFE1] focus-visible:outline-2 focus-visible:outline-offset-2'
       >
-        Back to Wi-Fi details
+        Back to password
       </Button>
     </div>
   );

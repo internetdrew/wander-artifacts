@@ -1,4 +1,5 @@
-import ComeOnInCard from './ComeOnInCard';
+import GetAcquaintedCard from './GetAcquaintedCard';
+import SettleInCard from './SettleInCard';
 import WelcomeCard from './welcome-card/WelcomeCard';
 import WifiCard from './wifi-card/WifiCard';
 
@@ -6,8 +7,9 @@ const WelcomeStack = () => {
   return (
     <div className='space-y-4'>
       <WelcomeCard />
-      <ComeOnInCard />
+      <GetAcquaintedCard />
       <WifiCard />
+      <SettleInCard />
     </div>
   );
 };
