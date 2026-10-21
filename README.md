@@ -1,36 +1,23 @@
-# React + TypeScript + Vite
+# Wander x Andrew Rowley
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+A collection of thoughtful interfaces and playful interactions for Wander, designed and built by Andrew Rowley.
 
-Currently, two official plugins are available:
+[View the project](https://wander-artifacts.vercel.app/)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **Extended Stay** — Choose extra nights, review payment, and download an invoice.
+- **Day to Night** — Explore [Watchmere](https://www.wander.com/property/wander-marthas-vineyard) through an interactive photo with a time-of-day slider.
+- **Welcome Stack** — Guest essentials in a playful card stack, with Wi-Fi, arrival details, and animated amenity illustrations.
 
-## React Compiler
+Built with React, TypeScript, Vite, Tailwind CSS, Base UI, and Motion. Includes keyboard navigation and reduced-motion support.
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+## Development
 
-Note: This will impact Vite dev & build performances.
-You can also try [the experimental native React Compiler support in plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md#rust-react-compiler) by using `compiler: true` in the plugin options instead of using the Babel plugin.
-
-## Expanding the Oxlint configuration
-
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
-
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+```sh
+npm install
+npm run dev
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
-# wander-artifacts
+```sh
+npm run build   # Production build
+npm run lint    # Lint checks
+```
