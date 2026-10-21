@@ -57,9 +57,7 @@ const hints = [
 
 const SettleInCard = () => {
   return (
-    <div
-      className='flex min-h-full flex-col bg-white md:max-w-88 rounded-2xl font-[450] p-4 pt-3 pb-6'
-    >
+    <div className='flex min-h-full flex-col bg-white md:max-w-88 rounded-2xl font-[450] p-4 pt-3 pb-6'>
       <h3 className='font-[550] text-lg text-[#202020]'>
         Make yourself at home
       </h3>
@@ -71,7 +69,7 @@ const SettleInCard = () => {
               <div className='mt-0.5 size-9 shrink-0 grid place-items-center bg-[#ECEFF0] p-1 ring-[0.5px] ring-neutral-300/50 rounded-full'>
                 {hint.icon}
               </div>
-              <div className='text-[13px] leading-[19px]'>
+              <div className='text-[13px] leading-4.75'>
                 <p>{hint.title}</p>
                 <p className='text-neutral-500'>{hint.subtitle}</p>
               </div>
