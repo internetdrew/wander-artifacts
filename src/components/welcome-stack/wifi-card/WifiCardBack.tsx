@@ -17,11 +17,12 @@ export default function WifiCardBack({
     <div
       aria-hidden={hidden}
       inert={hidden}
-      className='col-start-1 row-start-1 flex flex-col bg-white rounded-2xl p-4 pt-3 backface-hidden [-webkit-backface-visibility:hidden] transform-[rotateY(180deg)_translateZ(0)]'
+      style={{ boxShadow: '0 0 0 1px rgba(0,0,0,.04), 0 8px 32px -4px rgba(0,0,0,.06), 0 1px 3px 0 rgba(0,0,0,.04)' }}
+      className='col-start-1 row-start-1 flex flex-col bg-white rounded-2xl p-4 pt-3 pb-6 backface-hidden [-webkit-backface-visibility:hidden] transform-[rotateY(180deg)_translateZ(0)]'
     >
       <h3 className='font-[550] text-lg text-[#202020]'>Scan to connect</h3>
-      <p className='text-neutral-500 text-sm'>
-        Scan with another device's camera, then follow instructions to join.
+      <p className='text-neutral-500 text-[13px] leading-[19px]'>
+        Scan with another device's camera to join Wi-Fi.
       </p>
       <div className='flex flex-col flex-1 items-center justify-center'>
         <img
@@ -31,7 +32,8 @@ export default function WifiCardBack({
           alt='Wi-Fi connection QR code for WatchmereGuest'
           className='w-full max-w-64'
         />
-        <p className='text-center text-sm text-neutral-500'>WatchmereGuest</p>
+        {/* The SVG includes about 28px of white clearance below the code. */}
+        <p className='-mt-4 text-center text-xs text-neutral-500'>WatchmereGuest</p>
       </div>
       <Button
         ref={buttonRef}

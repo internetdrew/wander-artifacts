@@ -1,17 +1,15 @@
 const GetAcquaintedCard = () => {
   return (
-    <div
-      className='bg-white md:max-w-88 rounded-2xl font-[450] p-4 pt-3'
-    >
+    <div className='flex min-h-full flex-col bg-white md:max-w-88 rounded-2xl font-[450] p-4 pt-3 pb-6'>
       <h3 className='font-[550] text-lg text-[#202020]'>
-        Let's get you acquainted...
+        Arriving at Watchmere
       </h3>
 
       {/* Two points */}
       <div className='my-6 space-y-4'>
         {/* Parking */}
-        <div className='flex items-center gap-4'>
-          <div className='size-10 shrink-0 grid place-items-center bg-[#ECEFF0] p-1 ring-[0.5px] ring-neutral-300/50 rounded-full'>
+        <div className='flex items-start gap-4'>
+          <div className='mt-0.5 size-9 shrink-0 grid place-items-center bg-[#ECEFF0] p-1 ring-[0.5px] ring-neutral-300/50 rounded-full'>
             <svg
               xmlns='http://www.w3.org/2000/svg'
               width='24'
@@ -30,17 +28,17 @@ const GetAcquaintedCard = () => {
               <circle cx='17' cy='17' r='2' />
             </svg>
           </div>
-          <div className='text-sm'>
+          <div className='text-[13px] leading-4.75'>
             <p>Park beside the house</p>
             <p className='text-neutral-500'>
-              Two spaces are yours. Please keep the driveway clear.
+              Two spaces beside the house. Keep the driveway clear.
             </p>
           </div>
         </div>
 
         {/* Front door */}
-        <div className='flex items-center gap-4'>
-          <div className='size-10 shrink-0 grid place-items-center bg-[#ECEFF0] p-1 ring-[0.5px] ring-neutral-300/50 rounded-full'>
+        <div className='flex items-start gap-4'>
+          <div className='mt-0.5 size-9 shrink-0 grid place-items-center bg-[#ECEFF0] p-1 ring-[0.5px] ring-neutral-300/50 rounded-full'>
             <svg
               xmlns='http://www.w3.org/2000/svg'
               width='24'
@@ -60,11 +58,10 @@ const GetAcquaintedCard = () => {
               <path d='M22 21h-3' />
             </svg>
           </div>
-          <div className='text-sm'>
+          <div className='text-[13px] leading-4.75'>
             <p>Follow the lit path</p>
             <p className='text-neutral-500'>
-              The front door is at the end. There are three steps at the
-              entrance.
+              The front door is at the end of the lit path, up three steps.
             </p>
           </div>
         </div>
@@ -72,6 +69,11 @@ const GetAcquaintedCard = () => {
 
       {/* Getting Inside */}
       <div className='p-3 pt-2 bg-[#ECEFF0] rounded-lg mt-4 font-[450]'>
+        <div className='flex items-center justify-between'>
+          <span className='text-xs'>Entry code</span>
+          <span className='font-[550] tracking-widest text-lg'>2436</span>
+        </div>
+        <div className='h-px w-full bg-neutral-200 mt-2 mb-3' />
         <p className='text-sm'>Getting inside</p>
         <ol className='mt-2 space-y-1 text-pretty list-decimal list-inside text-neutral-500 text-xs'>
           <li>
@@ -88,25 +90,20 @@ const GetAcquaintedCard = () => {
                 strokeLinecap='round'
                 strokeLinejoin='round'
                 className='size-3'
+                aria-hidden='true'
               >
                 <path d='M20 6 9 17l-5-5' />
               </svg>
-            </span>
-            .
+              <span className='sr-only'>checkmark</span>
+            </span>{' '}
+            on the keypad.
           </li>
           <li>Wait for the lock to release, then open the door.</li>
         </ol>
-        <div className='h-px w-full bg-neutral-200 mt-3 mb-2' />
-        <div className='flex items-center justify-between'>
-          <span className='text-xs font-neutral-500'>Entry code</span>
-          <span className='font-[550] tracking-widest text-lg'>2436</span>
-        </div>
       </div>
 
-      <div className='h-px bg-neutral-200 my-4'></div>
-
-      <div className='flex items-start gap-4'>
-        <div className='size-10 shrink-0 grid place-items-center bg-[#ECEFF0] p-1 ring-[0.5px] ring-neutral-300/50 rounded-full'>
+      <div className='mt-auto flex items-start gap-4 pt-6'>
+        <div className='mt-0.5 size-9 shrink-0 grid place-items-center bg-[#ECEFF0] p-1 ring-[0.5px] ring-neutral-300/50 rounded-full'>
           <svg
             xmlns='http://www.w3.org/2000/svg'
             width='24'
@@ -123,11 +120,11 @@ const GetAcquaintedCard = () => {
             <path d='M7 11V7a5 5 0 0 1 10 0v4' />
           </svg>
         </div>
-        <div className='text-sm'>
+        <div className='text-[13px] leading-4.75'>
           <p>Heading out?</p>
-          <p className='text-neutral-500 leading-tight text-pretty'>
-            Close the door and press the keypad's lock button. Check that it's
-            locked before you go.
+          <p className='text-neutral-500 text-pretty'>
+            Close the door, press the keypad's lock button, and check it's
+            locked.
           </p>
         </div>
       </div>

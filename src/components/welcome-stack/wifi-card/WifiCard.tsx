@@ -28,9 +28,9 @@ const WifiCard = () => {
     }
   };
   return (
-    <div ref={surface} className='md:max-w-88 font-[450] perspective-1000px'>
+    <div ref={surface} className='h-full md:max-w-88 font-[450] perspective-1000px'>
       <motion.div
-        className='grid transform-3d'
+        className='grid min-h-full transform-3d'
         initial={false}
         animate={{ rotateY: flipped ? 180 : 0 }}
         transition={

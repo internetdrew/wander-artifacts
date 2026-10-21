@@ -128,6 +128,7 @@ const WelcomeStack = () => {
               id={`${id}-${card.id}`}
               title={card.title}
               active={active}
+              ownsSurface={card.id === 'wifi'}
               deckVisible={deckVisible}
               cardWidth={bounds.width}
               reducedMotion={!!reducedMotion}

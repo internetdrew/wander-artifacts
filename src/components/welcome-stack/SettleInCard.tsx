@@ -18,7 +18,7 @@ const hints = [
         <path d='M14 4v10.54a4 4 0 1 1-4 0V4a2 2 0 0 1 4 0Z' />
       </svg>
     ),
-    title: 'Temperature control',
+    title: 'Temperature',
     subtitle: 'Adjust the thermostat in the living room hallway.',
   },
   {
@@ -40,39 +40,38 @@ const hints = [
         <path d='M20 4v16h-6c0-3 2-5 2-8s-2-5-2-8' />
       </svg>
     ),
-    title: 'Let the light in. Or out',
-    subtitle:
-      'The bedroom shades are controlled by the remote on each bedside table.',
+    title: 'Bedroom shades',
+    subtitle: 'Use the remote on each bedside table.',
   },
   {
     icon: <BlanketIcon />,
-    title: 'An extra layer of cozy',
-    subtitle: 'Find spare blankets in the basket beside the sofa.',
+    title: 'Extra blankets',
+    subtitle: 'In the basket beside the sofa.',
   },
   {
     icon: <TowelIcon />,
-    title: 'Fresh towels, within reach',
-    subtitle: 'Help yourself from the linen cupboard in the hallway.',
+    title: 'Fresh towels',
+    subtitle: 'In the hallway linen cupboard.',
   },
 ];
 
 const SettleInCard = () => {
   return (
     <div
-      className='bg-white md:max-w-88 rounded-2xl font-[450] p-4 pt-3'
+      className='flex min-h-full flex-col bg-white md:max-w-88 rounded-2xl font-[450] p-4 pt-3 pb-6'
     >
       <h3 className='font-[550] text-lg text-[#202020]'>
-        Make yourself at home...
+        Make yourself at home
       </h3>
 
-      <div className='mt-8 space-y-4'>
+      <div className='flex flex-1 flex-col justify-center gap-6 py-6'>
         {hints.map((hint, i) => (
           <div key={`hint-${i}`}>
-            <div className='flex items-center gap-4'>
-              <div className='size-10 shrink-0 grid place-items-center bg-[#ECEFF0] p-1 ring-[0.5px] ring-neutral-300/50 rounded-full'>
+            <div className='flex items-start gap-4'>
+              <div className='mt-0.5 size-9 shrink-0 grid place-items-center bg-[#ECEFF0] p-1 ring-[0.5px] ring-neutral-300/50 rounded-full'>
                 {hint.icon}
               </div>
-              <div className='text-sm'>
+              <div className='text-[13px] leading-[19px]'>
                 <p>{hint.title}</p>
                 <p className='text-neutral-500'>{hint.subtitle}</p>
               </div>

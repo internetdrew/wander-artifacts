@@ -5,6 +5,7 @@ interface WelcomeStackCardProps {
   id: string;
   title: string;
   active: boolean;
+  ownsSurface?: boolean;
   deckVisible: boolean;
   cardWidth: number;
   reducedMotion: boolean;
@@ -27,6 +28,7 @@ export default function WelcomeStackCard({
   id,
   title,
   active,
+  ownsSurface = false,
   deckVisible,
   cardWidth,
   reducedMotion,
@@ -45,7 +47,7 @@ export default function WelcomeStackCard({
     >
       <motion.div
         className={
-          active ? 'absolute top-0 left-0 bg-white' : 'fixed left-1/2 bg-white'
+          `${active ? 'absolute top-0 left-0' : 'fixed left-1/2'}${ownsSurface ? '' : ' bg-white'}`
         }
         data-card-surface
         aria-hidden={!active && !deckVisible}
@@ -61,7 +63,7 @@ export default function WelcomeStackCard({
           originY: 1,
           pointerEvents: active || deckVisible ? 'auto' : 'none',
           borderRadius: 16,
-          boxShadow:
+          boxShadow: ownsSurface ? 'none' :
             '0 0 0 1px rgba(0,0,0,.04), 0 8px 32px -4px rgba(0,0,0,.06), 0 1px 3px 0 rgba(0,0,0,.04)',
         }}
         initial={false}
@@ -76,7 +78,7 @@ export default function WelcomeStackCard({
           aria-hidden={!active}
           inert={!active}
           tabIndex={-1}
-          className='h-full overflow-x-hidden overflow-y-auto rounded-2xl focus-visible:outline-2 focus-visible:outline-offset-4'
+          className={`h-full rounded-2xl focus-visible:outline-2 focus-visible:outline-offset-4${ownsSurface ? '' : ' overflow-x-hidden overflow-y-auto'}`}
         >
           {children}
         </div>

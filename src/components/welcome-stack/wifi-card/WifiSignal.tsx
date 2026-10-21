@@ -10,7 +10,7 @@ export default function WifiSignal() {
       strokeWidth='2'
       strokeLinecap='round'
       strokeLinejoin='round'
-      className='size-24'
+      className='size-16'
       aria-hidden='true'
     >
       <path d='M12 20h.01' />
