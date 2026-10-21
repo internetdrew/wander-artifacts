@@ -1,5 +1,5 @@
 import { Button } from '@base-ui/react';
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import VoiceWaveform from './VoiceWaveform';
 import PlayPauseIcon from './PlayPauseIcon';
 import welcomeAudio from '../../../assets/watchmere.mp3';
@@ -14,34 +14,10 @@ function timestamp(seconds: number) {
 
 export default function WelcomeAudioPlayer() {
   const audio = useRef<HTMLAudioElement>(null);
-  const audioContext = useRef<AudioContext | null>(null);
-  const [analyser, setAnalyser] = useState<AnalyserNode | null>(null);
-
-  useEffect(
-    () => () => {
-      const context = audioContext.current;
-      if (context && context.state !== 'closed')
-        void context.close().catch(() => {});
-    },
-    [],
-  );
   const [playing, setPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [error, setError] = useState('');
-  function suspendProcessing() {
-    const context = audioContext.current;
-    if (!context || context.state === 'closed') return;
-    void context
-      .suspend()
-      .then(() => {
-        // A new play gesture may arrive before a pending suspension finishes.
-        if (audio.current && !audio.current.paused && !audio.current.ended) {
-          return context.resume();
-        }
-      })
-      .catch(() => {});
-  }
 
   async function togglePlayback() {
     const media = audio.current;
@@ -52,27 +28,6 @@ export default function WelcomeAudioPlayer() {
     }
     setError('');
     if (media.ended) media.currentTime = 0;
-    // Initialize and resume in the user gesture so mobile browsers permit audio.
-    if (!audioContext.current) {
-      let context: AudioContext | undefined;
-      try {
-        context = new AudioContext();
-        const meter = context.createAnalyser();
-        meter.fftSize = 1024;
-        meter.smoothingTimeConstant = 0.65;
-        const source = context.createMediaElementSource(media);
-        source.connect(meter);
-        meter.connect(context.destination);
-        audioContext.current = context;
-        setAnalyser(meter);
-      } catch {
-        // Visual analysis is optional; native playback still works without it.
-        if (context) void context.close();
-      }
-    }
-    if (audioContext.current?.state === 'suspended') {
-      void audioContext.current.resume().catch(() => {});
-    }
     // Call play directly in the click handler for mobile gesture requirements.
     const playRequest = media.play();
     try {
@@ -80,7 +35,6 @@ export default function WelcomeAudioPlayer() {
     } catch (reason) {
       if (reason instanceof DOMException && reason.name === 'AbortError')
         return;
-      if (media.paused) suspendProcessing();
       setError('Could not play the welcome audio. Please try again.');
     }
   }
@@ -105,24 +59,14 @@ export default function WelcomeAudioPlayer() {
           setDuration(Number.isFinite(next) ? next : 0);
         }}
         onTimeUpdate={event => setCurrentTime(event.currentTarget.currentTime)}
-        onPlay={() => {
-          setPlaying(true);
-          const context = audioContext.current;
-          if (context && context.state !== 'closed')
-            void context.resume().catch(() => {});
-        }}
-        onPause={() => {
-          setPlaying(false);
-          suspendProcessing();
-        }}
+        onPlay={() => setPlaying(true)}
+        onPause={() => setPlaying(false)}
         onEnded={event => {
           setPlaying(false);
-          suspendProcessing();
           setCurrentTime(event.currentTarget.duration);
         }}
         onError={() => {
           setPlaying(false);
-          suspendProcessing();
           setError('Could not load the welcome audio. Please try again.');
         }}
       />
@@ -137,8 +81,6 @@ export default function WelcomeAudioPlayer() {
           <PlayPauseIcon playing={playing} />
         </Button>
         <VoiceWaveform
-          playing={playing}
-          analyser={analyser}
           levels={waveform.levels}
           progress={duration > 0 ? currentTime / duration : 0}
           onSeek={duration > 0 ? seek : undefined}

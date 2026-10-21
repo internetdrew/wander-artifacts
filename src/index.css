@@ -265,7 +265,7 @@
   }
 }
 
-/* Played bars brighten as the playhead passes their index. */
+/* Motion fades the sampled bars as playback advances. */
 .welcome-waveform {
   flex: 1;
   min-width: 0;
@@ -284,11 +284,6 @@
   transition: transform 140ms ease-out;
   border-radius: 2px;
   background: currentColor;
-  opacity: clamp(0.3, calc((var(--prog) * var(--n) - var(--i)) * 99), 1);
-}
-
-.welcome-waveform[data-live] .welcome-waveform-bar {
-  transition: none;
 }
 
 @media (prefers-reduced-motion: reduce) {

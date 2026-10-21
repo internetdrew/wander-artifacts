@@ -1,4 +1,4 @@
-import { BlanketIcon, TowelIcon } from './AmenityIcons';
+import { BlanketIcon } from './AmenityIcons';
 
 const hints = [
   {
@@ -49,9 +49,50 @@ const hints = [
     subtitle: 'In the basket beside the sofa.',
   },
   {
-    icon: <TowelIcon />,
-    title: 'Fresh towels',
-    subtitle: 'In the hallway linen cupboard.',
+    icon: (
+      <svg
+        xmlns='http://www.w3.org/2000/svg'
+        width='24'
+        height='24'
+        viewBox='0 0 24 24'
+        fill='none'
+        stroke='currentColor'
+        strokeWidth='2'
+        strokeLinecap='round'
+        strokeLinejoin='round'
+        className='stroke-[#202020] size-5'
+        aria-hidden='true'
+      >
+        <path d='m17 2-5 5-5-5' />
+        <rect width='20' height='15' x='2' y='7' rx='2' />
+      </svg>
+    ),
+    title: 'TV & streaming',
+    subtitle: 'Use your streaming accounts, and sign out before you leave.',
+  },
+  {
+    icon: (
+      <svg
+        xmlns='http://www.w3.org/2000/svg'
+        width='24'
+        height='24'
+        viewBox='0 0 24 24'
+        fill='none'
+        stroke='currentColor'
+        strokeWidth='2'
+        strokeLinecap='round'
+        strokeLinejoin='round'
+        className='stroke-[#202020] size-5'
+        aria-hidden='true'
+      >
+        <rect width='16' height='20' x='4' y='2' rx='2' />
+        <path d='M12 6h.01' />
+        <circle cx='12' cy='14' r='4' />
+        <path d='M12 14h.01' />
+      </svg>
+    ),
+    title: 'Music',
+    subtitle: 'Connect to the home Wi-Fi and use the Sonos app to play your favorites.',
   },
 ];
 

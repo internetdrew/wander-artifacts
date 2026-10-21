@@ -1,5 +1,5 @@
-import { useEffect, useId, useRef, type CSSProperties } from 'react';
-import { useReducedMotion } from 'motion/react';
+import { useId, type CSSProperties } from 'react';
+import { motion, useReducedMotion } from 'motion/react';
 
 // Placeholder speech levels until the welcome audio supplies real samples.
 const WELCOME_LEVELS = [
@@ -9,8 +9,6 @@ const WELCOME_LEVELS = [
 
 interface VoiceWaveformProps {
   levels?: readonly number[];
-  playing?: boolean;
-  analyser?: AnalyserNode | null;
   progress?: number;
   onSeek?: (progress: number) => void;
   onTogglePlayback?: () => void;
@@ -21,127 +19,32 @@ interface VoiceWaveformProps {
 export default function VoiceWaveform({
   levels = WELCOME_LEVELS,
   progress = 0,
-  playing = false,
-  analyser = null,
   onSeek,
   onTogglePlayback,
   currentTime = 0,
   duration = 0,
 }: VoiceWaveformProps) {
   const keyboardHintId = useId();
-  const root = useRef<HTMLSpanElement>(null);
   const reducedMotion = useReducedMotion();
-  const live = playing && !!analyser && !reducedMotion;
-
-  useEffect(() => {
-    if (!live || !analyser) return;
-    const bars = root.current?.querySelectorAll<HTMLElement>(
-      '.welcome-waveform-bar',
-    );
-    if (!bars?.length) return;
-    const data = new Uint8Array(analyser.frequencyBinCount);
-    const envelopes = new Float32Array(bars.length);
-    const starts = new Uint16Array(bars.length);
-    const ends = new Uint16Array(bars.length);
-    const binHz = analyser.context.sampleRate / analyser.fftSize;
-    for (let index = 0; index < bars.length; index++) {
-      starts[index] = Math.max(
-        1,
-        Math.floor((80 * (4000 / 80) ** (index / bars.length)) / binHz),
-      );
-      ends[index] = Math.min(
-        data.length,
-        Math.max(
-          starts[index] + 1,
-          Math.ceil((80 * (4000 / 80) ** ((index + 1) / bars.length)) / binHz),
-        ),
-      );
-    }
-    const frameInterval = 1000 / 60;
-    let frame = 0;
-    let previous = performance.now();
-    let lastPaint = previous;
-    let onscreen = !('IntersectionObserver' in window);
-    let disposed = false;
-    function schedule() {
-      if (!disposed && !document.hidden && onscreen && !frame) {
-        frame = requestAnimationFrame(draw);
-      }
-    }
-    function draw(now: number) {
-      frame = 0;
-      if (disposed || document.hidden || !onscreen || !analyser || !bars)
-        return;
-      // Keep 120Hz/144Hz displays from doubling the analysis and DOM writes.
-      if (now - lastPaint < frameInterval - 0.5) {
-        schedule();
-        return;
-      }
-      lastPaint = now;
-      const elapsed = Math.min((now - previous) / 1000, 0.05);
-      previous = now;
-      analyser.getByteFrequencyData(data);
-      for (let index = 0; index < bars.length; index++) {
-        let peak = 0;
-        for (let bin = starts[index]; bin < ends[index]; bin++)
-          peak = Math.max(peak, data[bin]);
-        const target = peak / 255;
-        // Fast attack follows syllables; slower release softens their falloff.
-        const response =
-          1 - Math.exp(-elapsed / (target > envelopes[index] ? 0.035 : 0.14));
-        envelopes[index] += (target - envelopes[index]) * response;
-        bars[index].style.transform =
-          `scaleY(${0.125 + envelopes[index] * 0.875})`;
-      }
-      schedule();
-    }
-    function updateVisibility() {
-      cancelAnimationFrame(frame);
-      frame = 0;
-      previous = performance.now();
-      lastPaint = previous - frameInterval;
-      schedule();
-    }
-    const observer =
-      'IntersectionObserver' in window
-        ? new IntersectionObserver(entries => {
-            onscreen = entries.some(entry => entry.isIntersecting);
-            updateVisibility();
-          })
-        : null;
-    if (root.current) observer?.observe(root.current);
-    schedule();
-    document.addEventListener('visibilitychange', updateVisibility);
-    return () => {
-      disposed = true;
-      cancelAnimationFrame(frame);
-      observer?.disconnect();
-      document.removeEventListener('visibilitychange', updateVisibility);
-      for (const bar of bars) bar.style.removeProperty('transform');
-    };
-  }, [live, analyser, levels.length]);
+  const playedBars = Math.min(1, Math.max(0, progress)) * levels.length;
 
   return (
     <span
-      ref={root}
-      data-live={live || undefined}
-      className='welcome-waveform relative rounded-sm has-focus-visible]:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-[#202020]'
-      style={
-        {
-          '--n': levels.length,
-          '--prog': Math.min(1, Math.max(0, progress)),
-        } as CSSProperties
-      }
+      className='welcome-waveform relative rounded-sm has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-[#202020]'
     >
       {levels.map((level, index) => (
-        <i
+        <motion.i
           key={index}
           aria-hidden='true'
           className='welcome-waveform-bar'
+          initial={false}
+          animate={{
+            opacity: 0.3 + 0.7 * Math.min(1, Math.max(0, playedBars - index)),
+          }}
+          transition={{ duration: reducedMotion ? 0 : 0.2, ease: 'linear' }}
           style={
             {
               '--l': Math.min(1, Math.max(0, level)),
-              '--i': index,
             } as CSSProperties
           }
         />
