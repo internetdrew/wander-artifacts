@@ -1,6 +1,7 @@
 import DeferredStayExtension from './components/extend-your-stay/DeferredStayExtension';
 import DayAndNightPhoto from './components/day-and-night-photo/DayAndNightPhoto';
 import DeferredWelcomeStack from './components/welcome-stack/DeferredWelcomeStack';
+import InvoiceWanderLogo from './components/extend-your-stay/invoice/InvoiceGlobe';
 import { ProjectNoteDialog } from './components/ProjectNoteDialog';
 import {
   ExtendedStayNotes,
@@ -12,7 +13,10 @@ function App() {
   return (
     <main className='max-w-xl mx-auto space-y-16 py-8 px-4'>
       <header className=''>
-        <h1 className='text-[17px] font-[550]'>Wander x Andrew Rowley</h1>
+        <h1 className='flex items-center gap-1.5 text-[17px] font-[550]'>
+          <InvoiceWanderLogo globeOnly animationReady />
+          <span>Wander x Andrew Rowley</span>
+        </h1>
         <p className='text-neutral-500 font-[450]'>
           A collection of thoughtful interfaces and playful interactions for
           Wander, designed and built by Andrew Rowley.

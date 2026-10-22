@@ -1,5 +1,9 @@
 import { useCallback, useEffect, useRef } from 'react';
-import { animate, useReducedMotion, type AnimationPlaybackControls } from 'motion/react';
+import {
+  animate,
+  useReducedMotion,
+  type AnimationPlaybackControls,
+} from 'motion/react';
 
 function meridian(value: number, index: number) {
   const phase = ((value + 1 / 3 + index / 6) % 1) * Math.PI - Math.PI / 2;
@@ -7,7 +11,13 @@ function meridian(value: number, index: number) {
   return `M 212.5 14.5 A ${Math.max(Math.abs(width), 0.001)} 198 0 0 ${width >= 0 ? 1 : 0} 212.5 410.5`;
 }
 
-export default function InvoiceWanderLogo({ animationReady = false }: { animationReady?: boolean }) {
+export default function InvoiceWanderLogo({
+  animationReady = false,
+  globeOnly = false,
+}: {
+  animationReady?: boolean;
+  globeOnly?: boolean;
+}) {
   const reducedMotion = useReducedMotion();
   const paths = useRef<(SVGPathElement | null)[]>([]);
   const playback = useRef<AnimationPlaybackControls | null>(null);
@@ -18,13 +28,17 @@ export default function InvoiceWanderLogo({ animationReady = false }: { animatio
     }
   }, []);
   const spin = useCallback(() => {
-    if (!animationReady || reducedMotion || running.current || document.hidden) return;
+    if (!animationReady || reducedMotion || running.current || document.hidden)
+      return;
     running.current = true;
     playback.current = animate(0, 1, {
       duration: 1.8,
       ease: [0.45, 0, 0.2, 1],
       onUpdate: value => draw(value === 1 ? 0 : value),
-      onComplete: () => { running.current = false; draw(0); },
+      onComplete: () => {
+        running.current = false;
+        draw(0);
+      },
     });
   }, [animationReady, reducedMotion, draw]);
 
@@ -47,13 +61,20 @@ export default function InvoiceWanderLogo({ animationReady = false }: { animatio
   return (
     <span
       role='img'
-      aria-label='Wander'
+      aria-label={globeOnly ? 'Wander globe' : 'Wander'}
       tabIndex={0}
-      className='relative mt-1 inline-block w-20 max-w-full shrink-0 leading-none focus-visible:outline-2 focus-visible:outline-offset-4'
-      onPointerEnter={event => { if (event.pointerType === 'mouse') spin(); }}
+      className={
+        globeOnly
+          ? 'relative inline-block size-4 shrink-0 leading-none focus-visible:outline-2 focus-visible:outline-offset-4'
+          : 'relative mt-1 inline-block w-20 max-w-full shrink-0 leading-none focus-visible:outline-2 focus-visible:outline-offset-4'
+      }
+      onPointerEnter={event => {
+        if (event.pointerType === 'mouse') spin();
+      }}
       onFocus={spin}
     >
-<svg
+      {!globeOnly && (
+        <svg
           fill='none'
           viewBox='0 0 2011.4 424.99'
           xmlns='http://www.w3.org/2000/svg'
@@ -92,11 +113,31 @@ export default function InvoiceWanderLogo({ animationReady = false }: { animatio
             />
           </g>
         </svg>
-      {!reducedMotion && (
-        <svg aria-hidden='true' viewBox='0 0 425 425' className='pointer-events-none absolute top-0 left-0 h-full w-[21.129%]'>
-          <g transform='rotate(23.5 212.5 212.5)' fill='none' stroke='currentColor' strokeWidth='29.5'>
+      )}
+      {(globeOnly || !reducedMotion) && (
+        <svg
+          aria-hidden='true'
+          viewBox='0 0 425 425'
+          className={
+            globeOnly
+              ? 'block size-full'
+              : 'pointer-events-none absolute top-0 left-0 h-full w-[21.129%]'
+          }
+        >
+          <g
+            transform='rotate(23.5 212.5 212.5)'
+            fill='none'
+            stroke='currentColor'
+            strokeWidth='29.5'
+          >
             {[0, 1, 2].map(index => (
-              <path key={index} ref={node => { paths.current[index] = node; }} d={meridian(0, index)} />
+              <path
+                key={index}
+                ref={node => {
+                  paths.current[index] = node;
+                }}
+                d={meridian(0, index)}
+              />
             ))}
             <ellipse cx='212.5' cy='212.5' rx='198' ry='82' />
             <circle cx='212.5' cy='212.5' r='198' />
