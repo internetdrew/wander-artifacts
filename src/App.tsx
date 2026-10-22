@@ -13,7 +13,7 @@ function App() {
     <main className='max-w-xl mx-auto space-y-16 py-8 px-4'>
       <header className=''>
         <h1 className='text-[17px] font-[550]'>Wander x Andrew Rowley</h1>
-        <p className='text-neutral-500'>
+        <p className='text-neutral-500 font-[450]'>
           A collection of thoughtful interfaces and playful interactions for
           Wander, designed and built by Andrew Rowley.
         </p>
@@ -48,7 +48,7 @@ function App() {
       </section>
       <section aria-labelledby='welcome-stack-title'>
         <div className='relative flex items-center'>
-          <h2 id='welcome-stack-title' className='font-[450]'>
+          <h2 id='welcome-stack-title' className='font-[550]'>
             The Welcome Stack
           </h2>
           <ProjectNoteDialog title='The Welcome Stack'>

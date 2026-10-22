@@ -56,7 +56,6 @@
     -moz-osx-font-smoothing: grayscale;
     font-family: var(--font-sans);
     font-feature-settings: var(--default-font-feature-settings);
-    background-color: #f9f9f9;
   }
 }
 
