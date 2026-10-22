@@ -25,8 +25,14 @@ const CONTENT_EASE = [0.215, 0.61, 0.355, 1] as const;
 
 type View = 'invitation' | 'choose-nights' | 'review';
 
-export default function ExtendYourStay() {
+export default function ExtendYourStay({ exploreOnMount = false }: { exploreOnMount?: boolean }) {
   const [view, setView] = useState<View>('invitation');
+  useEffect(() => {
+    if (!exploreOnMount) return;
+    // Mount at the invitation's measured height, then use the existing resize.
+    const frame = requestAnimationFrame(() => setView('choose-nights'));
+    return () => cancelAnimationFrame(frame);
+  }, [exploreOnMount]);
   const [{ nights, direction }, setSelection] = useState({
     nights: 1,
     direction: 1,
