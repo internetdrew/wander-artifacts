@@ -1,6 +1,6 @@
 import { Button } from '@base-ui/react';
 import { useEffect, useRef, useState } from 'react';
-import watchmere from '../../../assets/home-0.webp';
+import { daytime } from '../../../assets/photos';
 import WelcomeAudioPlayer from './WelcomeAudioPlayer';
 
 const WelcomeCard = () => {
@@ -41,10 +41,10 @@ const WelcomeCard = () => {
     <div className='flex min-h-full flex-col bg-white md:max-w-88 rounded-2xl'>
       <div className='relative aspect-11/6 shrink-0 overflow-hidden rounded-t-2xl'>
         <img
-          src={watchmere}
+          {...daytime}
+          sizes='(min-width: 384px) 352px, calc(100vw - 32px)'
           alt='Watchmere coastal home in daylight'
-          width={1449}
-          height={1085}
+          decoding='async'
           draggable={false}
           className='block h-full w-full object-cover object-center'
         />

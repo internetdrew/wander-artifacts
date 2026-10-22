@@ -1,8 +1,16 @@
 @import 'tailwindcss';
 
 @font-face {
+  font-family: 'Caveat Variable';
+  src: url('./assets/fonts/caveat-signature.woff2') format('woff2');
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
   font-family: 'instrumentSans';
-  src: url('./assets/fonts/instrument-sans-450.otf') format('opentype');
+  src: url('./assets/fonts/instrument-sans-450.woff2') format('woff2');
   font-weight: 450;
   font-style: normal;
   font-display: swap;
@@ -11,7 +19,7 @@
 
 @font-face {
   font-family: 'instrumentSans';
-  src: url('./assets/fonts/instrument-sans-550.otf') format('opentype');
+  src: url('./assets/fonts/instrument-sans-550.woff2') format('woff2');
   font-weight: 550;
   font-style: normal;
   font-display: swap;
@@ -20,7 +28,7 @@
 
 @font-face {
   font-family: 'instrumentSans';
-  src: url('./assets/fonts/instrument-sans-700.ttf') format('truetype');
+  src: url('./assets/fonts/instrument-sans-700.woff2') format('woff2');
   font-weight: 700;
   font-style: normal;
   font-display: swap;

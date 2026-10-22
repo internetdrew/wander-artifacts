@@ -10,6 +10,8 @@ A collection of thoughtful interfaces and playful interactions for Wander, desig
 
 Built with React, TypeScript, Vite, Tailwind CSS, Base UI, and Motion. Includes keyboard navigation and reduced-motion support.
 
+Each project has a notebook button beside its title with design notes.
+
 ## Development
 
 ```sh
@@ -21,3 +23,8 @@ npm run dev
 npm run build   # Production build
 npm run lint    # Lint checks
 ```
+
+The production build prerenders the initial page into HTML, then hydrates its
+interactions in the browser. The full stay-extension flow loads when exploring
+dates, and the Welcome Stack loads near the viewport. Use `npm run preview` to
+check the production output locally.

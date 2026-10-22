@@ -1,4 +1,4 @@
-import { useId, useRef, useState, type PointerEvent } from 'react';
+import { useEffect, useId, useRef, useState, type PointerEvent } from 'react';
 import {
   AnimatePresence,
   motion,
@@ -9,33 +9,31 @@ import {
   useTransform,
   type MotionValue,
 } from 'motion/react';
-import daytime from '../../assets/home-0.webp';
-import evening from '../../assets/home-1.webp';
-import nighttime from '../../assets/home-2.webp';
+import { daytime, evening, nighttime, dayNightSizes } from '../../assets/photos';
 
 const TILT = { max: 12, depth: -6, spring: { stiffness: 200, damping: 24 } };
 
 const SCENES = [
   {
-    src: daytime,
+    photo: daytime,
     label: 'This morning',
   },
   {
-    src: evening,
+    photo: evening,
     label: 'This evening',
   },
   {
-    src: nighttime,
+    photo: nighttime,
     label: 'Tonight',
   },
 ];
 
 function PhotoLayer({
-  src,
+  photo,
   index,
   progress,
 }: {
-  src: string;
+  photo: typeof daytime;
   index: number;
   progress: MotionValue<number>;
 }) {
@@ -46,11 +44,13 @@ function PhotoLayer({
   );
   return (
     <motion.img
-      src={src}
+      {...photo}
+      sizes={dayNightSizes}
+      fetchPriority={index === 0 ? 'high' : 'low'}
+      loading='eager'
       alt=''
-      width={1449}
-      height={1085}
       draggable={false}
+      decoding='async'
       className='pointer-events-none absolute inset-0 size-full select-none object-cover'
       style={{ opacity }}
     />
@@ -96,6 +96,20 @@ export default function DayAndNightPhoto() {
   const [scrubberStart, setScrubberStart] = useState(0);
   const settingsButton = useRef<HTMLButtonElement>(null);
   const cardBounds = useRef<HTMLDivElement>(null);
+  const [loadAlternatives, setLoadAlternatives] = useState(
+    () => typeof window !== 'undefined' && !('IntersectionObserver' in window),
+  );
+  useEffect(() => {
+    const node = cardBounds.current;
+    if (!node || !('IntersectionObserver' in window)) return;
+    const observer = new IntersectionObserver(([entry]) => {
+      if (!entry.isIntersecting) return;
+      setLoadAlternatives(true);
+      observer.disconnect();
+    }, { rootMargin: '400px' });
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
   const touchPointer = useRef<number | null>(null);
   const rotateX = useSpring(0, TILT.spring);
   const rotateY = useSpring(0, TILT.spring);
@@ -199,10 +213,10 @@ export default function DayAndNightPhoto() {
               role='img'
               aria-label={`Watchmere, a coastal home, ${SCENES[scene].label.toLowerCase()}`}
             >
-              {SCENES.map(({ src }, index) => (
+              {SCENES.map(({ photo }, index) => (index === 0 || loadAlternatives) && (
                 <PhotoLayer
-                  key={src}
-                  src={src}
+                  key={photo.src}
+                  photo={photo}
                   index={index}
                   progress={progress}
                 />
@@ -217,6 +231,7 @@ export default function DayAndNightPhoto() {
               onClick={() => {
                 resetTilt();
                 setScrubberStart(progress.get() * 100);
+                setLoadAlternatives(true);
                 setControlsOpen(open => !open);
               }}
               className='absolute right-3 bottom-3 grid size-10 cursor-pointer place-items-center rounded-full bg-neutral-800/30 text-white hover:bg-neutral-800/40 focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-white'
