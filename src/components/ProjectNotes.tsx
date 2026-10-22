@@ -38,11 +38,10 @@ export function WelcomeStackNotes() {
       <p>
         The person who books a trip often becomes the unofficial concierge.
         What's the address? What's the Wi-Fi password? Have you seen any coffee
-        filters? I wanted to give those questions a home, so whoever booked
-        could enjoy the stay, too.
+        filters?
       </p>
       <p>
-        The Welcome Stack gathers the essentials into a hand of cards you can
+        The Welcome Stack gathers the essentials into a handful of cards you can
         share with everyone coming along. I modeled this after a deck of cards
         where you can find arrival details, connect to the Wi-Fi, and get
         acquainted with the little comforts around the house.
