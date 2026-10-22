@@ -2,7 +2,11 @@ import DeferredStayExtension from './components/extend-your-stay/DeferredStayExt
 import DayAndNightPhoto from './components/day-and-night-photo/DayAndNightPhoto';
 import DeferredWelcomeStack from './components/welcome-stack/DeferredWelcomeStack';
 import { ProjectNoteDialog } from './components/ProjectNoteDialog';
-import { ExtendedStayNotes, DayAndNightNotes, WelcomeStackNotes } from './components/ProjectNotes';
+import {
+  ExtendedStayNotes,
+  DayAndNightNotes,
+  WelcomeStackNotes,
+} from './components/ProjectNotes';
 
 function App() {
   return (
@@ -19,7 +23,9 @@ function App() {
           <h2 id='extended-stay-title' className='font-[550] text-[15px]'>
             Extended Stay
           </h2>
-          <ProjectNoteDialog title='Extended Stay'><ExtendedStayNotes /></ProjectNoteDialog>
+          <ProjectNoteDialog title='Extended Stay'>
+            <ExtendedStayNotes />
+          </ProjectNoteDialog>
         </div>
 
         <div className='mt-6 sm:max-w-md mx-auto'>
@@ -29,9 +35,11 @@ function App() {
       <section aria-labelledby='day-night-title'>
         <div className='relative flex items-center'>
           <h2 id='day-night-title' className='font-[550]'>
-            Watchmere, from day to night
+            Watchmere's Dynamic Postcard
           </h2>
-          <ProjectNoteDialog title='Watchmere, from day to night'><DayAndNightNotes /></ProjectNoteDialog>
+          <ProjectNoteDialog title={`Watchmere's Dynamic Postcard`}>
+            <DayAndNightNotes />
+          </ProjectNoteDialog>
         </div>
 
         <div className='mt-6 sm:max-w-md mx-auto'>
@@ -43,7 +51,9 @@ function App() {
           <h2 id='welcome-stack-title' className='font-[450]'>
             The Welcome Stack
           </h2>
-          <ProjectNoteDialog title='The Welcome Stack'><WelcomeStackNotes /></ProjectNoteDialog>
+          <ProjectNoteDialog title='The Welcome Stack'>
+            <WelcomeStackNotes />
+          </ProjectNoteDialog>
         </div>
         <div className='mt-6'>
           <DeferredWelcomeStack />

@@ -16,8 +16,15 @@ export default function WelcomeAudioPlayer() {
   const audio = useRef<HTMLAudioElement>(null);
   const [playing, setPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
-  const [duration, setDuration] = useState(0);
+  // The sampled waveform includes the duration of this exact audio file.
+  // Keep seeking/progress available even if metadata loads before event handlers.
+  const [duration, setDuration] = useState(waveform.duration);
   const [error, setError] = useState('');
+
+  function syncDuration(media: HTMLAudioElement) {
+    const next = media.duration;
+    if (Number.isFinite(next) && next > 0) setDuration(next);
+  }
 
   async function togglePlayback() {
     const media = audio.current;
@@ -53,12 +60,12 @@ export default function WelcomeAudioPlayer() {
         ref={audio}
         src={welcomeAudio}
         preload='metadata'
-        onLoadedMetadata={event => setDuration(event.currentTarget.duration)}
-        onDurationChange={event => {
-          const next = event.currentTarget.duration;
-          setDuration(Number.isFinite(next) ? next : 0);
+        onLoadedMetadata={event => syncDuration(event.currentTarget)}
+        onDurationChange={event => syncDuration(event.currentTarget)}
+        onTimeUpdate={event => {
+          syncDuration(event.currentTarget);
+          setCurrentTime(event.currentTarget.currentTime);
         }}
-        onTimeUpdate={event => setCurrentTime(event.currentTarget.currentTime)}
         onPlay={() => setPlaying(true)}
         onPause={() => setPlaying(false)}
         onEnded={event => {
