@@ -8,7 +8,7 @@
   border-radius: 6px;
   background: white;
   box-shadow: 0 1px 3px rgb(0 0 0 / 8%);
-  transition: translate 180ms ease-in-out, width 180ms ease-in-out;
+  transition: translate 180ms ease-in-out;
   pointer-events: none;
 }
 

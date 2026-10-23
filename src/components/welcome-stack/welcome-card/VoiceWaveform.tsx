@@ -1,5 +1,4 @@
 import { useId, type CSSProperties } from 'react';
-import { motion, useReducedMotion } from 'motion/react';
 
 // Placeholder speech levels until the welcome audio supplies real samples.
 const WELCOME_LEVELS = [
@@ -25,7 +24,6 @@ export default function VoiceWaveform({
   duration = 0,
 }: VoiceWaveformProps) {
   const keyboardHintId = useId();
-  const reducedMotion = useReducedMotion();
   const playedBars = Math.min(1, Math.max(0, progress)) * levels.length;
 
   return (
@@ -33,18 +31,14 @@ export default function VoiceWaveform({
       className='welcome-waveform relative rounded-sm has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-[#202020]'
     >
       {levels.map((level, index) => (
-        <motion.i
+        <i
           key={index}
           aria-hidden='true'
           className='welcome-waveform-bar'
-          initial={false}
-          animate={{
-            opacity: 0.3 + 0.7 * Math.min(1, Math.max(0, playedBars - index)),
-          }}
-          transition={{ duration: reducedMotion ? 0 : 0.2, ease: 'linear' }}
           style={
             {
               '--l': Math.min(1, Math.max(0, level)),
+              opacity: 0.3 + 0.7 * Math.min(1, Math.max(0, playedBars - index)),
             } as CSSProperties
           }
         />
