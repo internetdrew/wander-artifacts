@@ -19,15 +19,20 @@ export default function CoffeeMachine({ active }: { active: boolean }) {
     const x = Number(svg.dataset.liquidX);
     const y = Number(svg.dataset.liquidY);
     const drop = Number(svg.dataset.liquidDrop);
+    let phase: 'empty' | 'pouring' | 'full' | undefined;
     const paint = (progress: number) => {
       const radius = 0.84 + progress * 0.16;
       liquid.setAttribute(
         'transform',
         `translate(${x} ${y + drop * (1 - progress)}) scale(${radius}) translate(${-x} ${-y})`,
       );
-      liquid.style.opacity = progress === 0 ? '0' : '1';
-      stream.style.opacity = progress > 0 && progress < 1 ? '1' : '0';
-      host.dataset.coffeeState = progress === 0 ? 'empty' : progress === 1 ? 'full' : 'pouring';
+      const nextPhase = progress === 0 ? 'empty' : progress === 1 ? 'full' : 'pouring';
+      if (nextPhase !== phase) {
+        liquid.style.opacity = nextPhase === 'empty' ? '0' : '1';
+        stream.style.opacity = nextPhase === 'pouring' ? '1' : '0';
+        host.dataset.coffeeState = nextPhase;
+        phase = nextPhase;
+      }
     };
     if (!active || !visible) {
       paint(0);

@@ -267,7 +267,7 @@
   }
 }
 
-/* Motion fades the sampled bars as playback advances. */
+/* Fade the sampled bars as playback advances without per-bar Motion instances. */
 .welcome-waveform {
   flex: 1;
   min-width: 0;
@@ -283,7 +283,7 @@
   max-width: 3px;
   height: 28px;
   transform: scaleY(calc(0.125 + var(--l) * 0.875));
-  transition: transform 140ms ease-out;
+  transition: opacity 200ms linear;
   border-radius: 2px;
   background: currentColor;
 }
